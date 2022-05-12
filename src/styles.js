@@ -11,12 +11,19 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         backgroundColor: theme.palette.background.teal,
-        padding: theme.spacing(8, 0, 6),
+        padding: theme.spacing(9, 0, 9),
     },
     buttons: {
         marginTop: '40px',
         background: 'rgba(20, 140, 20, 1)',
         color: "white",
+    },
+    majorbuttons: {
+        marginTop: '40px',
+        background: 'rgba(100, 100, 100, 1)',
+        color: "white",
+        width: 120,
+        fontSize: 12,
     },
     card: {
         height: '100%',
