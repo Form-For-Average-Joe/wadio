@@ -1,9 +1,9 @@
 import React from 'react';
 import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import useStyles from './styles';
 import LoginDialog from './loginbutton';
 import SignupDialog from './signupbutton';
-import PushUpDialog from './pushup';
 
 const App = () => {
     const classes = useStyles();
@@ -11,7 +11,7 @@ const App = () => {
     return (
         <CssBaseline>
             <div className={classes.root}>
-                <Container maxWidth="sm" style={{ marginTop: '0px' }} color={"primary"}>
+                <Container maxWidth="lg" style={{ marginTop: '0px' }} color={"primary"}>
                     <Typography align="center" variant="h2">
                         Form For The Average Joe
                     </Typography>
@@ -44,10 +44,10 @@ const App = () => {
                                         </Typography>
                                         <Grid container spacing={4} justify="center">
                                             <Grid item>
-                                                <PushUpDialog/>
+                                                <Button variant="contained" className={classes.buttons} component={Link} to="/pushupsassessment">Assessment</Button>
                                             </Grid>
                                             <Grid item>
-                                                <PushUpDialog/>
+                                                <Button variant="contained" className={classes.buttons} component={Link} to="/pushupstraining">Training</Button>
                                             </Grid>
                                         </Grid>
                                     </CardContent>
@@ -68,10 +68,10 @@ const App = () => {
                                         </Typography>
                                         <Grid container spacing={4} justify="center">
                                             <Grid item>
-                                                <Button variant="contained" className={classes.buttons}>Assessment</Button>
+                                                <Button variant="contained" className={classes.buttons} component={Link} to="/situpsassessment">Assessment</Button>
                                             </Grid>
                                             <Grid item>
-                                                <Button variant="contained" className={classes.buttons}>Training</Button>
+                                                <Button variant="contained" className={classes.buttons} component={Link} to="/situpstraining">Training</Button>
                                             </Grid>
                                         </Grid>
                                     </CardContent>
