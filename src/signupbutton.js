@@ -3,10 +3,8 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import { Typography } from '@material-ui/core';
 import useStyles from './styles';
@@ -67,7 +65,7 @@ export default function SignupDialog(actiontype) {
                         <TextField
                             required
                             id="filled-required"
-                            label="Confirm PasswordPassword"
+                            label="Confirm Password"
                             variant="filled"
                             fullWidth
                             margin='dense'

@@ -1,13 +1,9 @@
 import React from 'react';
-import { useState } from 'react';
 import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@material-ui/core';
-import { LocalGasStation, Update } from '@material-ui/icons';
 import useStyles from './styles';
-import { createTheme } from '@material-ui/core';
-import CustomizedDialogs from './loginbutton';
-import AlertDialog from './loginbutton';
 import LoginDialog from './loginbutton';
 import SignupDialog from './signupbutton';
+import PushUpDialog from './pushup';
 
 const App = () => {
     const classes = useStyles();
@@ -48,10 +44,10 @@ const App = () => {
                                         </Typography>
                                         <Grid container spacing={4} justify="center">
                                             <Grid item>
-                                                <Button variant="contained" className={classes.buttons}>Assessment</Button>
+                                                <PushUpDialog/>
                                             </Grid>
                                             <Grid item>
-                                                <Button variant="contained" className={classes.buttons}>Training</Button>
+                                                <PushUpDialog/>
                                             </Grid>
                                         </Grid>
                                     </CardContent>
