@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     },
     buttons: {
         marginTop: '40px',
-        background: 'rgba(20, 140, 20, 1)',
+        background: 'rgba(20, 20, 140, 1)',
         color: "white",
     },
     majorbuttons: {
