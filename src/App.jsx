@@ -1,8 +1,13 @@
 import React from 'react';
+import { useState } from 'react';
 import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@material-ui/core';
 import { LocalGasStation, Update } from '@material-ui/icons';
 import useStyles from './styles';
 import { createTheme } from '@material-ui/core';
+import CustomizedDialogs from './loginbutton';
+import AlertDialog from './loginbutton';
+import LoginDialog from './loginbutton';
+import SignupDialog from './signupbutton';
 
 const App = () => {
     const classes = useStyles();
@@ -18,15 +23,11 @@ const App = () => {
                 </Container>
                 <div>
                     <Grid container spacing={2} justify="center">
-                        <Grid item>
-                            <Button variant="contained" startIcon={<Update />} className={classes.majorbuttons} onClick={()=>{console.log("login attempt")}}>
-                                Log In
-                            </Button>
+                        <Grid item style={{marginTop: "40px"}}>
+                            <LoginDialog/>
                         </Grid>
-                        <Grid item>
-                            <Button variant="contained" endIcon={<LocalGasStation/>} className={classes.majorbuttons} onClick={()=>{console.log("signup attempt")}}>
-                                Sign Up
-                            </Button>
+                        <Grid item style={{marginTop: "40px"}}>
+                            <SignupDialog/>
                         </Grid>
                     </Grid>
                 </div>
@@ -47,10 +48,10 @@ const App = () => {
                                         </Typography>
                                         <Grid container spacing={4} justify="center">
                                             <Grid item>
-                                                <Button variant="contained" className={classes.buttons} onClick={()=>{console.log("pushup assessment")}}>Assessment</Button>
+                                                <Button variant="contained" className={classes.buttons}>Assessment</Button>
                                             </Grid>
                                             <Grid item>
-                                                <Button variant="contained" className={classes.buttons} onClick={()=>{console.log("pushup training")}}>Training</Button>
+                                                <Button variant="contained" className={classes.buttons}>Training</Button>
                                             </Grid>
                                         </Grid>
                                     </CardContent>
@@ -71,10 +72,10 @@ const App = () => {
                                         </Typography>
                                         <Grid container spacing={4} justify="center">
                                             <Grid item>
-                                                <Button variant="contained" className={classes.buttons} onClick={()=>{console.log("situp assessment")}}>Assessment</Button>
+                                                <Button variant="contained" className={classes.buttons}>Assessment</Button>
                                             </Grid>
                                             <Grid item>
-                                                <Button variant="contained" className={classes.buttons} onClick={()=>{console.log("situp training")}}>Training</Button>
+                                                <Button variant="contained" className={classes.buttons}>Training</Button>
                                             </Grid>
                                         </Grid>
                                     </CardContent>
