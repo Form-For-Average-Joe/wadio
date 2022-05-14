@@ -12,6 +12,7 @@ const PushupsAssessment = () => {
       <div className={classes.root}>
         <MemberHeader />
       </div>
+      <Typography>this is the dashboard</Typography>
     </CssBaseline>
   );
 }

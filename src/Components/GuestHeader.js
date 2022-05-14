@@ -18,7 +18,7 @@ const GuestHeader = () => {
                         Form For The Average Joe
                     </Typography>
                     <Box sx={{ alignItems: 'center', textAlign: 'center' }} marginLeft="auto">
-                        <Grid container spacing={2}>
+                        <Grid container spacing={3}>
                             <Grid item>
                                 <LoginDialog/>
                             </Grid>

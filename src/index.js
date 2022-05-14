@@ -6,6 +6,7 @@ import PushupsAssessment from './PushupsAssessment';
 import PushupsTraining from './PushupsTraining';
 import SitupsAssessment from './SitupsAssessment';
 import SitupsTraining from './SitupsTraining';
+import DashBoard from './Dashboard';
 
 
 ReactDOM.render((
@@ -17,6 +18,7 @@ ReactDOM.render((
             <Route exact path="/pushupstraining" element={<PushupsTraining />}/>
             <Route exact path="/situpsassessment" element={<SitupsAssessment />}/>
             <Route exact path="/situpstraining" element={<SitupsTraining />}/>
+            <Route exact path="/dashboard" element={<DashBoard />}/>
          </Routes>
     </div>
     </BrowserRouter>),

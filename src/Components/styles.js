@@ -37,7 +37,10 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         background: 'rgba(100, 100, 100, 1)',
         color: 'white',
-    }
+    },
+    CameraFeedback: {
+        background: 'rgba(150, 150, 150, 1)',
+    },
 }));
 
 export default useStyles;
