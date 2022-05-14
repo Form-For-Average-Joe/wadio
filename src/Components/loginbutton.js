@@ -21,7 +21,7 @@ export default function LoginDialog(actiontype) {
 
   return (
     <div>
-      <Button variant="contained" className={classes.majorbuttons} onClick={handleClickOpen}>
+      <Button variant="contained" onClick={handleClickOpen}>
         Login
       </Button>
       <Dialog

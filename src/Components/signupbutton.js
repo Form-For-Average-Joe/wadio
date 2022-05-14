@@ -24,7 +24,7 @@ export default function SignupDialog(actiontype) {
 
     return (
         <div>
-            <Button variant="contained" className={classes.majorbuttons} onClick={handleClickOpen}>
+            <Button variant="contained" onClick={handleClickOpen}>
                 Sign Up
             </Button>
             <Dialog

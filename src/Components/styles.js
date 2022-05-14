@@ -5,9 +5,9 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
         color: 'white',
         margin: 0,
-        paddingTop: 30,
+        paddingTop: 0,
         paddingBottom: 30,
-        background: 'rgba(0, 0, 30, 1)',
+        background: 'rgba(0, 0, 0, 1)',
     },
     container: {
         backgroundColor: theme.palette.background.teal,
