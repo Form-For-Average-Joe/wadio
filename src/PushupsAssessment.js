@@ -1,11 +1,12 @@
 import React from 'react';
 import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@material-ui/core';
 import useStyles from './Components/styles';
-import InputAdornment from '@mui/material/InputAdornment';
 import GuestHeader from './Components/GuestHeader';
 import MemberHeader from './Components/MemberHeader';
 import StartButton from './Components/StartButton';
 import StopButton from './Components/StopButton';
+import TimeInput from './Components/TimeInput';
+import DifficultyInput from './Components/DifficultyInput';
 
 const PushupsAssessment = () => {
   const classes = useStyles();

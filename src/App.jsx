@@ -5,6 +5,7 @@ import useStyles from './Components/styles';
 import PushupCard from './Components/PushupCard';
 import SitupCard from './Components/SitupCard';
 import GuestHeader from './Components/GuestHeader';
+import MemberHeader from './Components/MemberHeader';
 
 const App = () => {
     const classes = useStyles();
