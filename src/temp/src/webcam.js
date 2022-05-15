@@ -86,14 +86,14 @@ async function renderResult() {
     }
   }
 
-  // camera.drawCtx();
+  camera.drawCtx();
 
   // The null check makes sure the UI is not in the middle of changing to a
   // different model. If during model change, the result is from an old model,
   // which shouldn't be rendered.
-  // if (poses && poses.length > 0 && !STATE.isModelChanged) {
-  //   camera.drawResults(poses);
-  // }
+  if (poses && poses.length > 0 && !STATE.isModelChanged) {
+    camera.drawResults(poses);
+  }
 }
 
 async function renderPrediction() {
@@ -106,7 +106,7 @@ async function renderPrediction() {
   rafId = requestAnimationFrame(renderPrediction);
 };
 
-async function app() {
+async function app(context) {
   // Gui content will change depending on which model is in the query string.
   // const urlParams = new URLSearchParams(window.location.search);
   // if (!urlParams.has('model')) {
@@ -119,7 +119,7 @@ async function app() {
   // }
   // }
 
-  camera = await Camera.setupCamera(STATE.camera);
+  camera = await Camera.setupCamera(STATE.camera, context);
 
   await setBackendAndEnvFlags(STATE.flags, STATE.backend);
 

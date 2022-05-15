@@ -1,17 +1,29 @@
 import React from 'react';
-import { Box, Card, CardMedia, CssBaseline, Grid } from '@material-ui/core';
+import {Box, Card, CardMedia, CssBaseline, Grid} from '@material-ui/core';
 import useStyles from './Components/styles';
-import GuestHeader from './Components/GuestHeader';
 import MemberHeader from './Components/MemberHeader';
 import StartButton from './Components/StartButton';
 import StopButton from './Components/StopButton';
-import TimeInput from './Components/TimeInput';
-import DifficultyInput from './Components/DifficultyInput';
 import webcam from './temp/src/webcam.js'
+import './Video.css';
 
 const PushupsAssessment = () => {
   const classes = useStyles();
   const [video, setVideo] = React.useState(false);
+  const canvasRef = React.useRef(null);
+  const [context, setContext] = React.useState(null);
+  React.useEffect(() => {
+    if (canvasRef.current) {
+      const renderCtx = canvasRef.current.getContext('2d');
+
+      if (renderCtx) {
+        setContext(renderCtx);
+        if (video) {
+          webcam(context);
+        }
+      }
+    }
+  }, [video, context]);
 
   const handleStart = () => {
     setVideo(true);
@@ -32,35 +44,32 @@ const PushupsAssessment = () => {
       id="video"
       className={classes.cardMedia}
       component="video"
-      src=""
+      src="" />
+    <canvas id="output" ref={canvasRef} width={500} height={500} style={{
+      border: '2px solid #000',
+      marginTop: 10,
+    }}
     />
-    <canvas id="output"></canvas>
   </Box>;
 
   const cardMedia = video ? d : c;
 
-  React.useEffect(()=>{
-    if (video) {
-      webcam();
-    }
-  },[video])
-
   return (
     <CssBaseline>
       <div className={classes.root}>
-        <MemberHeader />
+        <MemberHeader/>
         <Grid container
-          alignItems="center"
-          justify="center">
+              alignItems="center"
+              justify="center">
           <Grid item xs={9}>
             <Card className={classes.CameraFeedback}>
               {cardMedia}
-              <Grid container spacing={4} justify="center" style={{ marginBottom: "0.5rem", marginTop: "0.5rem" }}>
+              <Grid container spacing={4} justify="center" style={{marginBottom: "0.5rem", marginTop: "0.5rem"}}>
                 <Grid item>
-                  <StartButton handleStart={handleStart} />
+                  <StartButton handleStart={handleStart}/>
                 </Grid>
                 <Grid item>
-                  <StopButton handleStop={handleStop} />
+                  <StopButton handleStop={handleStop}/>
                 </Grid>
               </Grid>
             </Card>
