@@ -3,14 +3,14 @@ import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, 
 import { Link } from 'react-router-dom';
 import useStyles from './styles';
 
-const StartButton = () => {
+const StartButton = ({handleStart}) => {
     const classes = useStyles();
 
     return (
         <Button
             variant="contained"
             style={{ backgroundColor: "#013220", color: "#FFFFFF" }}
-            onClick={console.log("start exercise")}
+            onClick={handleStart}
         >
             Start
         </Button>
