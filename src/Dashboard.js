@@ -5,6 +5,7 @@ import GuestHeader from './Components/GuestHeader';
 import MemberHeader from './Components/MemberHeader';
 import BodyStatsPanel from './Components/BodyStatsPanel';
 import ExerciseHistory from './Components/ExerciseHistory';
+import Timer from './Components/Timer';
 
 const PushupsAssessment = () => {
   const classes = useStyles();
@@ -22,7 +23,6 @@ const PushupsAssessment = () => {
               <BodyStatsPanel />
             </Grid>
             <Grid item xs={4}>
-              
             </Grid>
           </Grid>
         </Container>
