@@ -3,8 +3,8 @@ import {isMobile} from './util';
 import * as pushups from './pushups';
 import exerciseValues from './values';
 import * as assessment from './assessment';
-import { selectNameOfExercise } from '../../features/exercise/exerciseSlice'
-import {store} from "../../app/store";
+import { selectNameOfExercise } from '../features/exercise/exerciseSlice'
+import {store} from "../app/store";
 
 class Base {
   constructor(context) {

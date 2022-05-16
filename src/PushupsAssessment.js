@@ -4,7 +4,7 @@ import useStyles from './Components/styles';
 import MemberHeader from './Components/MemberHeader';
 import StartButton from './Components/StartButton';
 import StopButton from './Components/StopButton';
-import webcam from './poseDetection/src/webcam.js'
+import webcam from './poseDetection/webcam.js'
 import './Video.css';
 import { useDispatch } from 'react-redux';
 import { setExercise } from './features/exercise/exerciseSlice'
