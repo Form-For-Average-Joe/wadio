@@ -3,19 +3,10 @@
     "build-all": "cross-env NODE_ENV=production parcel build ./*html --public-url ./",
     "watch-image": "cross-env NODE_ENV=development parcel image/image.html --no-hmr --open",
     "build-image": "cross-env NODE_ENV=production parcel build image/image.html --public-url ./",
-    "lint": "eslint .",
-    "all": "rm -rf ./dist && yarn && yarn build-all && yarn watch-all",
-    "image": "rm -rf ./dist .cache && yarn && yarn build-image && yarn watch-image",
-    "clear-cache": "rm -rf .cache dist node_modules",
-    "link-core": "yalc link @tensorflow/tfjs-core",
-    "link-webgl": "yalc link @tensorflow/tfjs-backend-webgl"
   },
   "browser": {
     "crypto": false
-  },    
-  "resolutions": {
-    "is-svg": "4.3.1"
-  },
+  }
   "eslintConfig": {
     "extends": "google",
     "rules": {

@@ -46,3 +46,15 @@ https://stackoverflow.com/questions/59633005/how-is-eslint-integrated-into-creat
 React STRICT mode
 
 Optimise imports
+
+1. Advanced version of a leaderboard - run it on a schedule to aggregate all users' performance - there is potential to write this as a microservice and Dockerise it
+2. Analytics: track your progress over time, check how your progression compares to other (anonymised) users
+3. ML: do some basic ML for some of the more complicated exercises, but potentially time-consuming
+4. Add a service for coaches - so users can get some personalised coaching services, coaches can review the video and our algo's recommendations
+5. Typescript rather than JavaScript for the frontend, Golang/NodeJS for backend services
+
+git tagging, CI/CD, deployment and package.json version
+
+fix lag in canvas
+
+https://github.com/dependabot/dependabot-core
