@@ -3,6 +3,8 @@ import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, 
 import useStyles from './Components/styles';
 import GuestHeader from './Components/GuestHeader';
 import MemberHeader from './Components/MemberHeader';
+import BodyStatsPanel from './Components/BodyStatsPanel';
+import ExerciseHistory from './Components/ExerciseHistory';
 
 const PushupsAssessment = () => {
   const classes = useStyles();
@@ -11,8 +13,20 @@ const PushupsAssessment = () => {
     <CssBaseline>
       <div className={classes.root}>
         <MemberHeader />
+        <Typography variant="h5" align="center" style={{ paddingTop: "4rem" }}>
+          Welcome Back Chee Heng!
+        </Typography>
+        <Container className={classes.container}>
+          <Grid container spacing={5} justify="center" style={{ marginBottom: "0.5rem" }}>
+            <Grid item xs={4}>
+              <BodyStatsPanel />
+            </Grid>
+            <Grid item xs={4}>
+              
+            </Grid>
+          </Grid>
+        </Container>
       </div>
-      <Typography>this is the dashboard</Typography>
     </CssBaseline>
   );
 }
