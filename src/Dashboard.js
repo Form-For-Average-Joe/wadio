@@ -7,6 +7,8 @@ import BodyStatsPanel from './Components/BodyStatsPanel';
 import ExerciseHistory from './Components/ExerciseHistory';
 import Timer from './Components/Timer';
 
+const username = 'Chee Heng';
+
 const PushupsAssessment = () => {
   const classes = useStyles();
 
@@ -15,7 +17,7 @@ const PushupsAssessment = () => {
       <div className={classes.root}>
         <MemberHeader />
         <Typography variant="h5" align="center" style={{ paddingTop: "4rem" }}>
-          Welcome Back Chee Heng!
+          Welcome Back {username}!
         </Typography>
         <Container className={classes.container}>
           <Grid container spacing={5} justify="center" style={{ marginBottom: "0.5rem" }}>

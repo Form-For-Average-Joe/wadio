@@ -12,9 +12,15 @@ import ScaleIcon from '@mui/icons-material/Scale';
 import HeightIcon from '@mui/icons-material/Height';
 import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
 
+const weight = 30;
+const height = 140;
+const bmi = 18.2;
 
 const BodyStatsPanel = () => {
     const classes = useStyles();
+    const weightToPrint = weight + ' kg';
+    const heightToPrint = height + ' cm';
+    const bmiToPrint = bmi + ' BMI';
 
     return (
         <Card>
@@ -29,7 +35,7 @@ const BodyStatsPanel = () => {
                                 <ScaleIcon />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary="34 Kg" secondary="Weight" />
+                        <ListItemText primary={weightToPrint} secondary="Weight" />
                     </ListItem>
                     <ListItem>
                         <ListItemAvatar>
@@ -37,7 +43,7 @@ const BodyStatsPanel = () => {
                                 <HeightIcon />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary="130 cm" secondary="Height" />
+                        <ListItemText primary={heightToPrint} secondary="Height" />
                     </ListItem>
                     <ListItem>
                         <ListItemAvatar>
@@ -45,7 +51,7 @@ const BodyStatsPanel = () => {
                                 <MonitorWeightIcon />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary="18.1 BMI" secondary="Body Measurement Index" />
+                        <ListItemText primary={bmiToPrint} secondary="Body Measurement Index" />
                     </ListItem>
                 </List>
             </Card>
