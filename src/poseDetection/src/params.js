@@ -1,4 +1,5 @@
 import * as posedetection from '@tensorflow-models/pose-detection';
+import {SupportedModels} from "@tensorflow-models/pose-detection";
 export const DEFAULT_LINE_WIDTH = 2;
 export const DEFAULT_RADIUS = 4; // was set to 2 in original video params
 
@@ -8,13 +9,11 @@ export const VIDEO_SIZE = {
   '360 X 270': {width: 360, height: 270}
 };
 export const STATE = {
-  videoMode: window.location.pathname.match(/video/gi) !== null,
   camera: {targetFPS: 60, sizeOption: '640 X 480'},
   backend: '',
   flags: {},
   modelConfig: {},
-  exercise: '',
-  delay: false,
+  model: SupportedModels.MoveNet
 };
 export const MOVENET_CONFIG = {
   maxPoses: 1,
