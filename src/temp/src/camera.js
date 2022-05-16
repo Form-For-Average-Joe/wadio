@@ -3,6 +3,8 @@ import {isMobile} from './util';
 import * as pushups from './pushups';
 import exerciseValues from './values';
 import * as assessment from './assessment';
+import { selectNameOfExercise } from '../../features/exercise/exerciseSlice'
+import {store} from "../../app/store";
 
 class Base {
   constructor(context) {
@@ -36,17 +38,22 @@ class Base {
   drawResult(pose) {
     if (pose.keypoints != null) {
       // todo need a better way to enumerate exercises
-      if (!params.STATE.delay) {
-        if (params.STATE.exercise === 'pushups') {
-          if (exerciseValues.assess.stage !== 4) {
-            assessment.assess_pushups(pose.keypoints);
-          }
-        } else if (params.STATE.exercise === 'situps') {
-          if (exerciseValues.assess.stage !== 4) {
-            assessment.assess_situps(pose.keypoints);
-          }
+      const nameOfExercise = selectNameOfExercise(store.getState());
+      if (nameOfExercise === 'pushups') {
+        if (exerciseValues.assess.stage !== 4) {
+          assessment.assess_pushups(pose.keypoints);
+        }
+      } else if (nameOfExercise === 'situps') {
+        if (exerciseValues.assess.stage !== 4) {
+          assessment.assess_situps(pose.keypoints);
         }
       }
+      else {
+        console.log("No exercise detected, check Redux state for the value of nameOfExercise")
+      }
+    }
+    else {
+      console.log("Error in pose detection")
     }
   }
 }

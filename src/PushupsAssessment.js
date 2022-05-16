@@ -6,9 +6,13 @@ import StartButton from './Components/StartButton';
 import StopButton from './Components/StopButton';
 import webcam from './temp/src/webcam.js'
 import './Video.css';
+import { useDispatch } from 'react-redux';
+import { setExercise } from './features/exercise/exerciseSlice'
 
 const PushupsAssessment = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const [video, setVideo] = React.useState(false);
   const canvasRef = React.useRef(null);
   const [context, setContext] = React.useState(null);
@@ -26,6 +30,7 @@ const PushupsAssessment = () => {
   }, [video, context]);
 
   const handleStart = () => {
+    dispatch(setExercise('pushups'))
     setVideo(true);
   };
 
