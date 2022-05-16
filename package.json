@@ -35,9 +35,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint .",
-    "tag-it" : "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && echo \"Creating tag for v$PACKAGE_VERSION\" && git tag -a v$PACKAGE_VERSION -m \"Version v$PACKAGE_VERSION\" && git push --tags"
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
