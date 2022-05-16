@@ -5,7 +5,7 @@ import GuestHeader from './Components/GuestHeader';
 import MemberHeader from './Components/MemberHeader';
 import BodyStatsPanel from './Components/BodyStatsPanel';
 import ExerciseHistory from './Components/ExerciseHistory';
-import Timer from './Components/Timer';
+import LastAttemptStats from './Components/LastAttemptStats';
 
 const username = 'Chee Heng';
 
@@ -25,6 +25,7 @@ const PushupsAssessment = () => {
               <BodyStatsPanel />
             </Grid>
             <Grid item xs={4}>
+              <LastAttemptStats />
             </Grid>
           </Grid>
         </Container>

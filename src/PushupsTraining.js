@@ -6,7 +6,7 @@ import MemberHeader from './Components/MemberHeader';
 import StartButton from './Components/StartButton';
 import StopButton from './Components/StopButton';
 import TimeInput from './Components/TimeInput';
-import DifficultyInput from './Components/DifficultyInput';
+import DifficultyPanel from './Components/DifficultyPanel';
 
 const PushupsAssessment = () => {
   const classes = useStyles();
@@ -30,7 +30,7 @@ const PushupsAssessment = () => {
                   <TimeInput />
                 </Grid>
                 <Grid item>
-                  <DifficultyInput />
+                  <DifficultyPanel />
                 </Grid>
                 <Grid item>
                   <StartButton />
