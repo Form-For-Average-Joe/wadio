@@ -11,7 +11,19 @@ import SitupsTraining from './SitupsTraining';
 import DashBoard from './Dashboard';
 import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
 
-const theme = createTheme();
+const theme = createTheme({
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        },
+      },
+    },
+  },
+});
 
 const container = document.getElementById('root');
 const root = createRoot(container);

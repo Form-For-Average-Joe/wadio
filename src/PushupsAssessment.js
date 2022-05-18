@@ -42,7 +42,6 @@ const PushupsAssessment = () => {
   };
 
   const c = <CardMedia
-    className={classes.cardMedia}
     image="https://i0.wp.com/post.greatist.com/wp-content/uploads/sites/2/2019/05/PERFECT-PUSHUP.gif?w=1155&h=812"
     title="pushups"
   />;
@@ -50,7 +49,6 @@ const PushupsAssessment = () => {
   const d = <Box id="canvas-wrapper">
     <CardMedia
       id="video"
-      className={classes.cardMedia}
       component="video"
       src="" />
   </Box>;
