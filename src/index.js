@@ -29,6 +29,15 @@ const theme = createTheme({
         },
       },
     },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          flexGrow: 1,
+          background: 'rgba(100, 100, 100, 1)',
+          color: 'white',
+        },
+      },
+    },
   },
 });
 

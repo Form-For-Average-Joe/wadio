@@ -25,11 +25,6 @@ const useStyles = makeStyles((theme) => ({
         width: 120,
         fontSize: 12,
     },
-    cardContent: {
-        flexGrow: 1,
-        background: 'rgba(100, 100, 100, 1)',
-        color: 'white',
-    },
     CameraFeedback: {
         background: 'rgba(150, 150, 150, 1)',
     },

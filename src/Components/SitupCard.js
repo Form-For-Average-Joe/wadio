@@ -12,7 +12,7 @@ const SitupCard = () => {
                 image="https://static.toiimg.com/photo/89485806.cms"
                 title="situps"
             />
-            <CardContent className={classes.cardContent}>
+            <CardContent>
                 <Typography gutterBottom variant="h5">Sit Ups</Typography>
                 <Typography>
                     Choose Assessment for 1min IPPT Test and Training for Training Mode where you can customise
