@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid,
     List, ListItem, Toolbar, TextField, Container, requirePropFactory
-} from '@material-ui/core';
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';

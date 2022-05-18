@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@material-ui/core';
+import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@mui/material';
 import useStyles from './Components/styles';
 import GuestHeader from './Components/GuestHeader';
 import MemberHeader from './Components/MemberHeader';
@@ -20,7 +20,7 @@ const PushupsAssessment = () => {
           Welcome Back {username}!
         </Typography>
         <Container className={classes.container}>
-          <Grid container spacing={5} justify="center" style={{ marginBottom: "0.5rem" }}>
+          <Grid container spacing={5} justifyContent="center" style={{ marginBottom: "0.5rem" }}>
             <Grid item xs={4}>
               <BodyStatsPanel />
             </Grid>

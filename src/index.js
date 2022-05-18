@@ -9,22 +9,29 @@ import PushupsTraining from './PushupsTraining';
 import SitupsAssessment from './SitupsAssessment';
 import SitupsTraining from './SitupsTraining';
 import DashBoard from './Dashboard';
+import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme();
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render((
-    <Provider store={store}>
-      <BrowserRouter>
-        <div>
-          <Routes>
-            <Route exact path="/" element={<App/>}/>
-            <Route exact path="/pushupsassessment" element={<PushupsAssessment/>}/>
-            <Route exact path="/pushupstraining" element={<PushupsTraining/>}/>
-            <Route exact path="/situpsassessment" element={<SitupsAssessment/>}/>
-            <Route exact path="/situpstraining" element={<SitupsTraining/>}/>
-            <Route exact path="/dashboard" element={<DashBoard/>}/>
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </Provider>));
+  <StyledEngineProvider injectFirst>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <div>
+            <Routes>
+              <Route exact path="/" element={<App/>}/>
+              <Route exact path="/pushupsassessment" element={<PushupsAssessment/>}/>
+              <Route exact path="/pushupstraining" element={<PushupsTraining/>}/>
+              <Route exact path="/situpsassessment" element={<SitupsAssessment/>}/>
+              <Route exact path="/situpstraining" element={<SitupsTraining/>}/>
+              <Route exact path="/dashboard" element={<DashBoard/>}/>
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </Provider>
+    </ThemeProvider>
+  </StyledEngineProvider>));

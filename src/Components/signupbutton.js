@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import useStyles from './styles';
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Card, CardMedia, CssBaseline, Grid, Typography, Button } from '@material-ui/core';
+import { Box, Card, CardMedia, CssBaseline, Grid, Typography, Button } from '@mui/material';
 import useStyles from './Components/styles';
 import MemberHeader from './Components/MemberHeader';
 import values from './poseDetection/values';
@@ -104,7 +104,7 @@ const PushupsAssessment = () => {
       <div className={classes.root}>
         <MemberHeader />
         <Grid container
-          justify="center"
+          justifyContent="center"
           style={{ marginTop: "8rem", marginBottom: "8rem" }}
           spacing={2}>
           <Grid item xs={6}>

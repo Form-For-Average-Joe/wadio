@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@material-ui/core';
+import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import useStyles from './styles';
 import values from '../poseDetection/values';
@@ -11,7 +11,7 @@ const LastAttemptStats = () => {
 
     return (
         <Card>
-            <Grid container justify="center" alignItems="center">
+            <Grid container justifyContent="center" alignItems="center">
                 <Grid item style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
                     <Typography variant="subtitle1" align="center">
                         Last Attempt: {values.assess.count} reps in {time}.
@@ -19,7 +19,7 @@ const LastAttemptStats = () => {
                 </Grid>
             </Grid>
         </Card>
-    )
+    );
 }
 
 export default LastAttemptStats;
