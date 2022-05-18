@@ -8,7 +8,7 @@ import {Camera} from './camera';
 import {STATE} from './params';
 import {setBackendAndEnvFlags} from './util';
 
-let detector, camera;
+let detector, camera, rafId;
 
 tfjsWasm.setWasmPaths(
   `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${
@@ -59,6 +59,12 @@ async function renderResult() {
   }
 }
 
+async function renderPrediction() {
+  await renderResult();
+
+  rafId = requestAnimationFrame(renderPrediction);
+};
+
 async function app(context) {
   camera = await Camera.setupCamera(STATE.camera, context);
 
@@ -66,7 +72,7 @@ async function app(context) {
 
   detector = await createDetector();
 
-  renderResult();
+  renderPrediction();
 };
 
 export default app;
