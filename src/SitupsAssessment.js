@@ -21,7 +21,6 @@ const PushupsAssessment = () => {
           <Grid item xs={9}>
             <Card className={classes.CameraFeedback}>
               <CardMedia
-                className={classes.cardMedia}
                 image="https://flabfix.com/wp-content/uploads/2019/05/Sit-Ups.gif"
                 title="pushups"
               />

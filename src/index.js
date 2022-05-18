@@ -1,15 +1,15 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './app/App';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
+import {Provider} from 'react-redux';
+import {store} from './app/store';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import PushupsAssessment from './PushupsAssessment';
 import PushupsTraining from './PushupsTraining';
 import SitupsAssessment from './SitupsAssessment';
 import SitupsTraining from './SitupsTraining';
 import DashBoard from './Dashboard';
-import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
+import {ThemeProvider, StyledEngineProvider, createTheme} from '@mui/material/styles';
 
 const theme = createTheme({
   components: {
@@ -19,6 +19,13 @@ const theme = createTheme({
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
+        },
+      },
+    },
+    MuiCardMedia: {
+      styleOverrides: {
+        root: {
+          paddingTop: '56.25%',
         },
       },
     },
