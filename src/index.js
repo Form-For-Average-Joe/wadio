@@ -13,6 +13,18 @@ import {ThemeProvider, StyledEngineProvider, createTheme} from '@mui/material/st
 
 const theme = createTheme({
   components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          height: '100%',
+          color: 'white',
+          margin: 0,
+          paddingTop: "2rem",
+          paddingBottom: 30,
+          backgroundColor: "#333333",
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
