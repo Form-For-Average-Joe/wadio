@@ -9,7 +9,6 @@ const PushupCard = () => {
     return (
         <Card>
             <CardMedia
-                className={classes.cardMedia}
                 image="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/full-length-of-male-athlete-doing-push-ups-in-gym-royalty-free-image-1606406029."
                 title="pushups"
             />

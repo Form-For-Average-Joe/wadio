@@ -9,7 +9,6 @@ const SitupCard = () => {
     return (
         <Card>
             <CardMedia
-                className={classes.cardMedia}
                 image="https://static.toiimg.com/photo/89485806.cms"
                 title="situps"
             />
