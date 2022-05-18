@@ -1,17 +1,13 @@
 import React from 'react';
-import { Typography, AppBar, Button, Box, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory, Avatar } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import useStyles from './styles';
+import { Typography, AppBar, Box, Grid, Toolbar, Container, Avatar } from '@mui/material';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import DashboardButton from './DashboardButton';
 import HomeButton from './HomeButton';
 import avatar from './Media/cheeheng.jpg'
 
 const GuestHeader = () => {
-    const classes = useStyles();
-
     return (
-        <AppBar position="static" className={classes.root} style={{backgroundColor: "#333333", paddingTop: "2rem"}}>
+        <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar>
                     <FitnessCenterIcon fontSize="large" sx={{ display: { xs: 'none', md: 'flex' }, mr: 3 }} />

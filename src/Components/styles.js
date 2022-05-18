@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,19 +24,6 @@ const useStyles = makeStyles((theme) => ({
         color: "white",
         width: 120,
         fontSize: 12,
-    },
-    card: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    cardMedia: {
-        paddingTop: '56.25%',
-    },
-    cardContent: {
-        flexGrow: 1,
-        background: 'rgba(100, 100, 100, 1)',
-        color: 'white',
     },
     CameraFeedback: {
         background: 'rgba(150, 150, 150, 1)',

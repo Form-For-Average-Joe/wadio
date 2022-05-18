@@ -1,13 +1,12 @@
-import { Typography, AppBar, Button, Card, TextField, Grid, FormControl } from '@material-ui/core';
-import useStyles from './styles';
+import { Typography, AppBar, Button, Card, TextField, Grid, FormControl } from '@mui/material';
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import StartButton from './StartButton';
 import StopButton from './StopButton';
-
-const duration = 60;
+import values from '../poseDetection/values';
 
 function Timer() {
+    const duration = values.assess.duration;
     const intervalRef = useRef(null);
     const [timer, setTimer] = useState('00:00');
 
@@ -15,6 +14,10 @@ function Timer() {
         const total = Date.parse(endtime) - Date.parse(new Date());
         const seconds = Math.floor((total / 1000) % 60);
         const minutes = Math.floor((total / 1000 / 60) % 60);
+
+        values.assess.minutes = minutes;
+        values.assess.seconds = seconds;
+
         return {
             total, minutes, seconds
         };
@@ -33,8 +36,9 @@ function Timer() {
     }
 
     function clearTimer(endtime) {
-        setTimer((Math.floor(duration / 60) == 0 ? '00' : Math.floor(duration / 60)) + ':' 
-            + ((duration % 60) == 0 ? '00' : (duration%60)));
+        setTimer((Math.floor(duration / 60) == 0 ? '00' : Math.floor(duration / 60)) + ':'
+            + ((duration % 60) == 0 ? '00' : (duration % 60)));
+
         if (intervalRef.current) clearInterval(intervalRef.current);
         const id = setInterval(() => {
             startTimer(endtime);
@@ -66,16 +70,8 @@ function Timer() {
     return (
         <Card>
             <Grid container spacing={3} direction="column" alignItems="center">
-                <Grid item alignItems="center" style={{ marginTop: "2rem" }}>
+                <Grid item alignItems="center" style={{ marginTop: "2rem", marginBottom: "2rem" }}>
                     <Typography variant="h2"> {timer} </Typography>
-                </Grid>
-                <Grid container spacing={3} justify="center" style={{ marginBottom: "2rem" }}>
-                    <Grid item>
-                        <StartButton handleStart={handleStart}/>
-                    </Grid>
-                    <Grid item>
-                        <StopButton handleStop={handleStop}/>
-                    </Grid>
                 </Grid>
             </Grid>
         </Card>
