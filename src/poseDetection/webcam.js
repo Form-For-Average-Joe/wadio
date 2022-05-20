@@ -49,7 +49,7 @@ async function renderResult() {
     }
   }
 
-  camera.drawCtx();
+  // camera.drawCtx();
 
   // The null check makes sure the UI is not in the middle of changing to a
   // different model. If during model change, the result is from an old model,
@@ -65,8 +65,8 @@ async function renderPrediction() {
   rafId = requestAnimationFrame(renderPrediction);
 };
 
-async function app(context) {
-  camera = await Camera.setupCamera(STATE.camera, context);
+async function app(exerciseStatus) {
+  camera = await Camera.setupCamera(STATE.camera, exerciseStatus);
 
   await setBackendAndEnvFlags(STATE.flags, STATE.backend);
 
