@@ -36,6 +36,13 @@ const theme = createTheme({
       },
     },
     MuiCardMedia: {
+      variants: [
+        {
+          props: {variant: 'webcam'},
+          style: {
+            paddingTop: '0%'
+          },
+        },],
       styleOverrides: {
         root: {
           paddingTop: '56.25%',
@@ -64,7 +71,7 @@ root.render((
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<App/>}>
-              <Route index element={<Home/>} />
+              <Route index element={<Home/>}/>
             </Route>
             <Route exact path="/pushupsassessment" element={<PushupsAssessment/>}/>
             <Route exact path="/pushupstraining" element={<PushupsTraining/>}/>

@@ -18,7 +18,7 @@ const PushupsAssessment = () => {
 
   const styles = {
     video: {
-      '-webkit-transform': "scaleX(-1)",
+      WebkitTransform: "scaleX(-1)",
       transform: "scaleX(-1)",
     }
   };
@@ -78,12 +78,12 @@ const PushupsAssessment = () => {
               justifyContent="center"
               style={{marginTop: "8rem", marginBottom: "8rem"}}
               spacing={2}>
-          <Grid item xs={6} hii={"tt"}>
-            <CardMedia
-              style={styles.video}
-              id="video"
-              component="video"
-              src=""/>
+          <Grid item xs={6}>
+              <CardMedia variant='webcam'
+                style={styles.video}
+                id="video"
+                component="video"
+                src=""/>
           </Grid>
           <Grid item xs={2}>
             {sidebar}

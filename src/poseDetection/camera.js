@@ -66,9 +66,10 @@ export class Camera {
         facingMode: 'user',
         // Only setting the video to a specified size for large screen, on
         // mobile devices accept the default size.
-        width: isMobile() ? params.VIDEO_SIZE['360 X 270'].width : $size.width,
-        height: isMobile() ? params.VIDEO_SIZE['360 X 270'].height :
-          $size.height,
+        // width: isMobile() ? params.VIDEO_SIZE['360 X 270'].width : $size.width,
+        // height: isMobile() ? params.VIDEO_SIZE['360 X 270'].height :
+        //   $size.height,
+        // width: 360, height: 270,
         frameRate: {
           ideal: targetFPS,
         }
@@ -95,15 +96,6 @@ export class Camera {
     //todo hide camera element for now, only keep context
     // camera.video.width = videoWidth;
     // camera.video.height = videoHeight;
-
-    // camera.canvas.width = videoWidth;
-    // camera.canvas.height = videoHeight;
-    // const canvasContainer = document.getElementById('canvas-wrapper');
-    // canvasContainer.style = `width: ${videoWidth}px; height: ${videoHeight}px`;
-
-    // Because the image from camera is mirrored, need to flip horizontally.
-    // camera.ctx.translate(camera.video.videoWidth, 0);
-    // camera.ctx.scale(-1, 1);
 
     return camera;
   }
