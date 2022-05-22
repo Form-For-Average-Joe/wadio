@@ -2,9 +2,9 @@ import React from 'react';
 import {
   Container, Grid,
 } from '@mui/material';
-import useStyles from "./Components/styles";
-import PushupCard from "./Components/PushupCard";
-import SitupCard from "./Components/SitupCard";
+import useStyles from "./components/styles";
+import PushupCard from "./components/PushupCard";
+import SitupCard from "./components/SitupCard";
 
 const ExerciseCards = () => {
   return (

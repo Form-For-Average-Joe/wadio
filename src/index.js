@@ -72,11 +72,11 @@ root.render((
           <Routes>
             <Route path="/" element={<App/>}>
               <Route index element={<Home/>}/>
+              <Route exact path="pushupsassessment" element={<PushupsAssessment/>}/>
+              <Route exact path="pushupstraining" element={<PushupsTraining/>}/>
+              <Route exact path="situpsassessment" element={<SitupsAssessment/>}/>
+              <Route exact path="situpstraining" element={<SitupsTraining/>}/>
             </Route>
-            <Route exact path="/pushupsassessment" element={<PushupsAssessment/>}/>
-            <Route exact path="/pushupstraining" element={<PushupsTraining/>}/>
-            <Route exact path="/situpsassessment" element={<SitupsAssessment/>}/>
-            <Route exact path="/situpstraining" element={<SitupsTraining/>}/>
             <Route exact path="/dashboard" element={<DashBoard/>}/>
           </Routes>
         </BrowserRouter>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@mui/material';
-import useStyles from './Components/styles';
-import GuestHeader from './Components/GuestHeader';
-import MemberHeader from './Components/MemberHeader';
-import BodyStatsPanel from './Components/BodyStatsPanel';
-import ExerciseHistory from './Components/ExerciseHistory';
-import LastAttemptStats from './Components/LastAttemptStats';
+import useStyles from './components/styles';
+import GuestHeader from './components/GuestHeader';
+import MemberHeader from './components/MemberHeader';
+import BodyStatsPanel from './components/BodyStatsPanel';
+import ExerciseHistory from './components/ExerciseHistory';
+import LastAttemptStats from './components/LastAttemptStats';
 
 const username = 'Chee Heng';
 
