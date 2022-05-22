@@ -5,17 +5,10 @@ import {useSelector} from 'react-redux';
 import {selectIsStarted} from './features/exercise/exerciseSlice'
 import AssessmentStart from "./containers/AssessmentStart";
 import AssesmentNotStarted from './containers/AssessmentNotStarted';
+import {webcamStyles} from "./util";
 
 const PushupsAssessment = () => {
   const isStarted = useSelector(selectIsStarted);
-
-  // to mirror the webcam
-  const styles = {
-    video: {
-      WebkitTransform: "scaleX(-1)",
-      transform: "scaleX(-1)",
-    }
-  };
 
   React.useEffect(() => {
     webcam();
@@ -30,7 +23,7 @@ const PushupsAssessment = () => {
           spacing={2}>
       <Grid item xs={6}>
         <CardMedia variant='webcam'
-                   style={styles.video}
+                   style={webcamStyles.video}
                    id="video"
                    component="video"
                    src=""/>

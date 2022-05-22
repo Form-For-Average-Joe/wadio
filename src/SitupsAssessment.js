@@ -1,20 +1,13 @@
 import React from 'react';
 import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@mui/material';
 import useStyles from './components/styles';
-import GuestHeader from './components/GuestHeader';
-import MemberHeader from './components/MemberHeader';
 import StartButton from './components/StartButton';
 import StopButton from './components/StopButton';
-import TimeInput from './components/TimeInput';
-import DifficultyPanel from './components/DifficultyPanel';
 
 const PushupsAssessment = () => {
   const classes = useStyles();
 
   return (
-    <CssBaseline>
-      <div className={classes.root}>
-        <MemberHeader />
         <Grid container
           alignItems="center"
           justifyContent="center">
@@ -35,8 +28,6 @@ const PushupsAssessment = () => {
             </Card>
           </Grid>
         </Grid>
-      </div>
-    </CssBaseline>
   );
 }
 
