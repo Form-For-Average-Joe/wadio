@@ -7,12 +7,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import { Typography } from '@mui/material';
-import useStyles from './styles';
-
 
 export default function SignupDialog(actiontype) {
     const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
 
     const handleClickOpen = () => {
         setOpen(true);

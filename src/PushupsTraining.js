@@ -1,19 +1,16 @@
 import React from 'react';
 import {Card, CardMedia, Grid} from '@mui/material';
-import useStyles from './components/styles';
 import StartButton from './components/StartButton';
 import StopButton from './components/StopButton';
 import DifficultyPanel from './components/DifficultyPanel';
 
 const PushupsAssessment = () => {
-  const classes = useStyles();
-
   return (
     <Grid container
           alignItems="center"
           justifyContent="center">
       <Grid item xs={9}>
-        <Card className={classes.CameraFeedback}>
+        <Card sx={{background: 'rgba(150, 150, 150, 1)'}}>
           <CardMedia
             image="https://i0.wp.com/post.greatist.com/wp-content/uploads/sites/2/2019/05/PERFECT-PUSHUP.gif?w=1155&h=812"
             title="pushups"

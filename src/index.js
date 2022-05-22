@@ -12,7 +12,7 @@ import SitupsTraining from './SitupsTraining';
 import DashBoard from './Dashboard';
 import {ThemeProvider, StyledEngineProvider, createTheme} from '@mui/material/styles';
 
-const theme = createTheme({
+export const theme = createTheme({
   components: {
     MuiAppBar: {
       styleOverrides: {
@@ -76,8 +76,8 @@ root.render((
               <Route exact path="pushupstraining" element={<PushupsTraining/>}/>
               <Route exact path="situpsassessment" element={<SitupsAssessment/>}/>
               <Route exact path="situpstraining" element={<SitupsTraining/>}/>
+              <Route exact path="dashboard" element={<DashBoard/>}/>
             </Route>
-            <Route exact path="/dashboard" element={<DashBoard/>}/>
           </Routes>
         </BrowserRouter>
       </Provider>

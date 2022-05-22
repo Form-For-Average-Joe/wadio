@@ -1,20 +1,17 @@
 import React from 'react';
 import {Card, CardMedia, Grid} from '@mui/material';
-import useStyles from './components/styles';
 import StartButton from './components/StartButton';
 import StopButton from './components/StopButton';
 import TimeInput from './components/TimeInput';
 import DifficultyPanel from './components/DifficultyPanel';
 
 const PushupsAssessment = () => {
-  const classes = useStyles();
-
   return (
     <Grid container
           alignItems="center"
           justifyContent="center">
       <Grid item xs={9}>
-        <Card className={classes.CameraFeedback}>
+        <Card sx={{background: 'rgba(150, 150, 150, 1)'}}>
           <CardMedia
             image="https://flabfix.com/wp-content/uploads/2019/05/Sit-Ups.gif"
             title="pushups"

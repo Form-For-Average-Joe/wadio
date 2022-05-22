@@ -1,10 +1,8 @@
 import React from 'react';
-import {
-  Container, Grid,
-} from '@mui/material';
-import useStyles from "./components/styles";
+import {Container, Grid} from '@mui/material';
 import PushupCard from "./components/PushupCard";
 import SitupCard from "./components/SitupCard";
+import {theme} from "./index";
 
 const ExerciseCards = () => {
   return (
@@ -20,9 +18,8 @@ const ExerciseCards = () => {
 }
 
 const Home = () => {
-  const classes = useStyles();
   return (
-    <Container className={classes.container}>
+    <Container sx={{px: theme.spacing(0), py: theme.spacing(9)}}>
       <ExerciseCards/>
     </Container>)
 }

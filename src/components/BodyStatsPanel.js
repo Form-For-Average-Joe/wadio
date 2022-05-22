@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import useStyles from './styles';
 import ScaleIcon from '@mui/icons-material/Scale';
 import HeightIcon from '@mui/icons-material/Height';
 import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
@@ -17,7 +16,6 @@ const height = 140;
 const bmi = 18.2;
 
 const BodyStatsPanel = () => {
-    const classes = useStyles();
     const weightToPrint = weight + ' kg';
     const heightToPrint = height + ' cm';
     const bmiToPrint = bmi + ' BMI';
