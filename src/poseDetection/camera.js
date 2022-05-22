@@ -1,15 +1,13 @@
 import * as params from './params';
-import {isMobile} from './util';
 import * as pushups from './pushups';
 import exerciseValues from './values';
 import * as assessment from './assessment';
-import {selectNameOfExercise} from '../features/exercise/exerciseSlice'
+import {selectIsStarted, selectNameOfExercise} from '../features/exercise/exerciseSlice';
 import {store} from "../app/store";
 
 export class Camera {
-  constructor(exerciseStatus) {
+  constructor() {
     this.video = document.getElementById('video');
-    this.exerciseStatus = exerciseStatus;
   }
 
   /**
@@ -27,7 +25,7 @@ export class Camera {
    * @param pose A pose with keypoints to render.
    */
   drawResult(pose) {
-    if (this.exerciseStatus) {
+    if (selectIsStarted(store.getState())) {
       if (pose.keypoints != null) {
         // todo need a better way to enumerate exercises
         const nameOfExercise = selectNameOfExercise(store.getState());
@@ -52,7 +50,7 @@ export class Camera {
    * Initiate a Camera instance and wait for the camera stream to be ready.
    * @param cameraParam From app `STATE.camera`.
    */
-  static async setupCamera(cameraParam, exerciseStatus) {
+  static async setupCamera(cameraParam) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       throw new Error(
         'Browser API navigator.mediaDevices.getUserMedia not available');
@@ -78,7 +76,7 @@ export class Camera {
 
     const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
 
-    const camera = new Camera(exerciseStatus);
+    const camera = new Camera();
     camera.video.srcObject = stream;
 
     await new Promise((resolve) => {

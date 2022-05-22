@@ -65,8 +65,8 @@ async function renderPrediction() {
   requestAnimationFrame(renderPrediction);
 };
 
-async function app(exerciseStatus) {
-  camera = await Camera.setupCamera(STATE.camera, exerciseStatus);
+async function app() {
+  camera = await Camera.setupCamera(STATE.camera);
 
   await setBackendAndEnvFlags(STATE.flags, STATE.backend);
 

@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  nameOfExercise: ''
+  nameOfExercise: '',
+  isStarted: false
 };
 
 export const exerciseSlice = createSlice({
@@ -10,12 +11,17 @@ export const exerciseSlice = createSlice({
   reducers: {
     setExercise: (state, action) => {
       state.nameOfExercise = action.payload;
+    },
+    setIsStarted: (state, action) => {
+      state.isStarted = action.payload;
     }
   },
 });
 
-export const { setExercise } = exerciseSlice.actions;
+export const { setExercise, setIsStarted } = exerciseSlice.actions;
 
 export const selectNameOfExercise = (state) => state.exercise.nameOfExercise;
+
+export const selectIsStarted = (state) => state.exercise.isStarted;
 
 export default exerciseSlice.reducer;

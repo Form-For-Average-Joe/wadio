@@ -4,8 +4,8 @@ import useStyles from './Components/styles';
 import MemberHeader from './Components/MemberHeader';
 import values from './poseDetection/values';
 import webcam from './poseDetection/webcam.js'
-import {useDispatch} from 'react-redux';
-import {setExercise} from './features/exercise/exerciseSlice'
+import {useDispatch, useSelector} from 'react-redux';
+import {setExercise, setIsStarted, selectIsStarted} from './features/exercise/exerciseSlice'
 import Timer from './Components/Timer';
 import DifficultyPanel from './Components/DifficultyPanel';
 import TimeInput from './Components/TimeInput';
@@ -15,7 +15,9 @@ import RepCounter from './Components/RepCounter';
 const PushupsAssessment = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const isStarted = useSelector(selectIsStarted);
 
+  // to mirror the webcam
   const styles = {
     video: {
       WebkitTransform: "scaleX(-1)",
@@ -23,18 +25,16 @@ const PushupsAssessment = () => {
     }
   };
 
-  const [exerciseStatus, setExerciseStatus] = React.useState(false);
-
   React.useEffect(() => {
-    webcam(exerciseStatus);
-  }, [exerciseStatus])
+    webcam();
+  }, []) // [] here means no dependencies, so we only render webcam once for performance boost
 
   function handleStart() {
-    dispatch(setExercise('pushups'))
+    dispatch(setExercise('pushups'));
     values.assess.count = 0;
     values.assess.minutes = 0;
     values.assess.seconds = 0;
-    setExerciseStatus(true)
+    dispatch(setIsStarted(true));
   }
 
   const started = <Grid container spacing={2} direction="column">
@@ -47,7 +47,7 @@ const PushupsAssessment = () => {
     <Grid item>
       <Button variant="contained"
               style={{backgroundColor: "#8B0000", color: "#FFFFFF"}}
-              onClick={() => setExerciseStatus(false)}>Stop</Button>
+              onClick={() => dispatch(setIsStarted(false))}>Stop</Button>
     </Grid>
   </Grid>
 
@@ -68,7 +68,7 @@ const PushupsAssessment = () => {
     </Grid>
   </Grid>
 
-  const sidebar = exerciseStatus ? started : notStarted;
+  const sidebar = isStarted ? started : notStarted;
 
   return (
     <CssBaseline>
