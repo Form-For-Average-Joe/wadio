@@ -12,6 +12,29 @@ import SitupsTraining from './SitupsTraining';
 import DashBoard from './Dashboard';
 import {ThemeProvider, StyledEngineProvider, createTheme} from '@mui/material/styles';
 
+//Firebase init
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAGX6XeU2KMJvP08LKo_iUIC71R81TZpfQ",
+  authDomain: "form-for-average-joe.firebaseapp.com",
+  projectId: "form-for-average-joe",
+  storageBucket: "form-for-average-joe.appspot.com",
+  messagingSenderId: "847183773725",
+  appId: "1:847183773725:web:8b149912201a34e901c6f4",
+  measurementId: "G-0DWTZ7HHW7"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// import { getAnalytics } from "firebase/analytics";
+// const analytics = getAnalytics(app);
+
 export const theme = createTheme({
   components: {
     MuiAppBar: {

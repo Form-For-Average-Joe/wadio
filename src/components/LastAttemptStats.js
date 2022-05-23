@@ -9,7 +9,6 @@ const LastAttemptStats = () => {
     const duration = useSelector(selectDuration)
     const t = (values.assess.minutes*60 + values.assess.seconds) === 0 ? 0 : duration - (values.assess.minutes*60 + values.assess.seconds);
     const time = Math.floor(t/60) + ' minutes ' + (t%60) + ' seconds'
-    console.log("COUNT" + count)
     return (
         <Card>
             <Grid container justifyContent="center" alignItems="center">

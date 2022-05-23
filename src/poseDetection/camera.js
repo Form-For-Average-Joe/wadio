@@ -51,7 +51,7 @@ export class Camera {
    * Initiate a Camera instance and wait for the camera stream to be ready.
    * @param cameraParam From app `STATE.camera`.
    */
-  static async setupCamera(cameraParam) {
+  static async setupCamera(cameraParam, parentStreamRef) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       throw new Error(
         'Browser API navigator.mediaDevices.getUserMedia not available');
@@ -76,20 +76,31 @@ export class Camera {
     };
 
     const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
+    parentStreamRef.current = stream;
 
     const camera = new Camera();
+
     camera.video.srcObject = stream;
 
-    await new Promise((resolve) => {
-      camera.video.onloadedmetadata = () => {
-        resolve(document.getElementById('video'));
-      };
-    });
+    // we need to await the loadedmetaevent event to detect the width ahd height of the video element
+    // side note: readyState of metadata is 1, so the below code also handles this
+    // https://stackoverflow.com/questions/8983714/video-and-onloadedmetadata-event
+    // https://mklasen.com/using-onloadedmetadata-to-show-information-from-a-user-uploaded-video-before-its-uploaded/
+    // await new Promise((resolve) => {
+    //   camera.video.onloadedmetadata = () => {
+    //     resolve(document.getElementById('video'));
+    //   };
+    // });
+
+    // Make sure camera is ready, else wait
+    while (camera.video.readyState < 2) {
+      await new Promise(r => setTimeout(r, 500));
+    }
 
     camera.video.play();
 
-    const videoWidth = camera.video.videoWidth;
-    const videoHeight = camera.video.videoHeight;
+    // const videoWidth = camera.video.videoWidth;
+    // const videoHeight = camera.video.videoHeight;
     // Must set below two lines, otherwise video element doesn't show.
 
     //todo hide camera element for now, only keep context

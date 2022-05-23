@@ -10,8 +10,14 @@ import {webcamStyles} from "./util";
 const PushupsAssessment = () => {
   const isStarted = useSelector(selectIsStarted);
 
+  let stream = React.useRef(null);
+
   React.useEffect(() => {
-    webcam();
+    webcam(stream);
+    // cleanup function stops webcam
+    return () => {
+      stream.current.getTracks().forEach(track => track.stop());
+    }
   }, []) // [] here means no dependencies, so we only render webcam once for performance boost
 
   const sidebar = isStarted ? <AssessmentStart/> : <AssesmentNotStarted/>;
