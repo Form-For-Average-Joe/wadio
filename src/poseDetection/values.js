@@ -9,9 +9,5 @@ module.exports = {
     hipLimit: 0,
     side: 0,
     isCalibrated: false,
-  },
-  assess: {
-    minutes: 0,
-    seconds: 0
-  },
+  }
 };
