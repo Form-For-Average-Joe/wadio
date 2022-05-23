@@ -5,11 +5,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import useStyles from './styles';
 
 export default function LoginDialog(actiontype) {
   const [open, setOpen] = React.useState(false);
-  const classes = useStyles();
 
   const handleClickOpen = () => {
     setOpen(true);

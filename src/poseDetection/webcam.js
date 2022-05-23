@@ -8,7 +8,7 @@ import {Camera} from './camera';
 import {STATE} from './params';
 import {setBackendAndEnvFlags} from './util';
 
-let detector, camera, rafId;
+let detector, camera;
 
 tfjsWasm.setWasmPaths(
   `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${
@@ -49,7 +49,7 @@ async function renderResult() {
     }
   }
 
-  camera.drawCtx();
+  // camera.drawCtx();
 
   // The null check makes sure the UI is not in the middle of changing to a
   // different model. If during model change, the result is from an old model,
@@ -62,11 +62,11 @@ async function renderResult() {
 async function renderPrediction() {
   await renderResult();
 
-  rafId = requestAnimationFrame(renderPrediction);
+  requestAnimationFrame(renderPrediction);
 };
 
-async function app(context) {
-  camera = await Camera.setupCamera(STATE.camera, context);
+async function app() {
+  camera = await Camera.setupCamera(STATE.camera);
 
   await setBackendAndEnvFlags(STATE.flags, STATE.backend);
 

@@ -1,20 +1,17 @@
 import React from 'react';
 import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@mui/material';
 import { Link } from 'react-router-dom';
-import useStyles from './styles';
 
-const HomeButton = () => {
-    const classes = useStyles();
-
+const DashboardButton = () => {
     return (
         <Button
             variant="contained"
             style={{ backgroundColor: "#666666", color: "#FFFFFF" }}
-            component={Link} to="/"
+            component={Link} to="/dashboard"
         >
-            Home
+            Profile
         </Button>
     )
 }
 
-export default HomeButton;
+export default DashboardButton;
