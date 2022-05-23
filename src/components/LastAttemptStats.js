@@ -3,11 +3,15 @@ import { Typography, Card, Grid } from '@mui/material';
 import values from '../poseDetection/values';
 import {useSelector} from "react-redux";
 import {selectCount, selectDuration} from '../features/userValues/userValuesSlice'
+import {selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';
 
 const LastAttemptStats = () => {
     const count = useSelector(selectCount);
-    const duration = useSelector(selectDuration)
-    const t = (values.assess.minutes*60 + values.assess.seconds) === 0 ? 0 : duration - (values.assess.minutes*60 + values.assess.seconds);
+    const duration = useSelector(selectDuration);
+    const minutes = useSelector(selectMinutes);
+    const seconds = useSelector(selectSeconds);
+
+    const t = (minutes*60 + seconds) === 0 ? 0 : duration - (minutes*60 + seconds);
     const time = Math.floor(t/60) + ' minutes ' + (t%60) + ' seconds'
     return (
         <Card>
