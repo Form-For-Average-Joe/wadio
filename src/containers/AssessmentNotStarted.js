@@ -4,6 +4,7 @@ import TimeInput from "../components/TimeInput";
 import LastAttemptStats from "../components/LastAttemptStats";
 import React from "react";
 import {setExercise, setIsStarted} from "../features/exercise/exerciseSlice";
+import {resetStageAndCount} from "../features/userValues/userValuesSlice";
 import {useDispatch} from 'react-redux';
 import values from '../poseDetection/values';
 
@@ -12,7 +13,7 @@ export default function AssessmentNotStarted() {
 
   function handleStart() {
     dispatch(setExercise('pushups'));
-    values.assess.count = 0;
+    dispatch(resetStageAndCount());
     values.assess.minutes = 0;
     values.assess.seconds = 0;
     dispatch(setIsStarted(true));

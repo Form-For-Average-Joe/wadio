@@ -1,30 +1,28 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { Typography, AppBar, Button, Card, CardActions, CardContent, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory, FormControl } from '@mui/material';
-import values from '../poseDetection/values';
+import { Typography, Button, Card, Grid} from '@mui/material';
+import {useDispatch, useSelector} from "react-redux";
+import {selectDuration, setDuration} from "../features/userValues/userValuesSlice";
 
 const TimeInput = () => {
-    const [duration, setDuration] = useState(60);
+    const dispatch = useDispatch();
+    const duration = useSelector(selectDuration);
+
     const time = (Math.floor(duration / 60) < 10 ? '0' + Math.floor(duration / 60) : Math.floor(duration / 60))
         + ':' +
         ((duration % 60) < 10 ? '0' + (duration % 60) : (duration % 60));
-
-    useEffect(() => {
-        values.assess.duration = duration;
-    });
 
     function handleIncrease() {
         if (duration >= 3590) {
             return;
         }
-        setDuration(duration+10);
+        dispatch(setDuration(duration + 10));
     }
 
     function handleDecrease() {
         if (duration <= 0) {
             return;
         }
-        setDuration(duration-10);
+        dispatch(setDuration(duration - 10));
     }
 
     return (

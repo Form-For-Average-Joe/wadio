@@ -11,10 +11,7 @@ module.exports = {
     isCalibrated: false,
   },
   assess: {
-    stage: 0,
-    count: 0,
     minutes: 0,
-    seconds: 0,
-    duration: 60,
+    seconds: 0
   },
 };
