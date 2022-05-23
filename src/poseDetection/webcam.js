@@ -21,15 +21,6 @@ async function createDetector() {
 }
 
 async function renderResult() {
-  const video = document.getElementById('video')
-  if (camera.video.readyState < 2) {
-    await new Promise((resolve) => {
-      camera.video.onloadeddata = () => {
-        resolve(video);
-      };
-    });
-  }
-
   let poses = null;
 
   // Detector can be null if initialization failed (for example when loading
@@ -65,14 +56,16 @@ async function renderPrediction() {
   requestAnimationFrame(renderPrediction);
 };
 
-async function app() {
-  camera = await Camera.setupCamera(STATE.camera);
+async function app(stream) {
+  camera = await Camera.setupCamera(STATE.camera, stream);
 
   await setBackendAndEnvFlags(STATE.flags, STATE.backend);
 
   detector = await createDetector();
 
   renderPrediction();
+
+  return camera;
 };
 
 export default app;
