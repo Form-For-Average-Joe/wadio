@@ -21,7 +21,7 @@ const calibrationThreshold = 0.45;
 
 export function checkShoulderDepth(keypoints) {
     let bdpoints;
-    if (values.situpval.side == 1) {
+    if (values.situpval.side === 1) {
         bdpoints = leftside;
     } else {
         bdpoints = rightside;
@@ -29,16 +29,13 @@ export function checkShoulderDepth(keypoints) {
     const xpoints = [keypoints[bdpoints[0]].x, keypoints[bdpoints[2]].x, keypoints[bdpoints[4]].x];
     const ypoints = [keypoints[bdpoints[0]].y, keypoints[bdpoints[2]].y, keypoints[bdpoints[4]].y];
     let corr = calculateCorrelation(xpoints, ypoints);
-    if (Math.abs(corr) > 0.8) {
-        //console.log("SIT UP DEPTH REACHED");
-        return true;
-    }
-    return false;
+    return Math.abs(corr) > 0.8;
+
 }
 
 export function checkElbowRaise(keypoints) {
     let bdpoints;
-    if (values.situpval.side == 1) {
+    if (values.situpval.side === 1) {
         bdpoints = leftside;
     } else {
         bdpoints = rightside;
@@ -46,24 +43,20 @@ export function checkElbowRaise(keypoints) {
     const xpos = Math.abs(keypoints[bdpoints[1]].x - keypoints[bdpoints[3]].x);
     const ypos = Math.abs(keypoints[bdpoints[1]].y - keypoints[bdpoints[3]].y);
     const currentdepth = Math.sqrt((xpos * xpos) + (ypos * ypos));
-    if (currentdepth < values.situpval.elbowLimit) {
-        return true;
-    }
-    return false;
+    return currentdepth < values.situpval.elbowLimit;
+
 }
 
 export function checkHipMovement(keypoints) {
     let bdpoints;
-    if (values.situpval.side == 1) {
+    if (values.situpval.side === 1) {
         bdpoints = leftside;
     } else {
         bdpoints = rightside;
     }
     const ydiff = Math.abs(keypoints[bdpoints[2]].y - keypoints[bdpoints[4]].y);
-    if (ydiff < values.situpval.hipLimit) {
-        return true;
-    }
-    return false;
+    return ydiff < values.situpval.hipLimit;
+
 }
 
 function isBodyInFrame(keypoints, ankle) {
@@ -76,7 +69,7 @@ function isBodyInFrame(keypoints, ankle) {
 
 function isStablised(keypoints) {
     let bdpoints;
-    if (values.pushupval.side == 1) {
+    if (values.pushupval.side === 1) {
         bdpoints = leftside;
     } else {
         bdpoints = rightside;

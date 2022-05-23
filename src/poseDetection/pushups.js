@@ -12,7 +12,7 @@ const calibrationThreshold = 0.45;
 
 export function checkDepth(keypoints) {
   let bdpoints;
-  if (values.pushupval.side == 1) {
+  if (values.pushupval.side === 1) {
     bdpoints = leftside;
   } else {
     bdpoints = rightside;
@@ -20,16 +20,13 @@ export function checkDepth(keypoints) {
   const xpos = Math.abs(keypoints[bdpoints[0]].x - keypoints[bdpoints[2]].x);
   const ypos = Math.abs(keypoints[bdpoints[0]].y - keypoints[bdpoints[2]].y);
   const currentdepth = Math.sqrt((xpos * xpos) + (ypos * ypos));
-  if (currentdepth < values.pushupval.depthLimit) {
-    //console.log("PUSH UP DEPTH REACHED");
-    return true;
-  }
-  return false;
+  return currentdepth < values.pushupval.depthLimit;
+
 }
 
 export function checkArmStraight(keypoints) {
   let bdpoints;
-  if (values.pushupval.side == 1) {
+  if (values.pushupval.side === 1) {
     bdpoints = leftside;
   } else {
     bdpoints = rightside;
@@ -46,7 +43,7 @@ export function checkArmStraight(keypoints) {
 
 export function checkBackStraight(keypoints) {
   let bdpoints;
-  if (values.pushupval.side == 1) {
+  if (values.pushupval.side === 1) {
     bdpoints = leftside;
   } else {
     bdpoints = rightside;
@@ -54,10 +51,8 @@ export function checkBackStraight(keypoints) {
   const xpoints = [keypoints[bdpoints[0]].x, keypoints[bdpoints[3]].x, keypoints[bdpoints[4]].x];
   const ypoints = [keypoints[bdpoints[0]].y, keypoints[bdpoints[3]].y, keypoints[bdpoints[4]].y];
   let corr = calculateCorrelation(xpoints, ypoints);
-  if (Math.abs(corr) > 0.95) {
-    return true;
-  }
-  return false;
+  return Math.abs(corr) > 0.95;
+
 }
 
 function isBodyInFrame(keypoints, knee) {
@@ -66,7 +61,7 @@ function isBodyInFrame(keypoints, knee) {
 
 function isStablised(keypoints) {
   let bdpoints;
-  if (values.pushupval.side == 1) {
+  if (values.pushupval.side === 1) {
     bdpoints = leftside;
   } else {
     bdpoints = rightside;

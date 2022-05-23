@@ -1,12 +1,13 @@
 import { Typography, AppBar, Button, Card, TextField, Grid, FormControl } from '@mui/material';
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
-import StartButton from './StartButton';
-import StopButton from './StopButton';
 import values from '../poseDetection/values';
+import {selectDuration} from '../features/userValues/userValuesSlice';
+import {useSelector} from 'react-redux';
 
 function Timer() {
-    const duration = values.assess.duration;
+    //useSelector here, in case we change duration elsewhere, this can rerender
+    const duration = useSelector(selectDuration);
     const intervalRef = useRef(null);
     const [timer, setTimer] = useState('00:00');
 
