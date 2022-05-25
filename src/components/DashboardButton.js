@@ -6,7 +6,7 @@ const DashboardButton = () => {
     return (
         <Button
             variant="contained"
-            style={{ backgroundColor: "#666666", color: "#FFFFFF" }}
+            usage="header"
             component={Link} to="/dashboard"
         >
             Profile

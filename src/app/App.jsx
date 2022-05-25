@@ -1,20 +1,26 @@
-import React from 'react';
 import {CssBaseline, Box} from '@mui/material';
-import GuestHeader from '../components/GuestHeader';
+import MainHeader from '../containers/MainHeader';
 import {Outlet} from 'react-router-dom';
+import {AuthProvider, useFirebaseApp} from 'reactfire';
+import {getAuth} from 'firebase/auth';
 
 const App = () => {
+  const firebaseApp = useFirebaseApp();
+  const auth = getAuth(firebaseApp);
+
   return (
-    <CssBaseline>
-      <Box sx={{
-        height: '100%',
-        color: 'white',
-        background: 'rgba(0, 0, 0, 1)',
-      }}>
-        <GuestHeader/>
-        <Outlet/>
-      </Box>
-    </CssBaseline>
+    <AuthProvider sdk={auth}>
+      <CssBaseline>
+        <Box sx={{
+          height: '100%',
+          color: 'white',
+          background: 'rgba(0, 0, 0, 1)',
+        }}>
+          <MainHeader/>
+          <Outlet/>
+        </Box>
+      </CssBaseline>
+    </AuthProvider>
   );
 }
 

@@ -21,7 +21,7 @@ export default function SignupDialog(actiontype) {
 
     return (
         <div>
-            <Button variant="contained" onClick={handleClickOpen}>
+            <Button variant="contained" usage="header" onClick={handleClickOpen}>
                 Sign Up
             </Button>
             <Dialog

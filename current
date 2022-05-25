@@ -1,0 +1,70 @@
+login
+
+always reference issue in commit, always reference commit in issue?
+
+//todo in Intellij
+ 
+detect exercise from url - don't need Redux state for that
+
+https://reactrouter.com/docs/en/v6/examples/lazy-loading
+
+refactor all components, containers, pages - https://levelup.gitconnected.com/refactoring-a-complex-react-component-5-best-practices-to-write-efficient-and-readable-components-b0d06f4f22b4
+
+https://mui.com/x/react-date-pickers/time-picker/
+
+propTypes
+
+//style=
+//remove useStyles
+
+a module bundler such as webpack or Rollup - https://firebase.google.com/docs/web/module-bundling
+https://firebase.google.com/docs/web/environments-js-sdk#add-polyfills
+
+nextJS
+
+mongoDB?
+
+redux-persist
+https://github.com/supasate/connected-react-router
+React + Back-button + Redux + Router
+https://stackoverflow.com/questions/48834225/how-to-jump-to-redux-state-with-browser-back-button
+Should Redux state persist across back button
+
+https://flow.org/
+
+
+
+Setup
+Install func dep via yarn
+Github workflow originally used npm ci, but yarn has no equivalent of ci? https://stackoverflow.com/questions/58482655/what-is-the-closest-to-npm-ci-in-yarn
+i  Action required: Visit this URL to revoke authorization for the Firebase CLI GitHub OAuth App:
+https://github.com/settings/connections/applications/89cf50f02ac6aaed3484
+i  Action required: Push any new workflow file(s) to your repo
+
+Didn't set up Hosting - Github Action deploys, Emulators
+
+Auth Get Started --> Local Emulator Suite
+
+
+
+Firebase read again:
+https://firebase.google.com/docs/projects/dev-workflows/overview-environments
+https://firebase.google.com/docs/projects/api-keys
+https://firebase.google.com/docs/projects/provisioning/configure-oauth
+https://firebase.google.com/docs/projects/iam/overview
+https://firebase.google.com/docs/cli/
+https://firebase.google.com/support/guides
+https://firebase.google.com/docs/web/pwa
+
+compare to set-up in react-most-wanted
+
+  "functions": {
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run lint"
+    ],
+    "source": "firebase/functions"
+  },
+
+  loadingSpinner
+
+  Anonymous user
