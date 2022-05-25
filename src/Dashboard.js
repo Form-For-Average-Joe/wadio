@@ -2,11 +2,12 @@ import React from 'react';
 import {Typography, Grid, Container} from '@mui/material';
 import BodyStatsPanel from './components/BodyStatsPanel';
 import LastAttemptStats from './components/LastAttemptStats';
+import CaloriesBurnt from './components/CaloriesBurnt';
 import {theme} from "./index";
 
 const username = 'Chee Heng';
 
-const PushupsAssessment = () => {
+const Dashboard = () => {
   return (
     <>
       <Typography variant="h5" align="center" style={{paddingTop: "4rem"}}>
@@ -18,7 +19,14 @@ const PushupsAssessment = () => {
             <BodyStatsPanel/>
           </Grid>
           <Grid item xs={4}>
-            <LastAttemptStats/>
+            <Grid container spacing={2} direction= "column">
+              <Grid item>
+                <LastAttemptStats />
+              </Grid>
+              <Grid item>
+                <CaloriesBurnt />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Container>
@@ -26,4 +34,4 @@ const PushupsAssessment = () => {
   );
 }
 
-export default PushupsAssessment;
+export default Dashboard;
