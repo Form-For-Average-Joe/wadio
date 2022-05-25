@@ -1,6 +1,6 @@
 import React from 'react';
 import {CssBaseline, Box} from '@mui/material';
-import GuestHeader from '../components/GuestHeader';
+import MemberHeader from '../components/MemberHeader';
 import {Outlet} from 'react-router-dom';
 
 const App = () => {
@@ -11,7 +11,7 @@ const App = () => {
         color: 'white',
         background: 'rgba(0, 0, 0, 1)',
       }}>
-        <GuestHeader/>
+        <MemberHeader/>
         <Outlet/>
       </Box>
     </CssBaseline>
