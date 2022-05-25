@@ -2,6 +2,7 @@ import {Card, Grid, Typography} from '@mui/material';
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserTime} from "../features/userProfile/userProfileSlice";
+import { setIsStarted } from "../features/exercise/exerciseSlice";
 import {selectDuration} from '../features/userValues/userValuesSlice';
 
 //todo the LastAttemptStats is broken because of the timer issue, but we are looking to migrate anyways to another JS package
@@ -18,6 +19,10 @@ function Timer() {
         const minutes = Math.floor((total / 1000 / 60) % 60);
 
         dispatch(setUserTime({minutes, seconds}));
+
+        if (seconds <= 0) {
+            dispatch(setIsStarted(false));
+        }
 
         return {
             total, minutes, seconds
