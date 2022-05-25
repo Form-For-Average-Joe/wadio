@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Typography, AppBar, Button, Card, CardActions, CardContent, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory, FormControl } from '@mui/material';
-import values from '../poseDetection/values';
 import {useSelector, useDispatch} from "react-redux";
 import {incrementCount, selectCount, selectDuration} from '../features/userValues/userValuesSlice'
 
