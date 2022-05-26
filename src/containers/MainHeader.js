@@ -1,26 +1,17 @@
 import React from 'react';
 import {Typography, AppBar, Box, Grid, Toolbar, Container, Avatar} from '@mui/material';
-import LoginDialog from '../components/LoginButton';
+import LoginDialog from '../components/LoginDialog';
 import SignupDialog from '../components/signupbutton';
 import DashboardButton from '../components/DashboardButton';
 import HomeButton from '../components/HomeButton';
 import LogoutButton from '../components/LogoutButton'
 import avatar from '../components/Media/cheeheng.jpg';
 import logo from '../components/Media/OrbitalLogo.png';
-import { useSigninCheck } from 'reactfire';
+import {useSigninCheck} from 'reactfire';
 
 const Guest = () => {
   return (
-    <Grid container spacing={3}>
-      <Grid item>
-        <LoginDialog/>
-      </Grid>
-      <Grid item>
-        <SignupDialog/>
-      </Grid>
-      <Grid item>
-      </Grid>
-    </Grid>
+    <LoginDialog/>
   )
 }
 
@@ -41,11 +32,11 @@ const Member = () => {
 }
 
 const MainHeader = () => {
-  const { status, data } = useSigninCheck();
+  const {status, data} = useSigninCheck();
   if (status === 'loading') {
     return <p>Loading</p>
   }
-  const { signedIn, user } = data;
+  const {signedIn, user} = data;
   const guest = signedIn ? <Member user={user}/> : <Guest/>;
 
   return (
