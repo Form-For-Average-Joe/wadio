@@ -1,6 +1,5 @@
 import React from 'react';
 import { Typography, Card, Grid } from '@mui/material';
-import values from '../poseDetection/values';
 import {useSelector} from "react-redux";
 import {selectCount, selectDuration} from '../features/userValues/userValuesSlice'
 import {selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';

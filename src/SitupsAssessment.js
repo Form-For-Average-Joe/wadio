@@ -1,31 +1,44 @@
 import React from 'react';
-import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@mui/material';
-import StartButton from './components/StartButton';
-import StopButton from './components/StopButton';
+import {CardMedia, Grid} from '@mui/material';
+import webcam from './poseDetection/webcam.js'
+import {useSelector} from 'react-redux';
+import {selectIsStarted} from './features/exercise/exerciseSlice'
+import AssessmentStart from "./containers/AssessmentStart";
+import AssesmentNotStarted from './containers/AssessmentNotStarted';
+import {webcamStyles} from "./util";
 
-const PushupsAssessment = () => {
+const SitupsAssessment = () => {
+  const isStarted = useSelector(selectIsStarted);
+
+  let stream = React.useRef(null);
+
+  React.useEffect(() => {
+    webcam(stream);
+    // cleanup function stops webcam
+    return () => {
+      stream.current.getTracks().forEach(track => track.stop());
+    }
+  }, []) // [] here means no dependencies, so we only render webcam once for performance boost
+
+  const sidebar = isStarted ? <AssessmentStart/> : <AssesmentNotStarted/>;
+
   return (
-        <Grid container
-          alignItems="center"
-          justifyContent="center">
-          <Grid item xs={9}>
-            <Card sx={{background: 'rgba(150, 150, 150, 1)'}}>
-              <CardMedia
-                image="https://flabfix.com/wp-content/uploads/2019/05/Sit-Ups.gif"
-                title="pushups"
-              />
-              <Grid container spacing={4} justifyContent="center" style={{ marginBottom: "0.5rem", marginTop: "0.5rem" }}>
-                <Grid item>
-                  <StartButton />
-                </Grid>
-                <Grid item>
-                  <StopButton />
-                </Grid>
-              </Grid>
-            </Card>
-          </Grid>
-        </Grid>
+    <Grid container
+          justifyContent="center"
+          style={{marginTop: "8rem", marginBottom: "8rem"}}
+          spacing={2}>
+      <Grid item xs={6}>
+        <CardMedia variant='webcam'
+                   style={webcamStyles.video}
+                   id="video"
+                   component="video"
+                   src=""/>
+      </Grid>
+      <Grid item xs={2}>
+        {sidebar}
+      </Grid>
+    </Grid>
   );
 }
 
-export default PushupsAssessment;
+export default SitupsAssessment;
