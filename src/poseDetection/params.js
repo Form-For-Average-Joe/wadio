@@ -10,7 +10,7 @@ export const VIDEO_SIZE = {
 };
 export const STATE = {
   camera: {targetFPS: 60, sizeOption: '640 X 480'},
-  backend: '',
+  backend: 'tfjs-webgl',
   flags: {},
   modelConfig: {},
   model: SupportedModels.MoveNet
@@ -56,9 +56,7 @@ export const BACKEND_FLAGS_MAP = {
   ['mediapipe-gpu']: []
 };
 
-export const MODEL_BACKEND_MAP = {
-  [posedetection.SupportedModels.MoveNet]: ['tfjs-webgl', 'tfjs-wasm']
-}
+export const MODEL_BACKEND_MAP = ['tfjs-webgl', 'tfjs-wasm'];
 
 export const TUNABLE_FLAG_NAME_MAP = {
   PROD: 'production mode',

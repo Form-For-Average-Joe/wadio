@@ -10,7 +10,7 @@ const LastAttemptStats = () => {
     const minutes = useSelector(selectMinutes);
     const seconds = useSelector(selectSeconds);
 
-    const t = (minutes*60 + seconds) === 0 ? 0 : duration - (minutes*60 + seconds);
+    const t = (minutes*60 + seconds) === 0 ? duration : duration - (minutes*60 + seconds);
     const time = Math.floor(t/60) + ' minutes ' + (t%60) + ' seconds'
     return (
         <Card>
