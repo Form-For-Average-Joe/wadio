@@ -17,10 +17,7 @@ const PushupCard = () => {
                 </Typography>
                 <Grid container spacing={4} justifyContent="center" style={{marginTop: "0.5rem"}}>
                     <Grid item>
-                        <Button variant="contained" style={{backgroundColor: "#0F52BA", color: "#FFFFFF"}} component={Link} to="/pushupsassessment">Assessment</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button variant="contained" style={{backgroundColor: "#0F52BA", color: "#FFFFFF"}} component={Link} to="/pushupstraining">Training</Button>
+                        <Button variant="contained" style={{backgroundColor: "#0F52BA", color: "#FFFFFF"}} component={Link} to="/pushupsassessment">Attempt Now!</Button>
                     </Grid>
                 </Grid>
             </CardContent>

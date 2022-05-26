@@ -17,10 +17,7 @@ const SitupCard = () => {
                 </Typography>
                 <Grid container spacing={4} justifyContent="center" style={{marginTop: "0.5rem"}}>
                     <Grid item>
-                        <Button variant="contained" style={{backgroundColor: "#0F52BA", color: "#FFFFFF"}} component={Link} to="/situpsassessment">Assessment</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button variant="contained" style={{backgroundColor: "#0F52BA", color: "#FFFFFF"}} component={Link} to="/situpstraining">Training</Button>
+                        <Button variant="contained" style={{backgroundColor: "#0F52BA", color: "#FFFFFF"}} component={Link} to="/situpsassessment">Attempt Now!</Button>
                     </Grid>
                 </Grid>
             </CardContent>
