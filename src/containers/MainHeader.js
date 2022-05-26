@@ -2,11 +2,11 @@ import React from 'react';
 import {Typography, AppBar, Box, Grid, Toolbar, Container, Avatar} from '@mui/material';
 import LoginDialog from '../components/LoginButton';
 import SignupDialog from '../components/signupbutton';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import DashboardButton from '../components/DashboardButton';
 import HomeButton from '../components/HomeButton';
 import LogoutButton from '../components/LogoutButton'
 import avatar from '../components/Media/cheeheng.jpg';
+import logo from '../components/Media/OrbitalLogo.png';
 import { useSigninCheck } from 'reactfire';
 
 const Guest = () => {
@@ -36,9 +36,6 @@ const Member = () => {
       <Grid item>
         <Avatar src={avatar}/>
       </Grid>
-      <Grid item>
-        <LogoutButton/>
-      </Grid>
     </Grid>
   )
 }
@@ -55,8 +52,8 @@ const MainHeader = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar>
-          <FitnessCenterIcon fontSize="large" sx={{display: {xs: 'none', md: 'flex'}, mr: 3}}/>
-          <Typography variant="h4">
+          <Avatar variant="rounded" src={logo}/>
+          <Typography variant="h4" sx={{paddingLeft: "1rem"}}>
             Form For The Average Joe
           </Typography>
           <Box sx={{alignItems: 'center', textAlign: 'center'}} marginLeft="auto">
