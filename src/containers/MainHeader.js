@@ -1,10 +1,8 @@
 import React from 'react';
 import {Typography, AppBar, Box, Grid, Toolbar, Container, Avatar} from '@mui/material';
 import LoginDialog from '../components/LoginDialog';
-import SignupDialog from '../components/signupbutton';
 import DashboardButton from '../components/DashboardButton';
 import HomeButton from '../components/HomeButton';
-import LogoutButton from '../components/LogoutButton'
 import avatar from '../components/Media/cheeheng.jpg';
 import logo from '../components/Media/OrbitalLogo.png';
 import {useSigninCheck} from 'reactfire';

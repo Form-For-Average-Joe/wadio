@@ -7,7 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import {useAuth} from 'reactfire';
-import {GoogleAuthProvider, signInWithPopup, GithubAuthProvider, fetchSignInMethodsForEmail, createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
+import {GoogleAuthProvider, signInWithPopup, GithubAuthProvider, fetchSignInMethodsForEmail, createUserWithEmailAndPassword, signInWithEmailAndPassword, indexedDBLocalPersistence, setPersistence  } from "firebase/auth";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -33,11 +33,11 @@ const doSignInWithPopup = async (auth, provider) => {
 }
 
 const signInGoogle = async (auth) => {
-  await doSignInWithPopup(auth, new GoogleAuthProvider());
+  await setPersistence(auth, indexedDBLocalPersistence).then(() => doSignInWithPopup(auth, new GoogleAuthProvider()));
 }
 
 const signInGithub = async (auth) => {
-  await doSignInWithPopup(auth, new GithubAuthProvider());
+  await setPersistence(auth, indexedDBLocalPersistence).then(() => doSignInWithPopup(auth, new GithubAuthProvider()));
 }
 
 const signInEmail = async (auth, setOpenEmailAuth) => {
@@ -71,9 +71,10 @@ export default function LoginDialog() {
     setPassword(event.target.value)
   };
 
-  const handleEmailProceed = (auth) => {
+  const handleEmailProceed = async (auth) => {
     setOpenEmailTextField(false);
-    signInWithEmailAndPassword(auth, email, 'random')
+    await setPersistence(auth, indexedDBLocalPersistence)
+      .then(() => signInWithEmailAndPassword(auth, email, 'random'))
       .catch((error) => {
         const errorCode = error.code;
         if (errorCode === "auth/user-not-found") {
@@ -85,9 +86,10 @@ export default function LoginDialog() {
       });
   }
 
-  const handleExistingUserPasswordProceed = (auth) => {
+  const handleExistingUserPasswordProceed = async (auth) => {
     setExistingNewUserPasswordTextField(false);
-    signInWithEmailAndPassword(auth, email, password)
+    await setPersistence(auth, indexedDBLocalPersistence)
+      .then(() => signInWithEmailAndPassword(auth, email, password))
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -99,9 +101,10 @@ export default function LoginDialog() {
       });
   }
 
-  const handleNewUserPasswordProceed = (auth) => {
+  const handleNewUserPasswordProceed = async (auth) => {
     setNewUserPasswordTextField(false);
-    createUserWithEmailAndPassword(auth, email, password)
+    await setPersistence(auth, indexedDBLocalPersistence)
+      .then(() => createUserWithEmailAndPassword(auth, email, password))
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
