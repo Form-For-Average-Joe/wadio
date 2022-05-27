@@ -3,9 +3,9 @@ import {Typography, AppBar, Box, Grid, Toolbar, Container, Avatar} from '@mui/ma
 import LoginDialog from '../components/LoginDialog';
 import DashboardButton from '../components/DashboardButton';
 import HomeButton from '../components/HomeButton';
-import avatar from '../components/Media/cheeheng.jpg';
 import logo from '../components/Media/OrbitalLogo.png';
-import {useSigninCheck} from 'reactfire';
+import {useSigninCheck, useUser} from 'reactfire';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Guest = () => {
   return (
@@ -14,6 +14,7 @@ const Guest = () => {
 }
 
 const Member = () => {
+  const { data } = useUser();
   return (
     <Grid container spacing={3}>
       <Grid item>
@@ -23,7 +24,7 @@ const Member = () => {
         <DashboardButton/>
       </Grid>
       <Grid item>
-        <Avatar src={avatar}/>
+        {data.photoURL ? <Avatar src={data.photoURL}/> : <Avatar><AccountCircleIcon /></Avatar>}
       </Grid>
     </Grid>
   )
@@ -35,7 +36,7 @@ const MainHeader = () => {
     return <p>Loading</p>
   }
   const {signedIn, user} = data;
-  const guest = signedIn ? <Member user={user}/> : <Guest/>;
+  const guest = signedIn ? <Member /> : <Guest/>;
 
   return (
     <AppBar position="static">

@@ -25,7 +25,7 @@ const BodyStatsPanel = () => {
             <Typography variant="h6" align="center" style={{ paddingTop: "1rem" }}>
                 Your Body Measurements
             </Typography>
-            <Card item style={{ paddingLeft: "1rem" }}>
+            <Card style={{ paddingLeft: "1rem" }}>
                 <List>
                     <ListItem>
                         <ListItemAvatar>

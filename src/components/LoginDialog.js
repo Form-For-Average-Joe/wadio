@@ -4,6 +4,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
+import {InputAdornment, IconButton, Box} from "@mui/material";
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import {useAuth} from 'reactfire';
@@ -12,8 +13,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import {DialogContentText} from "@mui/material";
+import {DialogContentText, Input} from "@mui/material";
 import TextField from '@mui/material/TextField';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from '@mui/icons-material/Visibility';
 
 //todo refactor code
 //todo error handling in handleProceed functions avoid the use of alert and instead do something more professional
@@ -25,8 +28,7 @@ const doSignInWithPopup = async (auth, provider) => {
         fetchSignInMethodsForEmail(auth, error.customData.email).then(providers => {
           alert('The existing email address, ' + error.customData.email + ', is already in use! Please use tbe same authentication provider as was used during the the sign up: ' + providers[0])
         });
-      }
-      else {
+      } else {
         alert(error.code);
       }
     })
@@ -57,6 +59,8 @@ export default function LoginDialog() {
   const [openExistingUserPasswordTextField, setExistingNewUserPasswordTextField] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isPasswordShown, setIsPasswordShown] = React.useState(false);
+  const [isEmailInvalid, setIsEmailInvalid] = React.useState(false);
 
   const handleClose = (func, auth, setOpenEmailAuth) => {
     setOpen(false);
@@ -79,8 +83,10 @@ export default function LoginDialog() {
         const errorCode = error.code;
         if (errorCode === "auth/user-not-found") {
           setNewUserPasswordTextField(true);
-        }
-        else {
+        } else if (errorCode === 'auth/invalid-email') {
+          setOpenEmailTextField(true);
+          setIsEmailInvalid(true);
+        } else {
           setExistingNewUserPasswordTextField(true);
         }
       });
@@ -112,8 +118,7 @@ export default function LoginDialog() {
           alert('The password is too weak.');
         } else if (errorCode === 'auth/invalid-email') {
           alert(errorMessage + '\nCheck the email address entered.');
-        }
-        else {
+        } else {
           alert(errorMessage);
         }
       });
@@ -137,8 +142,10 @@ export default function LoginDialog() {
         <DialogTitle>Select your Login Method</DialogTitle>
         <List sx={{pt: 0}}>
           {signInMethods.map(method => (
-            <ListItem button onClick={() => {handleClose(method.func, auth, setOpenEmailTextField)}} key={method.name}>
-              <ListItemText primary={method.name} />
+            <ListItem button onClick={() => {
+              handleClose(method.func, auth, setOpenEmailTextField)
+            }} key={method.name}>
+              <ListItemText primary={method.name}/>
             </ListItem>
           ))}
         </List>
@@ -149,20 +156,21 @@ export default function LoginDialog() {
           <DialogContentText>
             Please enter your email address here.
           </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-            onChange={handleEmailTextChange}
-          />
+          <form>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="email"
+              label="Email Address"
+              fullWidth
+              variant="standard"
+              {...(isEmailInvalid && { error: true, helperText: "Please enter a valid email" })}
+              inputProps={{type: 'email'}}
+              onChange={handleEmailTextChange}
+            />
+            <Button onClick={() => handleEmailProceed(auth)}>Proceed</Button>
+          </form>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => handleEmailProceed(auth)}>Proceed</Button>
-        </DialogActions>
       </Dialog>
       <Dialog open={openExistingUserPasswordTextField} onClose={() => setExistingNewUserPasswordTextField(false)}>
         <DialogTitle>Password</DialogTitle>
@@ -170,36 +178,60 @@ export default function LoginDialog() {
           <DialogContentText>
             Please enter your password here.
           </DialogContentText>
-          <TextField
+          <Input
             autoFocus
             margin="dense"
-            id="existing-user-password"
-            label="Password"
-            type="password"
             fullWidth
             variant="standard"
+            id="existing-user-password"
+            label="Password"
+            type={isPasswordShown ? 'text' : 'password'}
             onChange={handlePasswordTextChange}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setIsPasswordShown(!isPasswordShown)}
+                  onMouseDown={event => event.preventDefault()}
+                  edge="end"
+                >
+                  {isPasswordShown ? <VisibilityOff/> : <Visibility/>}
+                </IconButton>
+              </InputAdornment>
+            }
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => handleExistingUserPasswordProceed(auth)}>Proceed</Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openNewUserPasswordTextField} onClose={() => setExistingNewUserPasswordTextField(false)}>
+      <Dialog open={openNewUserPasswordTextField} onClose={() => setNewUserPasswordTextField(false)}>
         <DialogTitle>Create a password</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Please enter your password here.
           </DialogContentText>
-          <TextField
+          <Input
             autoFocus
             margin="dense"
             id="new-user-password"
             label="Password"
-            type="password"
+            type={isPasswordShown ? 'text' : 'password'}
             fullWidth
             variant="standard"
             onChange={handlePasswordTextChange}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setIsPasswordShown(!isPasswordShown)}
+                  onMouseDown={event => event.preventDefault()}
+                  edge="end"
+                >
+                  {isPasswordShown ? <VisibilityOff/> : <Visibility/>}
+                </IconButton>
+              </InputAdornment>
+            }
           />
         </DialogContent>
         <DialogActions>
