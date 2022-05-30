@@ -5,13 +5,13 @@ import React from "react";
 import {setIsStarted} from '../features/exercise/exerciseSlice';
 import {useDispatch} from 'react-redux';
 
-export default function AssessmentStart() {
+export default function AssessmentStart({setIsFinished}) {
   const dispatch = useDispatch();
 
   return (
     <Grid container spacing={2} direction="column">
       <Grid item>
-        <Timer/>
+        <Timer setIsFinished={setIsFinished}/>
       </Grid>
       <Grid item>
         <RepCounter/>
@@ -19,7 +19,10 @@ export default function AssessmentStart() {
       <Grid item>
         <Button variant="contained"
                 style={{backgroundColor: "#8B0000", color: "#FFFFFF"}}
-                onClick={() => dispatch(setIsStarted(false))}>Stop</Button>
+                onClick={() => {
+                  dispatch(setIsStarted(false));
+                  setIsFinished(true);
+                }}>Stop</Button>
       </Grid>
     </Grid>
   )

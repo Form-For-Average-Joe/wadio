@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid,
-    List, ListItem, Toolbar, TextField, Container, requirePropFactory
-} from '@mui/material';
-import { Link } from 'react-router-dom';
+import {Typography, Card, List, ListItem} from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';

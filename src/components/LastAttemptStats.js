@@ -1,23 +1,42 @@
 import React from 'react';
 import { Typography, Card, Grid } from '@mui/material';
-import {useSelector} from "react-redux";
-import {selectCount, selectDuration} from '../features/userValues/userValuesSlice'
-import {selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';
+import {doc, getFirestore, getDoc} from 'firebase/firestore';
+import {getAuth} from "firebase/auth";
 
-const LastAttemptStats = () => {
-    const count = useSelector(selectCount);
-    const duration = useSelector(selectDuration);
-    const minutes = useSelector(selectMinutes);
-    const seconds = useSelector(selectSeconds);
+const LastAttemptStats = ({stats}) => {
+    const generateDisplayTimeString = (workoutTime) => Math.floor(workoutTime/60) + ' minutes ' + (workoutTime%60) + ' seconds'
 
-    const t = (minutes*60 + seconds) === 0 ? duration : duration - (minutes*60 + seconds);
-    const time = Math.floor(t/60) + ' minutes ' + (t%60) + ' seconds'
+    const [count, setCount] = React.useState(0);
+    const [displayTimeString, setDisplayTimeString] = React.useState('');
+
+    React.useEffect(() => {
+        if (stats) {
+            setCount(stats.repCount);
+            setDisplayTimeString(generateDisplayTimeString(stats.workoutTime));
+        }
+        else {
+            const firestore = getFirestore();
+            const auth = getAuth();
+            const user = auth.currentUser;
+            const ref = doc(firestore, 'userStatistics', user.uid);
+
+            const inner = async () => {
+                return await getDoc(ref);
+            };
+            inner().then(res => {
+                const data = res.data();
+                setDisplayTimeString(generateDisplayTimeString(data.workoutTime));
+                setCount(data.repCount);
+            });
+        }
+    }, [count, displayTimeString]);
+
     return (
         <Card>
             <Grid container justifyContent="center" alignItems="center">
                 <Grid item style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
                     <Typography variant="subtitle1" align="center">
-                        Last Attempt: {count} reps in {time}.
+                        Last Attempt: {count} reps in {displayTimeString}.
                     </Typography>
                 </Grid>
             </Grid>

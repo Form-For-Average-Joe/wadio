@@ -1,0 +1,42 @@
+import React from "react";
+import {doc, setDoc, getFirestore} from "firebase/firestore";
+import {useDispatch, useSelector} from "react-redux";
+import LastAttemptStats from "../components/LastAttemptStats";
+import {clearExerciseState} from "../features/exercise/exerciseSlice";
+import {selectCount, selectDuration} from '../features/userValues/userValuesSlice'
+import {selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';
+import {useUser} from 'reactfire';
+import {Navigate} from "react-router-dom";
+
+export default function AssessmentFinished() {
+  //code mainly duplicated from LastAttemptStats, so we can calculate it here and pass props to LastAttemptStats, then the Dashboard's LastAttemptStats will have to fetch from Firebase
+  const repCount = useSelector(selectCount);
+  const duration = useSelector(selectDuration);
+  const minutes = useSelector(selectMinutes);
+  const seconds = useSelector(selectSeconds);
+  const dispatch = useDispatch();
+
+  const workoutTime = (minutes * 60 + seconds) === 0 ? duration : duration - (minutes * 60 + seconds);
+
+  const {data: user} = useUser();
+
+  //todo fix warning that happens (when dispatching?) Warning is in relation to chaning PushupsAssessment despite rendering AssessmentFinished now apparently
+  dispatch(clearExerciseState());
+
+  //todo anonymous user persist stats
+  if (!user) {
+    alert("Please sign it to save your stats");
+    return <Navigate to="/" replace={true} />
+  }
+
+  console.log(user)
+
+  setDoc(doc(getFirestore(), "userStatistics", user.uid), {
+    repCount,
+    workoutTime
+  });
+
+  return (
+    <LastAttemptStats stats={{repCount, workoutTime}}/>
+  )
+}

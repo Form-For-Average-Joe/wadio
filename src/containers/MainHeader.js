@@ -3,7 +3,7 @@ import {Typography, AppBar, Box, Grid, Toolbar, Container, Avatar} from '@mui/ma
 import LoginDialog from '../components/LoginDialog';
 import DashboardButton from '../components/DashboardButton';
 import HomeButton from '../components/HomeButton';
-import logo from '../components/Media/OrbitalLogo.png';
+import logo from '../../public/OrbitalLogo.png';
 import {useSigninCheck, useUser} from 'reactfire';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -35,7 +35,7 @@ const MainHeader = () => {
   if (status === 'loading') {
     return <p>Loading</p>
   }
-  const {signedIn, user} = data;
+  const {signedIn} = data;
   const guest = signedIn ? <Member /> : <Guest/>;
 
   return (

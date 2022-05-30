@@ -82,23 +82,21 @@ export const theme = createTheme({
 
 const container = document.getElementById('root');
 const root = createRoot(container);
-//todo remove StyledEngineProvider
+
 root.render((
   <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <Provider store={store}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<App/>}>
-                <Route index element={<Home/>}/>
-                <Route exact path="pushupsassessment" element={<PushupsAssessment/>}/>
-                <Route exact path="situpsassessment" element={<SitupsAssessment/>}/>
-                <Route exact path="dashboard" element={<DashBoard/>}/>
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </Provider>
-      </ThemeProvider>
-    </StyledEngineProvider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<App/>}>
+              <Route index element={<Home/>}/>
+              <Route exact path="pushupsassessment" element={<PushupsAssessment/>}/>
+              <Route exact path="situpsassessment" element={<SitupsAssessment/>}/>
+              <Route exact path="dashboard" element={<DashBoard/>}/>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </ThemeProvider>
   </FirebaseAppProvider>));

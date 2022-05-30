@@ -2,11 +2,11 @@ import {Card, Grid, Typography} from '@mui/material';
 import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserTime} from "../features/userProfile/userProfileSlice";
-import { setIsStarted } from "../features/exercise/exerciseSlice";
+import {setIsStarted} from "../features/exercise/exerciseSlice";
 import {selectDuration} from '../features/userValues/userValuesSlice';
 
 //todo the LastAttemptStats is broken because of the timer issue, but we are looking to migrate anyways to another JS package
-function Timer() {
+function Timer({setIsFinished}) {
     //useSelector here, in case we change duration elsewhere, this can rerender
     const duration = useSelector(selectDuration);
     const intervalRef = useRef(null);
@@ -22,6 +22,7 @@ function Timer() {
 
         if (seconds <= 0) {
             dispatch(setIsStarted(false));
+            setIsFinished(true);
         }
 
         return {
