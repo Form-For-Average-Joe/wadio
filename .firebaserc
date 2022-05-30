@@ -2,6 +2,8 @@
   "projects": {
     "default": "form-for-average-joe",
     "dev": "form-for-average-joe",
-    "prod": "form-for-average-joe"
-  }
+    "prod": "form-for-average-joe",
+    "staging": "form-for-average-joe"
+  },
+  "targets": {}
 }

@@ -1,70 +1,56 @@
-# Getting Started with Create React App
+<p align="center">
+<img src="./public/OrbitalLogo.png">
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
 
-## Available Scripts
+# Form For the Average Joe
 
-In the project directory, you can run:
+**National University of Singapore**  
+Orbital 2022 - Form For Average Joe  
+Koh Chee Heng | Gujar Parth Shailesh  
+</div>
 
-### `npm start`
+## Deployment
+>https://form-for-average-joe.web.app/
+  
+## Features
+Below are the features that have been implemented for Milestone 1:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+***Signup and Login System***  
+Currently, we have a system where unregistered users can perform the exercises and gain feedback, but in order to save the session statistics, they need to be logged in. Currently, we have three authentication methods: Google, GitHub, and the standard email and password procedure. The app will request you to sign in if it detects that you are attempting to access pages that require data from signed-in users. The app also persists your authentication credentials, so that you do not have to keep signing in after closing the browser session.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+***Push-ups and Sit-ups rep counting***  
+The web-app is able to detect the pose of the user and decide if one rep of that particular exercise has been completed. This is done so by first recognising the starting position. In the case of push-ups, the starting pose is the standard push-up position with arms straightened. Next, it waits for the user to move to the reverse-point position. This refers to when the user attempts to do a push-up and has bent his/her arm to the required depth. The rep is registered when the user returns back to the starting position.
 
-### `npm test`
+***Push-ups and Sit-ups form checker***  
+While counting reps, the web-app also has another algorithm to check if, at any point during the rep, the user is not maintaining proper exercise posture. Improper posture for each exercise is unique. For push-ups, it refers to a curved back, unstraightened arms or not going low enough. Everytime improper posture is detected, the corresponding rep will not be counted. Difficulty levels can be set by manipulating the threshold values. For instance, how curved can the back be before it is considered improper form.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+***Customisable Time and Exercise Difficulty***  
+The web-app allows users to change difficulty levels (stringency) and to set the amount of duration of the exercise. Somebody doing the standard IPPT would set the time to 1 minute while somebody only doing training might set it to 30 seconds. The exercise will cut (stop counting reps) when the timer reaches zero.
 
-### `npm run build`
+  
+## Tech Stack
+1. **Frontend (state management)** - ReactJS (Redux)
+2. **Backend services** - Firebase
+3. **Pose detection** - TensorflowJS
+  
+## Challenges
+**Milestone 1**
+  
+*Frontend design* - as neither of us has had extensive experience with HTML/CSS before, we found it difficult to achieve the styling we wanted, as our styling approach sometimes led to bugs.
+  
+*Selection of the pose detection model* - initially we were using a different model called OpenPose. OpenPose was rather unsuited for our use-case, as it relied on GPUs to ensure its accuracy.
+  
+*Pose detection accuracy* - while the MoveNet model is able to accurately track the key points of a human body, it was difficult to design a robust algorithm that prevents users from cheating. As present, we are using assumptions on the relative positions of body parts to determine the user’s movements. However, this can be unreliable as there exists corner cases in which the user is in an incorrect position but the algorithm does not detect it.
+  
+## Set-up to run locally
+```
+$ npm install --global yarn # You will need yarn v1.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+$ yarn # Install dependencies
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+$ yarn start # Lauch the frontend
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+$ yarn firebase emulators:start # Run this in a separate terminal, to launch the Firebase backend 
+```

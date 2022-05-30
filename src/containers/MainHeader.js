@@ -3,7 +3,6 @@ import {Typography, AppBar, Box, Grid, Toolbar, Container, Avatar} from '@mui/ma
 import LoginDialog from '../components/LoginDialog';
 import DashboardButton from '../components/DashboardButton';
 import HomeButton from '../components/HomeButton';
-import logo from '../../public/OrbitalLogo.png';
 import {useSigninCheck, useUser} from 'reactfire';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -42,7 +41,7 @@ const MainHeader = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar>
-          <Avatar variant="rounded" src={logo}/>
+          <Avatar variant="rounded" src={`${process.env.PUBLIC_URL}/OrbitalLogo.png`}/>
           <Typography variant="h4" sx={{paddingLeft: "1rem"}}>
             Form For The Average Joe
           </Typography>
