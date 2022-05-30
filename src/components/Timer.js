@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setUserTime} from "../features/userProfile/userProfileSlice";
 import {setIsStarted} from "../features/exercise/exerciseSlice";
 import {selectDuration} from '../features/userValues/userValuesSlice';
+import {getDeadlineTime, getFlooredMinutes, getFlooredSeconds} from "../util";
 
 //todo the LastAttemptStats is broken because of the timer issue, but we are looking to migrate anyways to another JS package
 function Timer({setIsFinished}) {
@@ -15,8 +16,8 @@ function Timer({setIsFinished}) {
 
     function getTimeRemaining(endtime) {
         const total = Date.parse(endtime) - Date.parse(new Date());
-        const seconds = Math.floor((total / 1000) % 60);
-        const minutes = Math.floor((total / 1000 / 60) % 60);
+        const seconds = getFlooredSeconds(total);
+        const minutes = getFlooredMinutes(total);
 
         dispatch(setUserTime({minutes, seconds}));
 
@@ -38,7 +39,6 @@ function Timer({setIsFinished}) {
                 (seconds > 9 ? seconds : '0' + seconds)
             )
         } else {
-            console.log("Clearing Interval")
             clearInterval(intervalRef.current);
         }
     }
@@ -53,26 +53,10 @@ function Timer({setIsFinished}) {
         }, 1000);
     }
 
-    function getDeadlineTime() {
-        let deadline = new Date();
-        deadline.setSeconds(deadline.getSeconds() + duration);
-        return deadline;
-    }
-
     useEffect(() => {
-        clearTimer(getDeadlineTime());
+        clearTimer(getDeadlineTime(duration));
         return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
     }, []);
-
-    function handleStart() {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-        clearTimer(getDeadlineTime());
-    }
-
-    function handleStop() {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-        clearTimer(getDeadlineTime() - duration);
-    }
 
     return (
         <Card>

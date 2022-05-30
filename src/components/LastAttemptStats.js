@@ -5,14 +5,15 @@ import {getAuth} from "firebase/auth";
 
 const LastAttemptStats = ({stats}) => {
     const generateDisplayTimeString = (workoutTime) => Math.floor(workoutTime/60) + ' minutes ' + (workoutTime%60) + ' seconds'
-
-    const [count, setCount] = React.useState(0);
-    const [displayTimeString, setDisplayTimeString] = React.useState('');
+    const [displayString, setDisplayString] = React.useState('No previous workout: let\'s get started!');
+    const generateDisplayString = (workoutTime, repCount) => {
+        const displayTimeString = generateDisplayTimeString(workoutTime);
+        return 'Last Attempt: ' + repCount + ' reps in ' + displayTimeString + '.';
+    }
 
     React.useEffect(() => {
         if (stats) {
-            setCount(stats.repCount);
-            setDisplayTimeString(generateDisplayTimeString(stats.workoutTime));
+            setDisplayString(generateDisplayString(stats.workoutTime, stats.repCount));
         }
         else {
             const firestore = getFirestore();
@@ -25,18 +26,19 @@ const LastAttemptStats = ({stats}) => {
             };
             inner().then(res => {
                 const data = res.data();
-                setDisplayTimeString(generateDisplayTimeString(data.workoutTime));
-                setCount(data.repCount);
+                if (data) {
+                    setDisplayString(generateDisplayString(data.workoutTime, data.repCount));
+                }
             });
         }
-    }, [count, displayTimeString]);
+    }, []);
 
     return (
         <Card>
             <Grid container justifyContent="center" alignItems="center">
                 <Grid item style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
                     <Typography variant="subtitle1" align="center">
-                        Last Attempt: {count} reps in {displayTimeString}.
+                        {displayString}
                     </Typography>
                 </Grid>
             </Grid>

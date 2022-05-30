@@ -1,25 +1,18 @@
 import {Typography} from '@mui/material';
-import React, {useEffect, useRef, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {setExercise, setIsStarted} from "../features/exercise/exerciseSlice";
-import {resetUserTime} from "../features/userProfile/userProfileSlice";
-import {resetStageAndCount} from "../features/userValues/userValuesSlice";
+import {useEffect, useRef, useState} from 'react';
+import {getDeadlineTime, getFlooredSeconds} from "../util";
 
-function Countdown(handleClose) {
-    const duration = 10
+//todo refactor with Timer.js
+function Countdown({handleClose}) {
+    const duration = 10;
     const intervalRef = useRef(null);
-    const [timer, setTimer] = useState('00');
-    const dispatch = useDispatch();
+    const [timer, setTimer] = useState(duration % 60);
 
     function getTimeRemaining(endtime) {
         const total = Date.parse(endtime) - Date.parse(new Date());
-        const seconds = Math.floor((total / 1000) % 60);
+        const seconds = getFlooredSeconds(total);
 
         if (seconds <= 0) {
-            dispatch(setExercise('pushups'));
-            dispatch(resetStageAndCount());
-            dispatch(resetUserTime());
-            dispatch(setIsStarted(true));
             handleClose();
         }
 
@@ -38,23 +31,14 @@ function Countdown(handleClose) {
     }
 
     function clearTimer(endtime) {
-        setTimer(duration % 60);
-
         if (intervalRef.current) clearInterval(intervalRef.current);
-        const id = setInterval(() => {
+        intervalRef.current = setInterval(() => {
             startTimer(endtime);
-        }, 1000)
-        intervalRef.current = id;
-    }
-
-    function getDeadlineTime() {
-        let deadline = new Date();
-        deadline.setSeconds(deadline.getSeconds() + duration);
-        return deadline;
+        }, 1000);
     }
 
     useEffect(() => {
-        clearTimer(getDeadlineTime());
+        clearTimer(getDeadlineTime(duration));
         return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
     }, []);
 
