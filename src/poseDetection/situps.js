@@ -83,15 +83,8 @@ function isStablised(keypoints) {
     const diff = Math.abs((values.situpval.elbowLimit - newElbowLimit) / newElbowLimit);
     //console.log('Diff: ' + diff);
     values.situpval.elbowLimit = newElbowLimit;
-    const isStable = diff < differenceEpsilon;
-    if (isStable) {
-        console.log("CALIBRATION COMPLETE");
-        return true;
-    }
-    else {
-        //console.log("not stable");
-        return false;
-    }
+    // if diff < differenceEpsilon, is stalbe
+    return diff < differenceEpsilon;
 }
 
 //todo check for confidence, check if number here

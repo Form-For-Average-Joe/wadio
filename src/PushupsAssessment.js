@@ -1,12 +1,17 @@
 import React from 'react';
 import AssessmentFinished from "./containers/AssessmentFinished";
 import AssessmentInProgress from "./containers/AssessmentInProgress";
+import {setExercise} from "./features/exercise/exerciseSlice";
 import webcam from './poseDetection/webcam.js';
+import {useDispatch} from "react-redux";
 
 const PushupsAssessment = () => {
   const [isFinished, setIsFinished] = React.useState(false);
+  const dispatch = useDispatch();
 
   let stream = React.useRef(null);
+
+  dispatch(setExercise('pushups'));
 
   React.useEffect(() => {
     webcam(stream);

@@ -15,7 +15,6 @@ export default function CountdownButton(actiontype) {
   };
 
   const handleClose = () => {
-    dispatch(setExercise('pushups'));
     dispatch(resetStageAndCount());
     dispatch(resetUserTime());
     dispatch(setIsStarted(true));

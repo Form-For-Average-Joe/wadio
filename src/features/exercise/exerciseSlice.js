@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   nameOfExercise: '',
-  isStarted: false
+  isStarted: false,
+  feedback: ''
 };
 
 export const exerciseSlice = createSlice({
@@ -18,13 +19,17 @@ export const exerciseSlice = createSlice({
     clearExerciseState: (state) => {
       //performs a shallow reset/copy!!!!
       state = {...initialState};
+    },
+    setFeedback: (state, action) => {
+      state.feedback = action.payload;
     }
   },
 });
 
-export const { setExercise, setIsStarted, clearExerciseState } = exerciseSlice.actions;
+export const { setExercise, setIsStarted, clearExerciseState, setFeedback } = exerciseSlice.actions;
 
 export const selectNameOfExercise = (state) => state.exercise.nameOfExercise;
 export const selectIsStarted = (state) => state.exercise.isStarted;
+export const selectFeedback = (state) => state.exercise.feedback;
 
 export default exerciseSlice.reducer;

@@ -72,15 +72,8 @@ function isStablised(keypoints) {
   const diff = Math.abs((values.pushupval.depthLimit - newDepthLimit) / newDepthLimit);
   //console.log('Diff: ' + diff);
   values.pushupval.depthLimit = newDepthLimit;
-  const isStable = diff < differenceEpsilon;
-  if (isStable) {
-    console.log("CALIBRATION COMPLETE");
-    return true;
-  }
-  else {
-    //console.log("not stable");
-    return false;
-  }
+  // if diff < differenceEpsilon, is stalbe
+  return diff < differenceEpsilon;
 }
 
 //todo normalise

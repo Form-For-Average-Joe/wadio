@@ -29,13 +29,13 @@ export class Camera {
       if (pose.keypoints != null) {
         // todo need a better way to enumerate exercises
         const nameOfExercise = selectNameOfExercise(store.getState());
-        const isAtStageFour = selectStage(store.getState()) !== 4;
+        const isNotAtStageFour = selectStage(store.getState()) !== 4;
         if (nameOfExercise === 'pushups') {
-          if (isAtStageFour) {
+          if (isNotAtStageFour) {
             assessment.assess_pushups(pose.keypoints);
           }
         } else if (nameOfExercise === 'situps') {
-          if (isAtStageFour) {
+          if (isNotAtStageFour) {
             assessment.assess_situps(pose.keypoints);
           }
         } else {
@@ -50,6 +50,7 @@ export class Camera {
   /**
    * Initiate a Camera instance and wait for the camera stream to be ready.
    * @param cameraParam From app `STATE.camera`.
+   * @param parentStreamRef The reference to the stream
    */
   static async setupCamera(cameraParam, parentStreamRef) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
