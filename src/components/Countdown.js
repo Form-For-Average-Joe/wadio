@@ -1,10 +1,9 @@
-import { Typography, Card, Grid } from '@mui/material';
-import React from 'react';
-import { useState, useRef, useEffect } from 'react';
-import { setExercise, setIsStarted } from "../features/exercise/exerciseSlice";
-import { resetStageAndCount } from "../features/userValues/userValuesSlice";
-import { resetUserTime } from "../features/userProfile/userProfileSlice";
-import { useDispatch } from 'react-redux';
+import {Typography} from '@mui/material';
+import React, {useEffect, useRef, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {setExercise, setIsStarted} from "../features/exercise/exerciseSlice";
+import {resetUserTime} from "../features/userProfile/userProfileSlice";
+import {resetStageAndCount} from "../features/userValues/userValuesSlice";
 
 function Countdown(handleClose) {
     const duration = 10

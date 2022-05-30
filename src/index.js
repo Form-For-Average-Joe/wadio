@@ -8,7 +8,7 @@ import Home from './Home'
 import PushupsAssessment from './PushupsAssessment';
 import SitupsAssessment from './SitupsAssessment';
 import DashBoard from './Dashboard';
-import {ThemeProvider, StyledEngineProvider, createTheme} from '@mui/material/styles';
+import {ThemeProvider, createTheme} from '@mui/material/styles';
 import {FirebaseAppProvider} from 'reactfire';
 
 // Your web app's Firebase configuration

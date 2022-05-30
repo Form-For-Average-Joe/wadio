@@ -1,8 +1,7 @@
+import {Button, Card, Grid, Typography} from '@mui/material';
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { Typography, AppBar, Button, Card, CardActions, CardContent, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory, FormControl } from '@mui/material';
-import {useSelector, useDispatch} from "react-redux";
-import {incrementCount, selectCount, selectDuration} from '../features/userValues/userValuesSlice'
+import {useDispatch, useSelector} from "react-redux";
+import {incrementCount, selectCount} from '../features/userValues/userValuesSlice'
 
 
 const RepCounter = () => {

@@ -12,7 +12,7 @@
 /build
 
 # Firebase log files
-.log
+*debug.log
 
 # misc
 .DS_Store

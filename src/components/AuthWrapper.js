@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useSigninCheck } from 'reactfire';
 
 // Use this wrapper to paywall our users

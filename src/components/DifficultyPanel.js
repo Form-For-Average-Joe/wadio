@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, TextField, Container, requirePropFactory } from '@mui/material';
-import InputAdornment from '@mui/material/InputAdornment';
+import {Button, Card, Grid, Typography} from '@mui/material';
+import React, {useState} from 'react';
 
 const DifficultyPanel = () => {
     const [difficulty, setDifficulty] = useState(0);
