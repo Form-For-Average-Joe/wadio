@@ -14,14 +14,17 @@ export const exerciseSlice = createSlice({
     },
     setIsStarted: (state, action) => {
       state.isStarted = action.payload;
+    },
+    clearExerciseState: (state) => {
+      //performs a shallow reset/copy!!!!
+      state = {...initialState};
     }
   },
 });
 
-export const { setExercise, setIsStarted } = exerciseSlice.actions;
+export const { setExercise, setIsStarted, clearExerciseState } = exerciseSlice.actions;
 
 export const selectNameOfExercise = (state) => state.exercise.nameOfExercise;
-
 export const selectIsStarted = (state) => state.exercise.isStarted;
 
 export default exerciseSlice.reducer;

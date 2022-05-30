@@ -35,7 +35,7 @@ const MainHeader = () => {
   if (status === 'loading') {
     return <p>Loading</p>
   }
-  const {signedIn, user} = data;
+  const {signedIn} = data;
   const guest = signedIn ? <Member /> : <Guest/>;
 
   return (

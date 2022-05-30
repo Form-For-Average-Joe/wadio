@@ -69,7 +69,7 @@ async function app(stream) {
     // Lets the backend initialise
     await tf.ready();
     const backend = tf.getBackend();
-    console.log(backend);
+    console.log("Currently using backend: " + backend);
     if (backend) {
       isBackendSet = true;
     }
