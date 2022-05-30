@@ -9,6 +9,7 @@ export const AuthWrapper = ({ children, fallback }) => {
     throw new Error('Children must be provided');
   }
   if (status === 'loading') {
+    //todo loadingSpinner
   } else if (data.signedIn === true) {
     return children;
   }
