@@ -3,6 +3,7 @@ import DifficultyPanel from "../components/DifficultyPanel";
 import TimeInput from "../components/TimeInput";
 import React from "react";
 import CountdownButton from "../components/CountdownButton";
+import LastAttemptStats from "../components/LastAttemptStats";
 
 export default function AssessmentNotStarted() {
   return (
@@ -13,9 +14,9 @@ export default function AssessmentNotStarted() {
       <Grid item>
         <TimeInput/>
       </Grid>
-      {/*<Grid item>*/}
-      {/*  <LastAttemptStats/>*/}
-      {/*</Grid>*/}
+      <Grid item>
+        <LastAttemptStats/>
+      </Grid>
       <Grid item>
         <CountdownButton />
       </Grid>

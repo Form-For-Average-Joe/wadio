@@ -22,12 +22,12 @@ const LastAttemptStats = ({stats}) => {
 
             const inner = async () => {
                 return await getDoc(ref);
-            }
-            inner().then((res) => {
+            };
+            inner().then(res => {
                 const data = res.data();
                 setDisplayTimeString(generateDisplayTimeString(data.workoutTime));
                 setCount(data.repCount);
-            })
+            });
         }
     }, [count, displayTimeString]);
 
