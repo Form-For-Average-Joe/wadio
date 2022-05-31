@@ -50,7 +50,7 @@ const MainHeader = () => {
         <Toolbar>
           <Avatar variant="rounded" src={`${process.env.PUBLIC_URL}/OrbitalLogo.png`}/>
           <Typography variant="h4" sx={{paddingLeft: "1rem"}}>
-            Form For The Average Joe
+            Form For the Average Joe
           </Typography>
           <Box sx={{alignItems: 'center', textAlign: 'center'}} marginLeft="auto">
             {guest}

@@ -23,13 +23,15 @@ export default function AssessmentFinished() {
   //todo fix warning that happens (when dispatching?) Warning is in relation to chaning PushupsAssessment despite rendering AssessmentFinished now apparently
   dispatch(clearExerciseState());
 
-  //todo anonymous user persist stats
+  //todo anonymous user also must persist stats in local cache or online - figure out if need to save in Firebase
+
+  //todo fetch lastsessionstats from local cache if possible
+
+  //todo test if this works, keep getting alerts
   if (!user) {
     alert("Please sign it to save your stats");
     return <Navigate to="/" replace={true} />
   }
-
-  console.log(user)
 
   setDoc(doc(getFirestore(), "userStatistics", user.uid), {
     repCount,
