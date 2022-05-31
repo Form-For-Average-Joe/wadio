@@ -4,6 +4,7 @@ import LoginDialog from '../components/LoginDialog';
 import DashboardButton from '../components/DashboardButton';
 import HomeButton from '../components/HomeButton';
 import {useSigninCheck, useUser} from 'reactfire';
+import logo from '../assets/OrbitalLogo.png';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Guest = () => {
@@ -48,7 +49,7 @@ const MainHeader = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar>
-          <Avatar variant="rounded" src={`${process.env.PUBLIC_URL}/OrbitalLogo.png`}/>
+          <Avatar variant="rounded" src={logo}/>
           <Typography variant="h4" sx={{paddingLeft: "1rem"}}>
             Form For the Average Joe
           </Typography>

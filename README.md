@@ -1,5 +1,5 @@
 <p align="center">
-<img width="250" src="./public/OrbitalLogo.png">
+<img width="250" src="src/assets/OrbitalLogo.png">
 </p>
 
 <div align="center">
