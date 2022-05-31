@@ -16,13 +16,10 @@ export default function CountdownButton(actiontype) {
   };
 
   const handleClose = () => {
-    dispatch(setIsCalibrated(false));
     setOpen(false);
   };
 
   const handleSkip = () => {
-    dispatch(resetStageAndCount());
-    dispatch(resetUserTime());
     dispatch(setIsStarted(true));
     handleClose();
   }

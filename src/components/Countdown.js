@@ -1,5 +1,7 @@
 import {Typography} from '@mui/material';
 import {useEffect, useRef, useState} from 'react';
+import {useDispatch} from "react-redux";
+import {setIsStarted} from "../features/exercise/exerciseSlice";
 import {getDeadlineTime, getFlooredSeconds} from "../util";
 
 //todo refactor with Timer.js
@@ -7,12 +9,14 @@ function Countdown({handleClose}) {
     const duration = 10;
     const intervalRef = useRef(null);
     const [timer, setTimer] = useState(duration % 60);
+    const dispatch = useDispatch();
 
     function getTimeRemaining(endtime) {
         const total = Date.parse(endtime) - Date.parse(new Date());
         const seconds = getFlooredSeconds(total);
 
         if (seconds <= 0) {
+            dispatch(setIsStarted(true));
             handleClose();
         }
 

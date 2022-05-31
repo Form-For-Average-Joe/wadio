@@ -2,11 +2,12 @@ import React from "react";
 import {doc, setDoc, getFirestore} from "firebase/firestore";
 import {useDispatch, useSelector} from "react-redux";
 import LastAttemptStats from "./LastAttemptStats";
-import {clearExerciseState} from "../features/exercise/exerciseSlice";
-import {selectCount, selectDuration, setIsCalibrated} from '../features/userValues/userValuesSlice'
-import {selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';
+import {clearExerciseState, setFeedback} from "../features/exercise/exerciseSlice";
+import {resetStageAndCount, selectCount, selectDuration, setIsCalibrated} from '../features/userValues/userValuesSlice'
+import {resetUserTime, selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';
 import {useUser} from 'reactfire';
 import {Navigate} from "react-router-dom";
+import exerciseValues from '../poseDetection/values';
 
 export default function AssessmentFinished() {
   //code mainly duplicated from LastAttemptStats, so we can calculate it here and pass props to LastAttemptStats, then the Dashboard's LastAttemptStats will have to fetch from Firebase
@@ -23,6 +24,10 @@ export default function AssessmentFinished() {
   //todo fix warning that happens (when dispatching?) Warning is in relation to chaning PushupsAssessment despite rendering AssessmentFinished now apparently
   dispatch(clearExerciseState());
   dispatch(setIsCalibrated(false));
+  dispatch(resetStageAndCount());
+  dispatch(resetUserTime());
+  dispatch(setFeedback(""));
+  exerciseValues.pushupval.isCalibrated = false;
 
   //todo anonymous user also must persist stats in local cache or online - figure out if need to save in Firebase
 
