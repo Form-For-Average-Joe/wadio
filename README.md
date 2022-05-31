@@ -1,5 +1,5 @@
 <p align="center">
-<img src="./public/OrbitalLogo.png">
+<img width="250" src="./public/OrbitalLogo.png">
 </p>
 
 <div align="center">
@@ -44,6 +44,9 @@ The web-app allows users to change difficulty levels (stringency) and to set the
   
 *Pose detection accuracy* - while the MoveNet model is able to accurately track the key points of a human body, it was difficult to design a robust algorithm that prevents users from cheating. As present, we are using assumptions on the relative positions of body parts to determine the user’s movements. However, this can be unreliable as there exists corner cases in which the user is in an incorrect position but the algorithm does not detect it.
   
+## Demo
+[![Push-Up Demo](https://img.youtube.com/vi/8pN9LdhJhwU/0.jpg)](https://youtu.be/8pN9LdhJhwU "Push-Up Demo")
+  
 ## Set-up to run locally
 ```
 $ npm install --global yarn # You will need yarn v1.
@@ -54,3 +57,5 @@ $ yarn start # Lauch the frontend
 
 $ yarn firebase emulators:start # Run this in a separate terminal, to launch the Firebase backend 
 ```
+  
+## Donations
