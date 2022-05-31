@@ -27,7 +27,7 @@ The web-app is able to detect the pose of the user and decide if one rep of that
 While counting reps, the web-app also has another algorithm to check if, at any point during the rep, the user is not maintaining proper exercise posture. Improper posture for each exercise is unique. For push-ups, it refers to a curved back, unstraightened arms or not going low enough. Everytime improper posture is detected, the corresponding rep will not be counted. Difficulty levels can be set by manipulating the threshold values. For instance, how curved can the back be before it is considered improper form.
 
 ***Customisable Time and Exercise Difficulty***  
-The web-app allows users to change difficulty levels (stringency) and to set the amount of duration of the exercise. Somebody doing the standard IPPT would set the time to 1 minute while somebody only doing training might set it to 30 seconds. The exercise will cut (stop counting reps) when the timer reaches zero.
+The web-app allows users to change difficulty levels (stringency) and to set the duration of the exercise. Somebody doing the standard IPPT would set the time to 1 minute while somebody only doing training might set it to 30 seconds. The exercise will cut (stop counting reps) when the timer reaches zero.
 
   
 ## Tech Stack
