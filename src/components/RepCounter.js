@@ -7,7 +7,7 @@ import {selectFeedback} from '../features/exercise/exerciseSlice';
 const RepCounter = () => {
     const count = useSelector(selectCount);
     const feedback = useSelector(selectFeedback);
-  console.log(feedback)
+
     // const dispatch = useDispatch();
 
     // function handleIncrease() {
