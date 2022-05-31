@@ -1,7 +1,7 @@
 import React from "react";
 import {doc, setDoc, getFirestore} from "firebase/firestore";
 import {useDispatch, useSelector} from "react-redux";
-import LastAttemptStats from "../components/LastAttemptStats";
+import LastAttemptStats from "./LastAttemptStats";
 import {clearExerciseState} from "../features/exercise/exerciseSlice";
 import {selectCount, selectDuration} from '../features/userValues/userValuesSlice'
 import {selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';

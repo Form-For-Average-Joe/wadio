@@ -3,7 +3,7 @@ import DifficultyPanel from "../components/DifficultyPanel";
 import TimeInput from "../components/TimeInput";
 import React from "react";
 import CountdownButton from "../components/CountdownButton";
-import LastAttemptStats from "../components/LastAttemptStats";
+import LastAttemptStats from "./LastAttemptStats";
 
 export default function AssessmentNotStarted() {
   return (
