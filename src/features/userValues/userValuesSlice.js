@@ -24,8 +24,8 @@ export const userValuesSlice = createSlice({
       state.count = 0;
       state.stage = 0;
     },
-    setIsCalibrated: (state) => {
-      state.isCalibrated = true;
+    setIsCalibrated: (state, action) => {
+      state.isCalibrated = action.payload;
     },
   },
 });

@@ -5,6 +5,7 @@ import { setExercise, setIsStarted } from "../features/exercise/exerciseSlice";
 import { resetStageAndCount } from "../features/userValues/userValuesSlice";
 import { resetUserTime } from "../features/userProfile/userProfileSlice";
 import { useDispatch } from 'react-redux';
+import { setIsCalibrated } from '../features/userValues/userValuesSlice';
 
 export default function CountdownButton(actiontype) {
   const [open, setOpen] = React.useState(false);
@@ -15,13 +16,14 @@ export default function CountdownButton(actiontype) {
   };
 
   const handleClose = () => {
-    dispatch(resetStageAndCount());
-    dispatch(resetUserTime());
-    dispatch(setIsStarted(true));
+    dispatch(setIsCalibrated(false));
     setOpen(false);
   };
 
   const handleSkip = () => {
+    dispatch(resetStageAndCount());
+    dispatch(resetUserTime());
+    dispatch(setIsStarted(true));
     handleClose();
   }
 

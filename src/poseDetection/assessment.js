@@ -36,13 +36,13 @@ export function assess_pushups(keypoints) {
                 store.dispatch(setFeedback("CALIBRATION DONE!"));
                 calibratedSound.play();
                 moveToStageOne();
-                store.dispatch(setIsCalibrated());
             } else {
                 pushups.calibrate(keypoints);
                 store.dispatch(setFeedback("CALIBRATING!"));
             } return;
         case 1:
             if (pushups.checkArmStraight(keypoints)) {
+                store.dispatch(setIsCalibrated(true));
                 store.dispatch(setStage(2));
                 store.dispatch(setFeedback("EXERCISE BEGIN!"));
             } else {

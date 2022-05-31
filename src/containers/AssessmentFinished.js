@@ -3,7 +3,7 @@ import {doc, setDoc, getFirestore} from "firebase/firestore";
 import {useDispatch, useSelector} from "react-redux";
 import LastAttemptStats from "./LastAttemptStats";
 import {clearExerciseState} from "../features/exercise/exerciseSlice";
-import {selectCount, selectDuration} from '../features/userValues/userValuesSlice'
+import {selectCount, selectDuration, setIsCalibrated} from '../features/userValues/userValuesSlice'
 import {selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';
 import {useUser} from 'reactfire';
 import {Navigate} from "react-router-dom";
@@ -22,6 +22,7 @@ export default function AssessmentFinished() {
 
   //todo fix warning that happens (when dispatching?) Warning is in relation to chaning PushupsAssessment despite rendering AssessmentFinished now apparently
   dispatch(clearExerciseState());
+  dispatch(setIsCalibrated(false));
 
   //todo anonymous user also must persist stats in local cache or online - figure out if need to save in Firebase
 
