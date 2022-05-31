@@ -44,6 +44,7 @@ export function assess_pushups(keypoints) {
                 return;
             }
             if (pushups.checkDepth(keypoints)) {
+                store.dispatch(setFeedback(""));
                 store.dispatch(setStage(3));
                 } return;
         case 3:
