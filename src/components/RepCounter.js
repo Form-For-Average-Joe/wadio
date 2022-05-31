@@ -7,7 +7,7 @@ import {selectFeedback} from '../features/exercise/exerciseSlice';
 const RepCounter = () => {
     const count = useSelector(selectCount);
     const feedback = useSelector(selectFeedback);
-  console.log(feedback)
+
     // const dispatch = useDispatch();
 
     // function handleIncrease() {
@@ -16,8 +16,8 @@ const RepCounter = () => {
 
     return (
       <Card>
-          <Typography variant="h2"> {count} </Typography>
-          <Typography variant="h2"> {feedback} </Typography>
+          <Typography variant="h1" align="center"> {count} </Typography>
+          <Typography variant="h4" align="center"> {feedback} </Typography>
       </Card>
         // <Card>
         //     <Grid container spacing={1} direction="column" alignItems="center">

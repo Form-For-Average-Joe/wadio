@@ -2,10 +2,19 @@ import exerciseValues from './values';
 import * as pushups from './pushups';
 import * as situps from './situps';
 import {store} from "../app/store";
-import {selectStage, setStage, incrementCount, selectCount} from "../features/userValues/userValuesSlice";
+import {selectStage, setStage, incrementCount, selectCount, setIsCalibrated} from "../features/userValues/userValuesSlice";
 import {setFeedback} from "../features/exercise/exerciseSlice";
+import {Howl, Howler} from 'howler';
 
-const numberOfReps = 20;
+const calibratedSound = new Howl({
+  src: [require('./calibrated.webm'), require('./calibrated.ogg')]
+});
+calibratedSound.volume(1.0)
+const repCountSound = new Howl({
+    src: [require('./count.webm'), require('./count.wav')]
+});
+repCountSound.volume(0.5);
+Howler.volume(1.0);
 
 /*
 stage 0: pre-calibration
@@ -16,8 +25,8 @@ stage 4: complete
 */
 
 function moveToStageOne() {
-    store.dispatch(setStage(1));
-    store.dispatch(setFeedback("EXERCISE READY!"));
+  store.dispatch(setStage(1));
+  store.dispatch(setFeedback("EXERCISE READY!"));
 }
 
 export function assess_pushups(keypoints) {
@@ -26,7 +35,9 @@ export function assess_pushups(keypoints) {
         case 0:
             if (exerciseValues.pushupval.isCalibrated) {
                 store.dispatch(setFeedback("CALIBRATION DONE!"));
+                calibratedSound.play();
                 moveToStageOne();
+                store.dispatch(setIsCalibrated());
             } else {
                 pushups.calibrate(keypoints);
                 store.dispatch(setFeedback("CALIBRATING!"));
@@ -44,6 +55,7 @@ export function assess_pushups(keypoints) {
                 return;
             }
             if (pushups.checkDepth(keypoints)) {
+                store.dispatch(setFeedback(""));
                 store.dispatch(setStage(3));
                 } return;
         case 3:
@@ -55,10 +67,8 @@ export function assess_pushups(keypoints) {
             if (pushups.checkArmStraight(keypoints)) {
                 store.dispatch(setStage(2));
                 store.dispatch(incrementCount());
+                repCountSound.play();
                 // console.log("COUNT: " + selectCount(store.getState()));
-                if (selectCount(store.getState()) >= numberOfReps) {
-                    store.dispatch(setStage(4));
-                }
             } return;
         default:
             console.log("ERROR"); return;
@@ -100,9 +110,6 @@ export function assess_situps(keypoints) {
                 store.dispatch(setStage(2));
                 store.dispatch(incrementCount());
                 // store.dispatch(setFeedback("COUNT: " + selectCount(store.getState())));
-                if (selectCount(store.getState()) >= numberOfReps) {
-                    store.dispatch(setStage(4));
-                }
             } return;
         default:
             console.log("ERROR"); return;

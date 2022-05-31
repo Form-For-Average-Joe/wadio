@@ -8,12 +8,19 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Guest = () => {
   return (
-    <LoginDialog/>
+    <Grid container spacing={3}>
+      <Grid item>
+        <HomeButton/>
+      </Grid>
+      <Grid item>
+        <LoginDialog/>
+      </Grid>
+    </Grid>
   )
 }
 
 const Member = () => {
-  const { data } = useUser();
+  const {data} = useUser();
   return (
     <Grid container spacing={3}>
       <Grid item>
@@ -23,7 +30,7 @@ const Member = () => {
         <DashboardButton/>
       </Grid>
       <Grid item>
-        {data.photoURL ? <Avatar src={data.photoURL}/> : <Avatar><AccountCircleIcon /></Avatar>}
+        {data.photoURL ? <Avatar src={data.photoURL}/> : <Avatar><AccountCircleIcon/></Avatar>}
       </Grid>
     </Grid>
   )
@@ -35,7 +42,7 @@ const MainHeader = () => {
     return <p>Loading</p>
   }
   const {signedIn} = data;
-  const guest = signedIn ? <Member /> : <Guest/>;
+  const guest = signedIn ? <Member/> : <Guest/>;
 
   return (
     <AppBar position="static">

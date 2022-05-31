@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   duration: 60,
   stage: 0,
-  count: 0
+  count: 0,
+  isCalibrated: false,
 };
 
 export const userValuesSlice = createSlice({
@@ -22,14 +23,18 @@ export const userValuesSlice = createSlice({
     resetStageAndCount: (state) => {
       state.count = 0;
       state.stage = 0;
-    }
+    },
+    setIsCalibrated: (state) => {
+      state.isCalibrated = true;
+    },
   },
 });
 
-export const { setDuration, setStage, incrementCount, resetStageAndCount } = userValuesSlice.actions;
+export const { setDuration, setStage, incrementCount, resetStageAndCount, setIsCalibrated } = userValuesSlice.actions;
 
 export const selectDuration = (state) => state.userValues.duration;
 export const selectCount = (state) => state.userValues.count;
 export const selectStage = (state) => state.userValues.stage;
+export const selectIsCalibrated = (state) => state.userValues.isCalibrated;
 
 export default userValuesSlice.reducer;
