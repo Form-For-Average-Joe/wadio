@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+/.firebase
+/.idea
+
 # production
 /build
 
