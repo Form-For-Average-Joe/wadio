@@ -2,10 +2,9 @@ import exerciseValues from './values';
 import * as pushups from './pushups';
 import * as situps from './situps';
 import {store} from "../app/store";
-import {selectStage, setStage, incrementCount, selectCount} from "../features/userValues/userValuesSlice";
+import {selectStage, setStage, incrementCount, selectCount, setIsCalibrated} from "../features/userValues/userValuesSlice";
 import {setFeedback} from "../features/exercise/exerciseSlice";
 
-const numberOfReps = 20;
 
 /*
 stage 0: pre-calibration
@@ -27,6 +26,7 @@ export function assess_pushups(keypoints) {
             if (exerciseValues.pushupval.isCalibrated) {
                 store.dispatch(setFeedback("CALIBRATION DONE!"));
                 moveToStageOne();
+                store.dispatch(setIsCalibrated());
             } else {
                 pushups.calibrate(keypoints);
                 store.dispatch(setFeedback("CALIBRATING!"));
@@ -57,9 +57,6 @@ export function assess_pushups(keypoints) {
                 store.dispatch(setStage(2));
                 store.dispatch(incrementCount());
                 // console.log("COUNT: " + selectCount(store.getState()));
-                if (selectCount(store.getState()) >= numberOfReps) {
-                    store.dispatch(setStage(4));
-                }
             } return;
         default:
             console.log("ERROR"); return;
@@ -101,9 +98,6 @@ export function assess_situps(keypoints) {
                 store.dispatch(setStage(2));
                 store.dispatch(incrementCount());
                 // store.dispatch(setFeedback("COUNT: " + selectCount(store.getState())));
-                if (selectCount(store.getState()) >= numberOfReps) {
-                    store.dispatch(setStage(4));
-                }
             } return;
         default:
             console.log("ERROR"); return;
