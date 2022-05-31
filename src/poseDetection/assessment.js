@@ -7,13 +7,12 @@ import {setFeedback} from "../features/exercise/exerciseSlice";
 import {Howl, Howler} from 'howler';
 
 const calibratedSound = new Howl({
-  src: [require('./calibrated.webm'), require('./calibrated.ogg')]
+  src: [require('./calibrated.webm'), require('./calibrated.wav'), require('./calibrated.mp3')]
 });
 calibratedSound.volume(1.0)
 const repCountSound = new Howl({
-    src: [require('./count.webm'), require('./count.wav')]
+  src: [require('./count.webm'), require('./count.wav')]
 });
-repCountSound.volume(0.5);
 Howler.volume(1.0);
 
 /*
