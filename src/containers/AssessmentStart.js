@@ -11,8 +11,8 @@ const DummyTimer = () => {
   return (
     <Card>
       <Grid container spacing={3} direction="column" alignItems="center">
-        <Grid item alignItems="center" style={{ marginTop: "2rem", marginBottom: "2rem" }}>
-          <Typography variant="h4" align="center">Just be BOLD and aim for GOLD!</Typography>
+        <Grid item alignItems="center" style={{ marginTop: "2rem", marginBottom: "2rem"}}>
+          <Typography variant="h6" align="center" sx={{paddingRight: "1rem", paddingLeft: "1rem"}}>Just be BOLD and aim for GOLD!</Typography>
         </Grid>
       </Grid>
     </Card>
