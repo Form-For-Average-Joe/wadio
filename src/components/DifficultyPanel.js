@@ -1,21 +1,22 @@
 import {Button, Card, Grid, Typography} from '@mui/material';
 import React, {useState} from 'react';
-import {store} from "../app/store";
+import {useDispatch} from "react-redux";
 import {setDifficultyLevel} from "../features/userValues/userValuesSlice";
 
 const DifficultyPanel = () => {
     const [difficulty, setDifficulty] = useState(1);
+    const dispatch = useDispatch();
 
     function defineDifficulty(e) {
         switch (e) {
             case 0:
-                store.dispatch(setDifficultyLevel(0));
+                dispatch(setDifficultyLevel(0));
                 return 'Hellish';
             case 1:
-                store.dispatch(setDifficultyLevel(1));
+                dispatch(setDifficultyLevel(1));
                 return 'IPPT';
             case 2:
-                store.dispatch(setDifficultyLevel(2));
+                dispatch(setDifficultyLevel(2));
                 return 'Heavenly';
         }
     }

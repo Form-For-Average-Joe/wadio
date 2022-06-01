@@ -35,7 +35,7 @@ export default function AssessmentFinished() {
 
   //todo test if this works, keep getting alerts
   if (!user) {
-    alert("Please sign it to save your stats");
+    //todo remind user to sign in to save stats
     return <Navigate to="/" replace={true} />
   }
 

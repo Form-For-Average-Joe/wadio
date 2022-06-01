@@ -53,6 +53,9 @@ export function assess_pushups(keypoints) {
                 store.dispatch(setFeedback("STRAIGHTEN YOUR BACK"));
                 return;
             }
+            else {
+                store.dispatch(setFeedback(""));
+            }
             if (pushups.checkDepth(keypoints)) {
                 store.dispatch(setFeedback(""));
                 store.dispatch(setStage(3));

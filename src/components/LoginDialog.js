@@ -119,7 +119,7 @@ export default function LoginDialog() {
         } else if (errorCode === 'auth/invalid-email') {
           alert(errorMessage + '\nCheck the email address entered.');
         } else {
-          alert(errorMessage);
+          alert("Login error: " + errorMessage);
         }
       });
   }

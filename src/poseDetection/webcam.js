@@ -36,7 +36,7 @@ async function renderResult() {
     } catch (error) {
       detector.dispose();
       detector = null;
-      alert(error);
+      console.log("Unable to detect any poses" + error);
     }
   }
 

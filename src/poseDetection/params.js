@@ -1,4 +1,3 @@
-import * as posedetection from '@tensorflow-models/pose-detection';
 import {SupportedModels} from "@tensorflow-models/pose-detection";
 export const DEFAULT_LINE_WIDTH = 2;
 export const DEFAULT_RADIUS = 4; // was set to 2 in original video params
