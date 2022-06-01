@@ -8,6 +8,7 @@ import Home from './Home'
 import PushupsAssessment from './PushupsAssessment';
 import SitupsAssessment from './SitupsAssessment';
 import DashBoard from './Dashboard';
+import Settings from './Settings';
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import {FirebaseAppProvider} from 'reactfire';
 
@@ -94,6 +95,7 @@ root.render((
               <Route exact path="pushupsassessment" element={<PushupsAssessment/>}/>
               <Route exact path="situpsassessment" element={<SitupsAssessment/>}/>
               <Route exact path="dashboard" element={<DashBoard/>}/>
+              <Route exact path="settings" element={<Settings />}/>
             </Route>
           </Routes>
         </BrowserRouter>
