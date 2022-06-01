@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography, Button, Card, Grid} from '@mui/material';
 import {useDispatch, useSelector} from "react-redux";
 import {selectDuration, setDuration} from "../features/userValues/userValuesSlice";

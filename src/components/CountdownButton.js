@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useState} from 'react';
 import { Button, Dialog, Grid, Typography } from '@mui/material';
 import Countdown from './Countdown';
 import { setExercise, setIsStarted } from "../features/exercise/exerciseSlice";
@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { setIsCalibrated } from '../features/userValues/userValuesSlice';
 
 export default function CountdownButton(actiontype) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
   const handleClickOpen = () => {

@@ -1,5 +1,5 @@
-import React from 'react';
 import { Typography, Grid, Container, Box } from '@mui/material';
+import {Typography, Grid, Container, Box} from '@mui/material';
 import BodyStatsPanel from './components/BodyStatsPanel';
 import LastAttemptStats from './containers/LastAttemptStats';
 import CaloriesBurnt from './components/CaloriesBurnt';

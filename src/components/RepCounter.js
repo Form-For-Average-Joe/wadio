@@ -1,7 +1,6 @@
-import { Button, Card, Grid, Typography } from '@mui/material';
-import React from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { incrementCount, selectCount, selectDifficultyLevel } from '../features/userValues/userValuesSlice';
+import { Card, Typography } from '@mui/material';
+import { useSelector } from "react-redux";
+import { selectCount, selectDifficultyLevel } from '../features/userValues/userValuesSlice';
 import { selectFeedback } from '../features/exercise/exerciseSlice';
 
 function difficulty(e) {

@@ -1,4 +1,3 @@
-import React from 'react';
 import {Typography, Card, List, ListItem} from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';

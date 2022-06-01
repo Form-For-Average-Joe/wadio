@@ -1,10 +1,11 @@
 import { Button, Grid, Card, Typography } from "@mui/material";
 import Timer from "../components/Timer";
 import RepCounter from "../components/RepCounter";
-import React from "react";
+import {useRef} from "react";
 import { setIsStarted } from '../features/exercise/exerciseSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsCanStart } from "../features/userValues/userValuesSlice";
+import { useNavigate } from "react-router-dom";
 
 const DummyTimer = () => {
   return (
@@ -18,11 +19,13 @@ const DummyTimer = () => {
   )
 }
 
-export default function AssessmentStart({ setIsFinished }) {
+export default function AssessmentStart() {
   const dispatch = useDispatch();
   const calibrated = useSelector(selectIsCanStart);
+  const navigate = useNavigate();
+  const buttonRef = useRef(null)
 
-  const clock = calibrated ? <Timer setIsFinished={setIsFinished} /> : <DummyTimer />;
+  const clock = calibrated ? <Timer buttonRef={buttonRef}/> : <DummyTimer />;
   return (
     <Grid container spacing={2} direction="column">
       <Grid item>
@@ -32,11 +35,11 @@ export default function AssessmentStart({ setIsFinished }) {
         <RepCounter />
       </Grid>
       <Grid item>
-        <Button variant="contained"
+        <Button ref={buttonRef} variant="contained"
           style={{ backgroundColor: "#8B0000", color: "#FFFFFF" }}
           onClick={() => {
             dispatch(setIsStarted(false));
-            setIsFinished(true);
+            navigate('/assessmentend');
           }}>Stop</Button>
       </Grid>
     </Grid>

@@ -1,9 +1,9 @@
-import React from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './app/App';
 import {Provider} from 'react-redux';
 import {store} from './app/store';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import AssessmentFinished from "./containers/AssessmentFinished";
 import Home from './Home'
 import PushupsAssessment from './PushupsAssessment';
 import SitupsAssessment from './SitupsAssessment';
@@ -94,6 +94,7 @@ root.render((
               <Route index element={<Home/>}/>
               <Route exact path="pushupsassessment" element={<PushupsAssessment/>}/>
               <Route exact path="situpsassessment" element={<SitupsAssessment/>}/>
+              <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
               <Route exact path="dashboard" element={<DashBoard/>}/>
               <Route exact path="settings" element={<Settings />}/>
             </Route>
