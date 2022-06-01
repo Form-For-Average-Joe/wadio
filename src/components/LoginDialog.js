@@ -5,7 +5,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import {InputAdornment, IconButton} from "@mui/material";
-import * as React from 'react';
+import {useState} from 'react';
 import Button from '@mui/material/Button';
 import {useAuth} from 'reactfire';
 import {GoogleAuthProvider, signInWithPopup, GithubAuthProvider, fetchSignInMethodsForEmail, createUserWithEmailAndPassword, signInWithEmailAndPassword, indexedDBLocalPersistence, setPersistence  } from "firebase/auth";
@@ -53,14 +53,14 @@ const signInMethods = [
 
 export default function LoginDialog() {
   const auth = useAuth();
-  const [open, setOpen] = React.useState(false);
-  const [openEmailTextField, setOpenEmailTextField] = React.useState(false);
-  const [openNewUserPasswordTextField, setNewUserPasswordTextField] = React.useState(false);
-  const [openExistingUserPasswordTextField, setExistingNewUserPasswordTextField] = React.useState(false);
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [isPasswordShown, setIsPasswordShown] = React.useState(false);
-  const [isEmailInvalid, setIsEmailInvalid] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [openEmailTextField, setOpenEmailTextField] = useState(false);
+  const [openNewUserPasswordTextField, setNewUserPasswordTextField] = useState(false);
+  const [openExistingUserPasswordTextField, setExistingNewUserPasswordTextField] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
+  const [isEmailInvalid, setIsEmailInvalid] = useState(false);
 
   const handleClose = (func, auth, setOpenEmailAuth) => {
     setOpen(false);

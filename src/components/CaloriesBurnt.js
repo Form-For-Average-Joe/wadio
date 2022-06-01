@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography, Card, Grid } from '@mui/material';
 
 const CaloriesBurnt = () => {

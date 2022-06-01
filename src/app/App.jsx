@@ -1,6 +1,5 @@
 import {Box, CssBaseline} from "@mui/material";
 import {enableIndexedDbPersistence, initializeFirestore, connectFirestoreEmulator, getFirestore} from "firebase/firestore";
-import React from "react";
 import {Outlet} from "react-router-dom";
 import {AuthProvider, useFirebaseApp, useInitFirestore, FirestoreProvider} from 'reactfire';
 import {getAuth, connectAuthEmulator} from 'firebase/auth';

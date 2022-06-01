@@ -1,16 +1,15 @@
 import {CardMedia, Grid} from "@mui/material";
-import React from "react";
 import {useSelector} from "react-redux";
 import {selectIsStarted} from "../features/exercise/exerciseSlice";
 import {webcamStyles} from "../util";
 import AssesmentNotStarted from "./AssessmentNotStarted";
 import AssessmentStart from "./AssessmentStart";
 
-export default function AssessmentInProgress({setIsFinished}) {
+export default function AssessmentInProgress() {
   //todo if isStarted is only used in pushupsassessment, there is no need to use global redux, can use local state
   const isStarted = useSelector(selectIsStarted);
 
-  const sidebar = isStarted ? <AssessmentStart setIsFinished={setIsFinished}/> : <AssesmentNotStarted/>;
+  const sidebar = isStarted ? <AssessmentStart/> : <AssesmentNotStarted/>;
 
   return (
     <Grid container

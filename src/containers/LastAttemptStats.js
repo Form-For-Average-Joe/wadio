@@ -1,17 +1,18 @@
-import React from 'react';
+import {useEffect, useState} from 'react';
 import {Typography, Card, Grid} from '@mui/material';
 import {doc, getFirestore, getDoc} from 'firebase/firestore';
 import {getAuth} from "firebase/auth";
 
+//todo add name of exercise here, like pushups or situps, and update code elsewher, like Firebase fetching code
 const LastAttemptStats = ({stats}) => {
   const generateDisplayTimeString = (workoutTime) => Math.floor(workoutTime / 60) + ' minutes ' + (workoutTime % 60) + ' seconds'
-  const [displayString, setDisplayString] = React.useState('No previous workout: let\'s get started!');
+  const [displayString, setDisplayString] = useState('No previous workout: let\'s get started!');
   const generateDisplayString = (workoutTime, repCount) => {
     const displayTimeString = generateDisplayTimeString(workoutTime);
     return 'Last Attempt: ' + repCount + ' reps in ' + displayTimeString + '.';
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (stats) {
       setDisplayString(generateDisplayString(stats.workoutTime, stats.repCount));
     } else {

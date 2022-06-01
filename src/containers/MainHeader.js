@@ -1,4 +1,3 @@
-import React from 'react';
 import {Typography, AppBar, Box, Grid, Toolbar, Container, Avatar} from '@mui/material';
 import LoginDialog from '../components/LoginDialog';
 import DashboardButton from '../components/DashboardButton';

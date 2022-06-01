@@ -1,5 +1,5 @@
 import {Button, Card, Grid, Typography} from '@mui/material';
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {setDifficultyLevel} from "../features/userValues/userValuesSlice";
 
