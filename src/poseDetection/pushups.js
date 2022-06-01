@@ -2,13 +2,20 @@
 
 import calculateCorrelation from 'calculate-correlation';
 import values from './values';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectDifficultyLevel } from "../features/userValues/userValuesSlice";
+import {store} from "../app/store";
 
 //Indexed in order wrist, elbow, shoulder, hip, knee
 const leftside = [5, 7, 9, 11, 13];
 const rightside = [6, 8, 10, 12, 14];
-const difficultyThreshold = 1.3; // difficulty for user
 const differenceEpsilon = 0.01; // epsilon val, to check difference
 const calibrationThreshold = 0.45;
+//const difficultySet = selectDifficultyLevel(store.getState());
+
+// const depthThreshold = values.pushupval.depthThres[selectDifficultyLevel(store.getState())];
+// const armThreshold = values.pushupval.armThres[selectDifficultyLevel(store.getState())];
+// const backThreshold = values.pushupval.backThres[selectDifficultyLevel(store.getState())];
 
 export function checkDepth(keypoints) {
   let bdpoints;
@@ -21,7 +28,6 @@ export function checkDepth(keypoints) {
   const ypos = Math.abs(keypoints[bdpoints[0]].y - keypoints[bdpoints[2]].y);
   const currentdepth = Math.sqrt((xpos * xpos) + (ypos * ypos));
   return currentdepth < values.pushupval.depthLimit;
-
 }
 
 export function checkArmStraight(keypoints) {
@@ -34,7 +40,7 @@ export function checkArmStraight(keypoints) {
   const xpoints = [keypoints[bdpoints[0]].x, keypoints[bdpoints[1]].x, keypoints[bdpoints[2]].x];
   const ypoints = [keypoints[bdpoints[0]].y, keypoints[bdpoints[1]].y, keypoints[bdpoints[2]].y];
   let corr = calculateCorrelation(xpoints, ypoints);
-  if (Math.abs(corr) > 0.9) {
+  if (Math.abs(corr) > values.pushupval.armThres[selectDifficultyLevel(store.getState())]) {
     //console.log("ARM IS STRAIGHTENED");
     return true;
   }
@@ -51,7 +57,7 @@ export function checkBackStraight(keypoints) {
   const xpoints = [keypoints[bdpoints[0]].x, keypoints[bdpoints[3]].x, keypoints[bdpoints[4]].x];
   const ypoints = [keypoints[bdpoints[0]].y, keypoints[bdpoints[3]].y, keypoints[bdpoints[4]].y];
   let corr = calculateCorrelation(xpoints, ypoints);
-  return Math.abs(corr) > 0.95;
+  return Math.abs(corr) > values.pushupval.backThres[selectDifficultyLevel(store.getState())];
 
 }
 
@@ -68,7 +74,7 @@ function isStablised(keypoints) {
   }
   const xdiff = Math.abs(keypoints[bdpoints[1]].x - keypoints[bdpoints[2]].x);
   const ydiff = Math.abs(keypoints[bdpoints[1]].y - keypoints[bdpoints[2]].y);
-  const newDepthLimit = difficultyThreshold * Math.sqrt((xdiff * xdiff) + (ydiff * ydiff));
+  const newDepthLimit = values.pushupval.depthThres[selectDifficultyLevel(store.getState())] * Math.sqrt((xdiff * xdiff) + (ydiff * ydiff));
   const diff = Math.abs((values.pushupval.depthLimit - newDepthLimit) / newDepthLimit);
   //console.log('Diff: ' + diff);
   values.pushupval.depthLimit = newDepthLimit;

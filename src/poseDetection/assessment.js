@@ -2,7 +2,7 @@ import exerciseValues from './values';
 import * as pushups from './pushups';
 import * as situps from './situps';
 import {store} from "../app/store";
-import {selectStage, setStage, incrementCount, selectCount, setIsCalibrated} from "../features/userValues/userValuesSlice";
+import {selectStage, setStage, incrementCount, setIsCanStart} from "../features/userValues/userValuesSlice";
 import {setFeedback} from "../features/exercise/exerciseSlice";
 import {Howl, Howler} from 'howler';
 
@@ -42,7 +42,7 @@ export function assess_pushups(keypoints) {
             } return;
         case 1:
             if (pushups.checkArmStraight(keypoints)) {
-                store.dispatch(setIsCalibrated(true));
+                store.dispatch(setIsCanStart(true));
                 store.dispatch(setStage(2));
                 store.dispatch(setFeedback("EXERCISE BEGIN!"));
             } else {

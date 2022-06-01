@@ -1,17 +1,22 @@
 import {Button, Card, Grid, Typography} from '@mui/material';
 import React, {useState} from 'react';
+import {store} from "../app/store";
+import {setDifficultyLevel} from "../features/userValues/userValuesSlice";
 
 const DifficultyPanel = () => {
-    const [difficulty, setDifficulty] = useState(0);
+    const [difficulty, setDifficulty] = useState(1);
 
     function defineDifficulty(e) {
         switch (e) {
             case 0:
-                return 'Heavenly';
+                store.dispatch(setDifficultyLevel(0));
+                return 'Hellish';
             case 1:
+                store.dispatch(setDifficultyLevel(1));
                 return 'IPPT';
             case 2:
-                return 'Hellish';
+                store.dispatch(setDifficultyLevel(2));
+                return 'Heavenly';
         }
     }
 
@@ -26,7 +31,7 @@ const DifficultyPanel = () => {
                 <Grid item>
                     <Button variant="contained"
                         style={{ minWidth: "6rem" }}
-                        onClick={() => setDifficulty(0)}
+                        onClick={() => setDifficulty(2)}
                     >Heavenly</Button>
                 </Grid>
                 <Grid item>
@@ -37,7 +42,7 @@ const DifficultyPanel = () => {
                 <Grid item style={{ paddingBottom: "2rem" }}>
                     <Button variant="contained"
                         style={{ minWidth: "6rem" }}
-                        onClick={() => setDifficulty(2)}>Hellish</Button>
+                        onClick={() => setDifficulty(0)}>Hellish</Button>
                 </Grid>
             </Grid>
         </Card>

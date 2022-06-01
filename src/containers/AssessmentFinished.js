@@ -3,7 +3,7 @@ import {doc, setDoc, getFirestore} from "firebase/firestore";
 import {useDispatch, useSelector} from "react-redux";
 import LastAttemptStats from "./LastAttemptStats";
 import {clearExerciseState, setFeedback} from "../features/exercise/exerciseSlice";
-import {resetStageAndCount, selectCount, selectDuration, setIsCalibrated} from '../features/userValues/userValuesSlice'
+import {resetStageAndCount, selectCount, selectDuration, setIsCanStart} from '../features/userValues/userValuesSlice'
 import {resetUserTime, selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';
 import {useUser} from 'reactfire';
 import {Navigate} from "react-router-dom";
@@ -23,7 +23,7 @@ export default function AssessmentFinished() {
 
   //todo fix warning that happens (when dispatching?) Warning is in relation to chaning PushupsAssessment despite rendering AssessmentFinished now apparently
   dispatch(clearExerciseState());
-  dispatch(setIsCalibrated(false));
+  dispatch(setIsCanStart(false));
   dispatch(resetStageAndCount());
   dispatch(resetUserTime());
   dispatch(setFeedback(""));

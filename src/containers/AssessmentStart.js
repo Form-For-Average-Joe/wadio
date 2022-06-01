@@ -4,7 +4,7 @@ import RepCounter from "../components/RepCounter";
 import React from "react";
 import { setIsStarted } from '../features/exercise/exerciseSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectIsCalibrated } from "../features/userValues/userValuesSlice";
+import { selectIsCanStart } from "../features/userValues/userValuesSlice";
 
 const DummyTimer = () => {
   return (
@@ -20,7 +20,7 @@ const DummyTimer = () => {
 
 export default function AssessmentStart({ setIsFinished }) {
   const dispatch = useDispatch();
-  const calibrated = useSelector(selectIsCalibrated);
+  const calibrated = useSelector(selectIsCanStart);
 
   const clock = calibrated ? <Timer setIsFinished={setIsFinished} /> : <DummyTimer />;
   return (
