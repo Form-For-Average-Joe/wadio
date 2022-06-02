@@ -1,31 +1,15 @@
 import {Typography, AppBar, Box, Grid, Toolbar, Container, Avatar} from '@mui/material';
+import {Link, NavLink} from "react-router-dom";
 import LoginDialog from '../components/LoginDialog';
 import DashboardButton from '../components/DashboardButton';
-import HomeButton from '../components/HomeButton';
 import {useSigninCheck, useUser} from 'reactfire';
 import logo from '../assets/OrbitalLogo.png';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
-const Guest = () => {
-  return (
-    <Grid container spacing={3}>
-      <Grid item>
-        <HomeButton/>
-      </Grid>
-      <Grid item>
-        <LoginDialog/>
-      </Grid>
-    </Grid>
-  )
-}
 
 const Member = () => {
   const {data} = useUser();
   return (
     <Grid container spacing={3}>
-      <Grid item>
-        <HomeButton/>
-      </Grid>
       <Grid item>
         <DashboardButton/>
       </Grid>
@@ -42,21 +26,23 @@ const MainHeader = () => {
     return <p>Loading</p>
   }
   const {signedIn} = data;
-  const guest = signedIn ? <Member/> : <Guest/>;
+  const guest = signedIn ? <Member/> : <LoginDialog/>;
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar>
+      <Toolbar>
+        <Link to="/">
           <Avatar variant="rounded" src={logo}/>
+        </Link>
+        <Box component={NavLink} to={'/'} style={{flexGrow: 1, textDecoration: 'none', color: 'unset'}}>
           <Typography variant="h4" sx={{paddingLeft: "1rem"}}>
             Form For the Average Joe
           </Typography>
-          <Box sx={{alignItems: 'center', textAlign: 'center'}} marginLeft="auto">
-            {guest}
-          </Box>
-        </Toolbar>
-      </Container>
+        </Box>
+        <Box sx={{alignItems: 'center', textAlign: 'center'}}>
+          {guest}
+        </Box>
+      </Toolbar>
     </AppBar>
   )
 }

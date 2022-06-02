@@ -8,7 +8,7 @@ import Home from './Home'
 import PushupsAssessment from './PushupsAssessment';
 import SitupsAssessment from './SitupsAssessment';
 import DashBoard from './Dashboard';
-import {ThemeProvider, createTheme} from '@mui/material/styles';
+import {ThemeProvider, createTheme, responsiveFontSizes} from '@mui/material/styles';
 import {FirebaseAppProvider} from 'reactfire';
 
 // Your web app's Firebase configuration
@@ -23,16 +23,14 @@ const firebaseConfig = {
   measurementId: "G-0DWTZ7HHW7"
 };
 
-export const theme = createTheme({
+export const theme = responsiveFontSizes(createTheme({
   components: {
     MuiAppBar: {
       styleOverrides: {
         root: {
-          height: '100%',
           color: 'white',
-          margin: 0,
           paddingTop: "2rem",
-          paddingBottom: 30,
+          paddingBottom: "2rem",
           backgroundColor: "#333333",
         },
       },
@@ -64,7 +62,7 @@ export const theme = createTheme({
       variants: [
         {
           props: {usage: 'header'},
-          style: {backgroundColor: "#666666", color: "#FFFFFF"}
+          style: {backgroundColor: "#666666", color: "#FFFFFF", whiteSpace: 'nowrap'}//whiteSpace nowrap renders button text on one line
         },
       ],
     },
@@ -78,7 +76,7 @@ export const theme = createTheme({
       },
     },
   },
-});
+}));
 
 const container = document.getElementById('root');
 const root = createRoot(container);
