@@ -40,7 +40,6 @@ const App = () => {
             color: 'white',
             background: 'rgba(0, 0, 0, 1)',
           }}>
-            <MainHeader/>
             <Outlet/>
           </Box>
         </CssBaseline>

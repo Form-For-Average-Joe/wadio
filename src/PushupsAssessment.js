@@ -1,5 +1,4 @@
 import {useEffect, useRef} from 'react';
-import AssessmentFinished from "./containers/AssessmentFinished";
 import AssessmentInProgress from "./containers/AssessmentInProgress";
 import {setExercise} from "./features/exercise/exerciseSlice";
 import webcam from './poseDetection/webcam.js';

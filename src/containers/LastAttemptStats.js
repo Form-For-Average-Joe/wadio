@@ -7,14 +7,14 @@ import {getAuth} from "firebase/auth";
 const LastAttemptStats = ({stats}) => {
   const generateDisplayTimeString = (workoutTime) => Math.floor(workoutTime / 60) + ' minutes ' + (workoutTime % 60) + ' seconds'
   const [displayString, setDisplayString] = useState('No previous workout: let\'s get started!');
-  const generateDisplayString = (workoutTime, repCount) => {
+  const generateDisplayString = (workoutTime, repCount, nameOfExercise) => {
     const displayTimeString = generateDisplayTimeString(workoutTime);
-    return 'Last Attempt: ' + repCount + ' reps in ' + displayTimeString + '.';
+    return 'Last Attempt: ' + repCount + ' ' + nameOfExercise + ' reps in ' + displayTimeString + '.';
   }
 
   useEffect(() => {
     if (stats) {
-      setDisplayString(generateDisplayString(stats.workoutTime, stats.repCount));
+      setDisplayString(generateDisplayString(stats.workoutTime, stats.repCount, stats.nameOfExercise));
     } else {
       //todo use ReactFire hook to check to reload if user signs in? Clashes with useEffect
       const firestore = getFirestore();
@@ -29,7 +29,7 @@ const LastAttemptStats = ({stats}) => {
         inner().then(res => {
           const data = res.data();
           if (data) {
-            setDisplayString(generateDisplayString(data.workoutTime, data.repCount));
+            setDisplayString(generateDisplayString(data.workoutTime, data.repCount, data.nameOfExercise));
           }
         });
       } else {

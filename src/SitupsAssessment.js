@@ -1,6 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
 import {useDispatch} from "react-redux";
-import AssessmentFinished from "./containers/AssessmentFinished";
 import AssessmentInProgress from "./containers/AssessmentInProgress";
 import {setExercise} from "./features/exercise/exerciseSlice";
 import webcam from './poseDetection/webcam.js';

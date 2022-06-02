@@ -4,6 +4,7 @@ import {Provider} from 'react-redux';
 import {store} from './app/store';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import AssessmentFinished from "./containers/AssessmentFinished";
+import MainHeader from "./containers/MainHeader";
 import Home from './Home'
 import PushupsAssessment from './PushupsAssessment';
 import SitupsAssessment from './SitupsAssessment';
@@ -30,8 +31,6 @@ export const theme = responsiveFontSizes(createTheme({
       styleOverrides: {
         root: {
           color: 'white',
-          paddingTop: "2rem",
-          paddingBottom: "2rem",
           backgroundColor: "#333333",
         },
       },
@@ -88,16 +87,21 @@ root.render((
       <Provider store={store}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<App/>}>
-              <Route index element={<Home/>}/>
-              <Route exact path="pushupsassessment" element={<PushupsAssessment/>}/>
-              <Route exact path="situpsassessment" element={<SitupsAssessment/>}/>
-              <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
-              <Route exact path="dashboard" element={<DashBoard/>}/>
-              <Route exact path="settings" element={<Settings />}/>
+            <Route element={<App/>}>
+              <Route element={<MainHeader/>}>
+                <Route index path="/" element={<Home/>}/>
+                <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
+                <Route exact path="dashboard" element={<DashBoard/>}/>
+                <Route exact path="settings" element={<Settings/>}/>
+              </Route>
+              <Route path="/exercise">
+                <Route exact path="pushups" element={<PushupsAssessment/>}/>
+                <Route exact path="situps" element={<SitupsAssessment/>}/>
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>
       </Provider>
     </ThemeProvider>
-  </FirebaseAppProvider>));
+  </FirebaseAppProvider>
+));

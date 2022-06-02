@@ -2,7 +2,7 @@ import {useEffect} from "react";
 import {doc, setDoc, getFirestore} from "firebase/firestore";
 import {useDispatch, useSelector} from "react-redux";
 import LastAttemptStats from "./LastAttemptStats";
-import {clearExerciseState, setFeedback} from "../features/exercise/exerciseSlice";
+import {clearExerciseState, selectNameOfExercise, setFeedback} from "../features/exercise/exerciseSlice";
 import {resetStageAndCount, selectCount, selectDuration, setIsCanStart} from '../features/userValues/userValuesSlice'
 import {resetUserTime, selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';
 import {useUser} from 'reactfire';
@@ -14,6 +14,7 @@ export default function AssessmentFinished() {
   const duration = useSelector(selectDuration);
   const minutes = useSelector(selectMinutes);
   const seconds = useSelector(selectSeconds);
+  const nameOfExercise = useSelector(selectNameOfExercise);
   const dispatch = useDispatch();
 
   const {data: user} = useUser();
@@ -38,10 +39,11 @@ export default function AssessmentFinished() {
 
   setDoc(doc(getFirestore(), "userStatistics", user.uid), {
     repCount,
-    workoutTime
+    workoutTime,
+    nameOfExercise
   });
 
   return (
-    <LastAttemptStats stats={{repCount, workoutTime}}/>
+    <LastAttemptStats stats={{repCount, workoutTime, nameOfExercise}}/>
   )
 }
