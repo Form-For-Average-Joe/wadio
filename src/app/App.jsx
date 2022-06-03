@@ -3,7 +3,6 @@ import {enableIndexedDbPersistence, initializeFirestore, connectFirestoreEmulato
 import {Outlet} from "react-router-dom";
 import {AuthProvider, useFirebaseApp, useInitFirestore, FirestoreProvider} from 'reactfire';
 import {getAuth, connectAuthEmulator} from 'firebase/auth';
-import MainHeader from "../containers/MainHeader";
 
 const App = () => {
   const firebaseApp = useFirebaseApp();

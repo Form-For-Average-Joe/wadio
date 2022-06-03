@@ -12,18 +12,18 @@ export default function AssessmentInProgress() {
   const sidebar = isStarted ? <AssessmentStart/> : <AssesmentNotStarted/>;
 
   return (
-    <Box sx={{py: "2rem"}}>
+    <Box sx={{px: 1}}>
       <Grid container
             justifyContent="center"
-            spacing={2}>
-        <Grid item xs={6}>
+            spacing={1}>
+        <Grid item xs={8}>
           <CardMedia variant='webcam'
                      style={webcamStyles.video}
                      id="video"
                      component="video"
                      src=""/>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={4}>
           {sidebar}
         </Grid>
       </Grid>

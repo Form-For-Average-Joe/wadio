@@ -1,4 +1,4 @@
-import {Button, Card, CardContent, CardMedia, Container, Grid, Typography} from '@mui/material';
+import {Button, Card, CardContent, CardMedia, Container, Grid, Stack, Typography} from '@mui/material';
 import {Link} from "react-router-dom";
 import pushups from './assets/pushups.jpeg';
 import situps from './assets/situps.png';
@@ -7,14 +7,14 @@ const exerciseInformation = [
   {
     image: pushups,
     title: 'pushups',
-    description: 'Choose Assessment for 1min IPPT Test and Training for Training Mode where you can customise timings and difficulty.',
+    description: 'Choose your custom timings and difficulty',
     exercise: 'Push Ups',
     to: '/exercise/pushups'
   },
   {
     image: situps,
     title: 'situps',
-    description: 'Choose Assessment for 1min IPPT Test and Training for Training Mode where you can customise timings and difficulty.',
+    description: 'Choose your custom timings and difficulty',
     exercise: 'Sit Ups',
     to: '/exercise/situps'
   },
@@ -36,12 +36,12 @@ const ExerciseCards = () => {
                 <Typography>
                   {exerciseInfo.description}
                 </Typography>
-                <Grid container spacing={4} justifyContent="center" style={{marginTop: "0.5rem"}}>
-                  <Grid item>
-                    <Button variant="contained" style={{backgroundColor: "#0F52BA", color: "#FFFFFF"}} component={Link}
-                            to={exerciseInfo.to}>Attempt Now!</Button>
-                  </Grid>
-                </Grid>
+                <Stack sx={{paddingTop: 1}}>
+                  <Button variant="contained"
+                          style={{backgroundColor: "#0F52BA", color: "#FFFFFF", justifyContent: "center"}}
+                          component={Link}
+                          to={exerciseInfo.to}>Attempt Now!</Button>
+                </Stack>
               </CardContent>
             </Card>
           </Grid>
@@ -53,7 +53,7 @@ const ExerciseCards = () => {
 
 const Home = () => {
   return (
-    <Container sx={{px:{xs:4, sm:4, md:4, lg:4, xl: 4}, py: {xs:1, sm:2, md:9, lg:9, xl: 9}}}>
+    <Container sx={{px: {xs: 4, sm: 4, md: 4, lg: 4, xl: 4}, py: {xs: 1, sm: 2, md: 9, lg: 9, xl: 9}}}>
       <ExerciseCards/>
     </Container>
   )

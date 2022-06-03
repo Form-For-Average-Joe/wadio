@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material";
 import DifficultyPanel from "../components/DifficultyPanel";
+import HomeButton from "../components/HomeButton";
 import TimeInput from "../components/TimeInput";
 import CountdownButton from "../components/CountdownButton";
 import LastAttemptStats from "./LastAttemptStats";
@@ -18,6 +19,9 @@ export default function AssessmentNotStarted() {
       </Grid>
       <Grid item>
         <CountdownButton />
+      </Grid>
+      <Grid item>
+        <HomeButton />
       </Grid>
     </Grid>
   )

@@ -54,13 +54,13 @@ const MainHeader = () => {
   return (
     <>
       <HideOnScroll>
-        <AppBar sx={{py: {xs: 1, sm: 3, md: 4, lg: 5, xl: 6}}} position="static">
+        <AppBar sx={{py: {xs: 1, sm: 2, md: 2, lg: 2, xl: 2}, px: {xs: 0, sm: 2, md: 2, lg: 2, xl: 2}}} position="static">
           <Toolbar>
             <Link to="/">
               <Avatar variant="rounded" src={logo}/>
             </Link>
             <Box component={NavLink} to={'/'} style={{flexGrow: 1, textDecoration: 'none', color: 'unset'}}>
-              <Typography variant="h4" sx={{paddingLeft: "1rem"}}>
+              <Typography variant="h4" sx={{px: {xs: 1, sm: 2, md: 3, lg: 4, xl: 5}}}>
                 Form For the Average Joe
               </Typography>
             </Box>
