@@ -7,6 +7,7 @@ import logo from '../assets/OrbitalLogo.png';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PropTypes from 'prop-types';
 import Slide from '@mui/material/Slide';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 function HideOnScroll(props) {
   const {children} = props;
@@ -31,16 +32,19 @@ HideOnScroll.propTypes = {
 
 const Member = () => {
   const {data} = useUser();
-  return (
-    <Grid container spacing={{xs: 8, sm: 6, md: 5, lg: 4, xl: 3}}>
-      <Grid item xs={6}>
-        <DashboardButton/>
-      </Grid>
-      <Grid item xs={6}>
-        {data.photoURL ? <Avatar src={data.photoURL}/> : <Avatar><AccountCircleIcon/></Avatar>}
-      </Grid>
-    </Grid>
-  )
+  const matches = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const photo = data.photoURL ? <Avatar src={data.photoURL}/> : <Avatar><AccountCircleIcon/></Avatar>;
+
+  return matches
+         ? photo
+         : <Grid container spacing={{xs: 8, sm: 6, md: 5, lg: 4, xl: 3}}>
+           <Grid item xs={6}>
+             <DashboardButton/>
+           </Grid>
+           <Grid item xs={6}>
+             {photo}
+           </Grid>
+         </Grid>;
 }
 
 const MainHeader = () => {
