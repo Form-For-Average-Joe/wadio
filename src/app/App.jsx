@@ -25,7 +25,7 @@ const App = () => {
   // }
 
   if (process.env.NODE_ENV !== 'production') {
-    connectAuthEmulator(auth, 'http://localhost:9099');
+    connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
     if (firestoreInstance['_settings']['host'] !== 'localhost:8080') {
       connectFirestoreEmulator(firestoreInstance, 'localhost', 8080);
     }
