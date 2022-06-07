@@ -1,10 +1,11 @@
 import {Typography, Grid, Container, Box} from '@mui/material';
+import {Link} from "react-router-dom";
 import BodyStatsPanel from './components/BodyStatsPanel';
+import GenericProfileButton from "./components/GenericProfileButton";
 import LastAttemptStats from './containers/LastAttemptStats';
 import CaloriesBurnt from './components/CaloriesBurnt';
 import {theme} from "./index";
 import LogoutButton from './components/LogoutButton';
-import SettingsButton from './components/SettingsButton';
 import {AuthWrapper} from "./components/AuthWrapper";
 import {useUser} from 'reactfire';
 
@@ -31,7 +32,7 @@ const Dashboard = () => {
         </Grid>
         <Grid container spacing={2} direction="row" justifyContent="center" paddingTop="1rem">
           <Grid item align="center" sx={{paddingTop: "1rem"}}>
-            <SettingsButton/>
+            <GenericProfileButton component={Link} to="/settings">Settings</GenericProfileButton>
           </Grid>
           <Grid item align="center" sx={{paddingTop: "1rem"}}>
             <LogoutButton/>

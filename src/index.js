@@ -58,14 +58,6 @@ export const theme = responsiveFontSizes(createTheme({
         },
       },
     },
-    MuiButton: {
-      variants: [
-        {
-          props: {usage: 'header'},
-          style: {backgroundColor: "#666666", color: "#FFFFFF", whiteSpace: 'nowrap'}//whiteSpace nowrap renders button text on one line
-        },
-      ],
-    },
     MuiCardContent: {
       styleOverrides: {
         root: {
@@ -92,7 +84,7 @@ root.render((
               <Route element={<MainHeader/>}>
                 <Route index path="/" element={<Home/>}/>
                 <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
-                <Route exact path="dashboard" element={<DashBoard/>}/>
+                <Route exact path="profile" element={<DashBoard/>}/>
                 <Route exact path="settings" element={<Settings/>}/>
               </Route>
               <Route path="/exercise">

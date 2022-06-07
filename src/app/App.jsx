@@ -1,5 +1,10 @@
 import {Box, CssBaseline} from "@mui/material";
-import {enableIndexedDbPersistence, initializeFirestore, connectFirestoreEmulator, getFirestore} from "firebase/firestore";
+import {
+  enableIndexedDbPersistence,
+  initializeFirestore,
+  connectFirestoreEmulator,
+  getFirestore
+} from "firebase/firestore";
 import {Outlet} from "react-router-dom";
 import {AuthProvider, useFirebaseApp, useInitFirestore, FirestoreProvider} from 'reactfire';
 import {getAuth, connectAuthEmulator} from 'firebase/auth';
@@ -25,7 +30,7 @@ const App = () => {
   // }
 
   if (process.env.NODE_ENV !== 'production') {
-    connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+    connectAuthEmulator(auth, 'http://localhost:9099', {disableWarnings: true});
     if (firestoreInstance['_settings']['host'] !== 'localhost:8080') {
       connectFirestoreEmulator(firestoreInstance, 'localhost', 8080);
     }
@@ -40,7 +45,7 @@ const App = () => {
             color: 'white',
             background: 'rgba(0, 0, 0, 1)',
           }}>
-            <Outlet/>
+            <Box><Outlet/></Box>
           </Box>
         </CssBaseline>
       </AuthProvider>
