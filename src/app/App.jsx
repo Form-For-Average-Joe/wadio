@@ -35,11 +35,12 @@ const App = () => {
     <FirestoreProvider sdk={firestoreInstance}>
       <AuthProvider sdk={auth}>
         <CssBaseline>
-          <Box sx={{
-            height: '100%',
-            color: 'white',
-            background: 'rgba(0, 0, 0, 1)',
-          }}>
+          <Box
+            sx={{
+              color: 'white',
+              background: 'rgba(0, 0, 0, 1)',
+            }}
+          >
             <Outlet/>
           </Box>
         </CssBaseline>

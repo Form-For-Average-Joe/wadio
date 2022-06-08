@@ -1,13 +1,13 @@
 import {createRoot} from 'react-dom/client';
 import App from './app/App';
+import {StrictMode} from 'react';
 import {Provider} from 'react-redux';
 import {store} from './app/store';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import AssessmentFinished from "./containers/AssessmentFinished";
 import MainHeader from "./containers/MainHeader";
 import Home from './Home'
-import PushupsAssessment from './PushupsAssessment';
-import SitupsAssessment from './SitupsAssessment';
+import ExerciseAssessment from './ExerciseAssessment';
 import DashBoard from './Dashboard';
 import Settings from './Settings';
 import {ThemeProvider, createTheme, responsiveFontSizes} from '@mui/material/styles';
@@ -58,14 +58,6 @@ export const theme = responsiveFontSizes(createTheme({
         },
       },
     },
-    MuiButton: {
-      variants: [
-        {
-          props: {usage: 'header'},
-          style: {backgroundColor: "#666666", color: "#FFFFFF", whiteSpace: 'nowrap'}//whiteSpace nowrap renders button text on one line
-        },
-      ],
-    },
     MuiCardContent: {
       styleOverrides: {
         root: {
@@ -82,6 +74,7 @@ const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render((
+  <StrictMode>
   <FirebaseAppProvider firebaseConfig={firebaseConfig}>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
@@ -91,12 +84,12 @@ root.render((
               <Route element={<MainHeader/>}>
                 <Route index path="/" element={<Home/>}/>
                 <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
-                <Route exact path="dashboard" element={<DashBoard/>}/>
+                <Route exact path="profile" element={<DashBoard/>}/>
                 <Route exact path="settings" element={<Settings/>}/>
               </Route>
               <Route path="/exercise">
-                <Route exact path="pushups" element={<PushupsAssessment/>}/>
-                <Route exact path="situps" element={<SitupsAssessment/>}/>
+                <Route exact path="pushups" element={<ExerciseAssessment nameOfExercise={"pushups"}/>}/>
+                <Route exact path="situps" element={<ExerciseAssessment nameOfExercise={"situps"}/>}/>
               </Route>
             </Route>
           </Routes>
@@ -104,4 +97,5 @@ root.render((
       </Provider>
     </ThemeProvider>
   </FirebaseAppProvider>
+  </StrictMode>
 ));

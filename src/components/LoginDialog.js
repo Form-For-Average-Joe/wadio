@@ -17,6 +17,7 @@ import {DialogContentText, Input} from "@mui/material";
 import TextField from '@mui/material/TextField';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
+import GenericHeaderButton from "./GenericHeaderButton";
 
 //todo refactor code
 //todo error handling in handleProceed functions avoid the use of alert and instead do something more professional
@@ -126,13 +127,11 @@ export default function LoginDialog() {
 
   return (
     <>
-      <Button
-        variant="contained"
-        usage="header"
+      <GenericHeaderButton
         label="Sign in/Sign up"
         onClick={() => setOpen(true)}>
         Sign In
-      </Button>
+      </GenericHeaderButton>
       <Dialog
         open={open}
         onClose={() => setOpen(false)}

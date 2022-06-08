@@ -1,6 +1,6 @@
-import Button from '@mui/material/Button';
 import {useAuth} from 'reactfire';
 import { Link } from 'react-router-dom';
+import GenericProfileButton from "./GenericProfileButton";
 
 const signOut = auth => auth.signOut().then(() => console.log('signed out'));
 
@@ -8,13 +8,12 @@ export default function LogoutButton({user}) {
   const auth = useAuth();
 
   return (
-    <Button variant="contained"
-            usage="header"
+    <GenericProfileButton
             label="Sign Out"
             onClick={() => signOut(auth)}
             component={Link} to="/">
       Sign Out
-    </Button>
+    </GenericProfileButton>
   )
 };
 

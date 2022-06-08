@@ -1,6 +1,6 @@
-import { Grid } from "@mui/material";
+import {Button, Grid} from "@mui/material";
+import {Link} from "react-router-dom";
 import DifficultyPanel from "../components/DifficultyPanel";
-import HomeButton from "../components/HomeButton";
 import TimeInput from "../components/TimeInput";
 import CountdownButton from "../components/CountdownButton";
 import LastAttemptStats from "./LastAttemptStats";
@@ -21,7 +21,12 @@ export default function AssessmentNotStarted() {
         <CountdownButton />
       </Grid>
       <Grid item>
-        <HomeButton />
+        <Button
+          variant="contained"
+          component={Link} to="/"
+        >
+          Home
+        </Button>
       </Grid>
     </Grid>
   )
