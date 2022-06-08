@@ -83,9 +83,11 @@ root.render((
             <Route element={<App/>}>
               <Route element={<MainHeader/>}>
                 <Route index path="/" element={<Home/>}/>
-                <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
                 <Route exact path="profile" element={<DashBoard/>}/>
                 <Route exact path="settings" element={<Settings/>}/>
+              </Route>
+              <Route>
+                <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
               </Route>
               <Route path="/exercise">
                 <Route exact path="pushups" element={<ExerciseAssessment nameOfExercise={"pushups"}/>}/>

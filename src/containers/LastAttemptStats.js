@@ -7,14 +7,14 @@ import {getAuth} from "firebase/auth";
 const LastAttemptStats = ({stats}) => {
   const generateDisplayTimeString = (workoutTime) => Math.floor(workoutTime / 60) + ' minutes ' + (workoutTime % 60) + ' seconds'
   const [displayString, setDisplayString] = useState('No previous workout: let\'s get started!');
-  const generateDisplayString = (workoutTime, repCount, nameOfExercise) => {
+  const generateDisplayString = (workoutTime, repCount, nameOfExercise, caloriesBurnt) => {
     const displayTimeString = generateDisplayTimeString(workoutTime);
-    return 'Last Attempt: ' + repCount + ' ' + nameOfExercise + ' reps in ' + displayTimeString + '.';
+    return 'Last Attempt: ' + repCount + ' ' + nameOfExercise + ' reps in ' + displayTimeString + '. You burnt ' + caloriesBurnt + " calories.";
   }
 
   useEffect(() => {
     if (stats) {
-      setDisplayString(generateDisplayString(stats.workoutTime, stats.repCount, stats.nameOfExercise));
+      setDisplayString(generateDisplayString(stats.workoutTime, stats.repCount, stats.nameOfExercise, stats.caloriesBurnt));
     } else {
       //todo use ReactFire hook to check to reload if user signs in? Clashes with useEffect
       const firestore = getFirestore();
@@ -29,7 +29,7 @@ const LastAttemptStats = ({stats}) => {
         inner().then(res => {
           const data = res.data();
           if (data) {
-            setDisplayString(generateDisplayString(data.workoutTime, data.repCount, data.nameOfExercise));
+            setDisplayString(generateDisplayString(data.workoutTime, data.repCount, data.nameOfExercise, data.caloriesBurnt));
           }
         });
       } else {
@@ -41,8 +41,8 @@ const LastAttemptStats = ({stats}) => {
   return (
     <Card>
       <Grid container justifyContent="center" alignItems="center">
-        <Grid item style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
-          <Typography variant="subtitle1" align="center">
+        <Grid item sx={{paddingTop: "1rem", paddingBottom: "1rem"}}>
+          <Typography variant="subtitle1" align="center" sx={{marginLeft: "0.5rem", marginRight: "0.5rem"}}>
             {displayString}
           </Typography>
         </Grid>
