@@ -3,7 +3,7 @@ import {Typography, Card, Grid} from '@mui/material';
 import {doc, getFirestore, getDoc} from 'firebase/firestore';
 import {getAuth} from "firebase/auth";
 
-//todo add name of exercise here, like pushups or situps, and update code elsewher, like Firebase fetching code
+// the stats prop prevents an additional query from being sent to Firestore, as the current session stats are sent over from AssessmentFinished
 const LastAttemptStats = ({stats}) => {
   const generateDisplayTimeString = (workoutTime) => Math.floor(workoutTime / 60) + ' minutes ' + (workoutTime % 60) + ' seconds'
   const [displayString, setDisplayString] = useState('No previous workout: let\'s get started!');
@@ -13,9 +13,9 @@ const LastAttemptStats = ({stats}) => {
   }
 
   useEffect(() => {
-    if (stats) {
+    if (stats) { // stats prop has been passed in
       setDisplayString(generateDisplayString(stats.workoutTime, stats.repCount, stats.nameOfExercise, stats.caloriesBurnt));
-    } else {
+    } else { // get the stats from Firestore
       //todo use ReactFire hook to check to reload if user signs in? Clashes with useEffect
       const firestore = getFirestore();
       const auth = getAuth();
@@ -28,7 +28,7 @@ const LastAttemptStats = ({stats}) => {
         };
         inner().then(res => {
           const data = res.data();
-          if (data) {
+          if (data) { // not a first-time user
             setDisplayString(generateDisplayString(data.workoutTime, data.repCount, data.nameOfExercise, data.caloriesBurnt));
           }
         });

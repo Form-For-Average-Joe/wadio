@@ -1,7 +1,5 @@
 import { Typography, Grid, Container, Box } from '@mui/material';
-import { Link } from "react-router-dom";
 import BodyStatsPanel from './components/BodyStatsPanel';
-import GenericProfileButton from "./components/GenericProfileButton";
 import LastAttemptStats from './containers/LastAttemptStats';
 import CaloriesBurnt from './components/CaloriesBurnt';
 import { theme } from "./index";
@@ -32,19 +30,19 @@ const Dashboard = () => {
         </Grid>
         <Grid container spacing={2} direction="row" justifyContent="center" paddingTop="1rem">
           <Grid item align="center" sx={{ paddingTop: "1rem" }}>
-            <GenericProfileButton component={Link} to="/settings">Settings</GenericProfileButton>
+            <LogoutButton/>
           </Grid>
         </Grid>
       </Grid>
       <Container sx={{ px: theme.spacing(0), py: theme.spacing(3) }}>
         <Grid container spacing={3} justifyContent="center" style={{ marginBottom: "0.5rem" }}>
-          <Grid item xs="10">
+          <Grid item xs={10} sm={6} md={4}>
             <BodyStatsPanel />
           </Grid>
-          <Grid item xs="10">
+          <Grid item xs={10} sm={6} md={4}>
             <LastAttemptStats />
           </Grid>
-          <Grid item xs="10">
+          <Grid item xs={10} sm={6} md={4}>
             <CaloriesBurnt />
           </Grid>
         </Grid>
