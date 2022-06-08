@@ -9,6 +9,7 @@ import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -43,7 +44,6 @@ const Member = () => {
   return data.photoURL ? <Avatar src={data.photoURL}/> : <Avatar><AccountCircleIcon/></Avatar>;
 }
 
-//todo HideOnScroll mobile not working
 const drawerWidth = 240;
 const navigationItems = {
   home: {
@@ -82,14 +82,25 @@ function MainHeader() {
     setMobileOpen(!mobileOpen);
   };
 
-  const drawer = ( //todo fix Toolbaralignment with MainHeader
+  const drawer = (
     <Box>
-      <Toolbar/>
+      <Box sx={{  display: 'flex',
+        alignItems: 'center',
+        // padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        // ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
+        py: {xs: 1, sm: 2, md: 2, lg: 2, xl: 2},
+        x: {xs: 0, sm: 2, md: 2, lg: 2, xl: 2}}}>
+          <IconButton onClick={() => setMobileOpen(false)}>
+            <ChevronLeftIcon />
+          </IconButton>
+      </Box>
       <Divider/>
       <List>
         {Object.values(navigationItems).map(value =>
           <ListItem key={value.displayName} disablePadding>
-            <ListItemButton component={Link} to={value.to}>
+            <ListItemButton component={Link} to={value.to} onClick={() => setMobileOpen(false)}>
               <ListItemIcon>
                 {value.icon}
               </ListItemIcon>
