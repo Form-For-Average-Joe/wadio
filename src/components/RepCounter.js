@@ -1,6 +1,6 @@
 import { Card, Typography, Grid } from '@mui/material';
 import { useSelector } from "react-redux";
-import { selectCount, selectDifficultyLevel } from '../features/userValues/userValuesSlice';
+import { selectCount, selectDifficultyLevel } from '../features/exercise/exerciseSlice';
 import { selectFeedback } from '../features/exercise/exerciseSlice';
 
 function difficulty(e) {

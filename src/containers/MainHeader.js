@@ -138,7 +138,7 @@ function MainHeader() {
                 Form For the Average Joe
               </Typography>
             </Box>
-            {signedIn && <Box sx={{display: {xs: 'none', sm: 'inline'}}}>
+            {signedIn && <Box sx={{display: {xs: 'none', sm: 'inline'}, px: 1}}>
               <Box sx={{display: 'flex'}}>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.profile.to}>{navigationItems.profile.displayName}</GenericHeaderButton>

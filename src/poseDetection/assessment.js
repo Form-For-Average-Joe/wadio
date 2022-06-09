@@ -2,7 +2,7 @@ import exerciseValues from './values';
 import * as pushups from './pushups';
 import * as situps from './situps';
 import {store} from "../app/store";
-import {selectStage, setStage, incrementCount, setIsCanStart} from "../features/userValues/userValuesSlice";
+import {selectStage, setStage, incrementCount, setIsCanStart} from "../features/exercise/exerciseSlice";
 import {setFeedback} from "../features/exercise/exerciseSlice";
 import {Howl, Howler} from 'howler';
 

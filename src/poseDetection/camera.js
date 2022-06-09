@@ -2,7 +2,7 @@ import * as params from './params';
 import * as pushups from './pushups';
 import * as assessment from './assessment';
 import {selectIsStarted, selectNameOfExercise} from '../features/exercise/exerciseSlice';
-import {selectStage} from "../features/userValues/userValuesSlice";
+import {selectStage} from "../features/exercise/exerciseSlice";
 import {store} from "../app/store";
 
 export class Camera {

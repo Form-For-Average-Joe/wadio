@@ -4,7 +4,7 @@ import {Grid, Button} from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
 import LastAttemptStats from "./LastAttemptStats";
 import { clearExerciseState, selectNameOfExercise, setFeedback } from "../features/exercise/exerciseSlice";
-import { resetStageAndCount, selectCount, selectDuration, setIsCanStart } from '../features/userValues/userValuesSlice'
+import { resetStageAndCount, selectCount, selectDuration, setIsCanStart } from '../features/exercise/exerciseSlice'
 import { resetUserTime, selectMinutes, selectSeconds } from '../features/userProfile/userProfileSlice';
 import { useUser } from 'reactfire';
 import {Link, Navigate} from "react-router-dom";

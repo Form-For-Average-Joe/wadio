@@ -2,8 +2,7 @@
 
 import calculateCorrelation from 'calculate-correlation';
 import values from './values';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectDifficultyLevel } from "../features/userValues/userValuesSlice";
+import { selectDifficultyLevel } from "../features/exercise/exerciseSlice";
 import {store} from "../app/store";
 
 //Indexed in order wrist, elbow, shoulder, hip, knee

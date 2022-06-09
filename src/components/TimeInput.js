@@ -1,6 +1,6 @@
 import { Typography, Button, Card, Grid} from '@mui/material';
 import {useDispatch, useSelector} from "react-redux";
-import {selectDuration, setDuration} from "../features/userValues/userValuesSlice";
+import {selectDuration, setDuration} from "../features/exercise/exerciseSlice";
 
 const TimeInput = () => {
     const dispatch = useDispatch();
