@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { doc, setDoc, getFirestore } from "firebase/firestore";
-import {Grid, Button} from '@mui/material';
+import { Grid, Card, Typography } from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
 import LastAttemptStats from "./LastAttemptStats";
-import { clearExerciseState, selectNameOfExercise, setFeedback } from "../features/exercise/exerciseSlice";
-import { resetStageAndCount, selectCount, selectDuration, setIsCanStart } from '../features/exercise/exerciseSlice'
+import { resetStageAndCount, selectCount, selectDuration, setIsCanStart, clearExerciseState, selectNameOfExercise, setFeedback } from "../features/exercise/exerciseSlice";
 import { resetUserTime, selectMinutes, selectSeconds } from '../features/userProfile/userProfileSlice';
 import { useUser } from 'reactfire';
-import {Link} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
+import GenericHeaderButton from "../components/GenericHeaderButton";
 
 export default function AssessmentFinished() {
   const dispatch = useDispatch();
@@ -47,6 +47,8 @@ export default function AssessmentFinished() {
     }
   }, [])
 
+  const pastExercise = "/exercise/" + nameOfExercise;
+
   //todo anonymous user also must persist stats in local cache or online - figure out if need to save in Firebase
   //todo fetch lastsessionstats from local cache if possible
   //todo remind user to sign in to save stats
@@ -57,15 +59,27 @@ export default function AssessmentFinished() {
   // todo write unit tests first
 
   return (
-    <Grid>
-      <Grid item>
-        <LastAttemptStats stats={{ repCount, workoutTime, nameOfExercise, caloriesBurnt }} />
+    <Card sx={{backgroundColor: "#000000"}}>
+      <Grid container spacing={3} direction="column" alignItems="center">
+        <Grid item sx={{marginTop: "3rem"}}>
+          <LastAttemptStats stats={{ repCount, workoutTime, nameOfExercise, caloriesBurnt }} />
+        </Grid>
+        <Grid item>
+          <Typography sx={{color: "#FFFFFF"}}>
+            Select continue to save your workout!
+          </Typography>
+        </Grid>
+        <Grid item>
+          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} component={Link} to="/profile">
+            Continue
+          </GenericHeaderButton>
+        </Grid>
+        <Grid item>
+          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} component={Link} to={pastExercise}>
+            Try Again
+          </GenericHeaderButton>
+        </Grid>
       </Grid>
-      <Grid item>
-        <Button variant="contained" component={Link} to="/">
-          Continue
-        </Button>
-      </Grid>
-    </Grid>
+    </Card>
   )
 }
