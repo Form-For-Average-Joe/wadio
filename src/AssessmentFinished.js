@@ -2,12 +2,12 @@ import {useEffect, useState} from "react";
 import {doc, setDoc, getFirestore} from "firebase/firestore";
 import {Grid, Card, Typography} from '@mui/material';
 import {useDispatch, useSelector} from "react-redux";
-import LastAttemptStats from "./LastAttemptStats";
-import {selectCount, selectDuration, clearExerciseState, selectNameOfExercise} from "../features/exercise/exerciseSlice";
-import {resetUserTime, selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';
+import LastAttemptStats from "./containers/LastAttemptStats";
+import {selectCount, selectDuration, clearExerciseState, selectNameOfExercise} from "./features/exercise/exerciseSlice";
+import {resetUserTime, selectMinutes, selectSeconds} from './features/userProfile/userProfileSlice';
 import {useUser} from 'reactfire';
 import {Link} from "react-router-dom";
-import GenericHeaderButton from "../components/GenericHeaderButton";
+import GenericHeaderButton from "./components/GenericHeaderButton";
 
 export default function AssessmentFinished() {
   const dispatch = useDispatch();

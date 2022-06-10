@@ -4,7 +4,7 @@ import {StrictMode} from 'react';
 import {Provider} from 'react-redux';
 import {store} from './app/store';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import AssessmentFinished from "./containers/AssessmentFinished";
+import AssessmentFinished from "./AssessmentFinished";
 import MainHeader from "./containers/MainHeader";
 import Home from './Home'
 import ExerciseAssessment from './ExerciseAssessment';
