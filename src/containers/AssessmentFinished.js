@@ -1,40 +1,54 @@
-import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
+import { useEffect } from "react";
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 import { Grid, Card, Typography } from '@mui/material';
-import { getAuth } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import LastAttemptStats from "./LastAttemptStats";
 import { clearExerciseState, selectNameOfExercise, setFeedback } from "../features/exercise/exerciseSlice";
 import { resetStageAndCount, selectCount, selectDuration, setIsCanStart } from '../features/userValues/userValuesSlice'
 import { resetUserTime, selectMinutes, selectSeconds } from '../features/userProfile/userProfileSlice';
 import { useUser } from 'reactfire';
-import { Navigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import React from 'react';
 import GenericHeaderButton from "../components/GenericHeaderButton";
-
+import exerciseValues from '../poseDetection/values';
 
 export default function AssessmentFinished() {
+  const dispatch = useDispatch();
   const repCount = useSelector(selectCount);
   const duration = useSelector(selectDuration);
   const minutes = useSelector(selectMinutes);
   const seconds = useSelector(selectSeconds);
   const nameOfExercise = useSelector(selectNameOfExercise);
-  //const dispatch = useDispatch();
-  const totalCalories = 0;
 
   const { data: user } = useUser();
 
-  const saveData = () => {
-    setDoc(doc(getFirestore(), "userStatistics", user.uid), {
-      repCount,
-      workoutTime,
-      nameOfExercise,
-      caloriesBurnt,
-    });
-  }
+  useEffect(() => {
+    return () => {
+      if (user) {
+        const sendToFirestore = async () => {
+          await setDoc(doc(getFirestore(), "userStatistics", user.uid), {
+            repCount,
+            workoutTime,
+            nameOfExercise,
+            caloriesBurnt,
+          });
+        }
+        sendToFirestore().then(() => {
+          dispatch(clearExerciseState());
+          dispatch(setIsCanStart(false));
+          dispatch(resetStageAndCount());
+          dispatch(resetUserTime());
+          dispatch(setFeedback(""));
+          exerciseValues.pushupval.isCalibrated = false;
+        })
+      }
+    }
+  }, [])
 
   const pastExercise = "/exercise/" + nameOfExercise;
 
+  //todo anonymous user also must persist stats in local cache or online - figure out if need to save in Firebase
+  //todo fetch lastsessionstats from local cache if possible
   if (!user) {
     //todo remind user to sign in to save stats
     return <Navigate to="/" replace={true} />
@@ -56,7 +70,7 @@ export default function AssessmentFinished() {
           </Typography>
         </Grid>
         <Grid item>
-          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} onClick={saveData} component={Link} to="/profile">
+          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} component={Link} to="/profile">
             Continue
           </GenericHeaderButton>
         </Grid>
