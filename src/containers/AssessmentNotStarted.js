@@ -4,12 +4,13 @@ import DifficultyPanel from "../components/DifficultyPanel";
 import TimeInput from "../components/TimeInput";
 import CountdownButton from "../components/CountdownButton";
 import LastAttemptStats from "./LastAttemptStats";
+import NewDifficultyPanel from "../components/NewDifficultyPanel";
 
 export default function AssessmentNotStarted() {
   return (
     <Grid container spacing={2} direction="column">
-      <Grid item>
-        <DifficultyPanel/>
+      <Grid item justifyContent="center">
+        <NewDifficultyPanel/>
       </Grid>
       <Grid item>
         <TimeInput/>
