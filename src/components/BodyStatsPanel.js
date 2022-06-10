@@ -6,14 +6,12 @@ import ScaleIcon from '@mui/icons-material/Scale';
 import HeightIcon from '@mui/icons-material/Height';
 import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
 
-const weight = 30;
-const height = 140;
 const bmi = 18.2;
 
-const BodyStatsPanel = () => {
-    const weightToPrint = weight + ' kg';
-    const heightToPrint = height + ' cm';
-    const bmiToPrint = bmi + ' BMI';
+const BodyStatsPanel = ({stats}) => {
+    const weightToPrint = stats.weight + ' kg';
+    const heightToPrint = stats.height + ' cm';
+    const bmiToPrint = parseFloat(weightToPrint) / ((parseFloat(heightToPrint) / 100) * (parseFloat(heightToPrint) / 100))
 
     return (
         <Card sx={{paddingLeft: "1rem", paddingRight:"1rem"}}>
@@ -44,7 +42,7 @@ const BodyStatsPanel = () => {
                                 <MonitorWeightIcon />
                             </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary={bmiToPrint} secondary="Body Measurement Index" />
+                        <ListItemText primary={bmiToPrint.toFixed(2)} secondary="Body Measurement Index" />
                     </ListItem>
                 </List>
             </Card>
