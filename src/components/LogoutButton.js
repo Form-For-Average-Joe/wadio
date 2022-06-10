@@ -4,7 +4,7 @@ import GenericProfileButton from "./GenericProfileButton";
 
 const signOut = auth => auth.signOut().then(() => console.log('signed out'));
 
-export default function LogoutButton({user}) {
+export default function LogoutButton() {
   const auth = useAuth();
 
   return (

@@ -2,12 +2,17 @@ import * as params from './params';
 import * as pushups from './pushups';
 import * as assessment from './assessment';
 import {selectIsStarted, selectNameOfExercise} from '../features/exercise/exerciseSlice';
-import {selectStage} from "../features/userValues/userValuesSlice";
+import {selectStage} from "../features/exercise/exerciseSlice";
 import {store} from "../app/store";
+import valuesFactory from "./valuesFactory";
 
 export class Camera {
   constructor() {
     this.video = document.getElementById('video');
+    this.isPostureDetectionEnabled = false;
+    this.nameOfExercise = '';
+    this.exerciseValues = null;
+    this.frameId = null;
   }
 
   /**
@@ -28,15 +33,14 @@ export class Camera {
     if (selectIsStarted(store.getState())) {
       if (pose.keypoints != null) {
         // todo need a better way to enumerate exercises
-        const nameOfExercise = selectNameOfExercise(store.getState());
         const isNotAtStageFour = selectStage(store.getState()) !== 4;
-        if (nameOfExercise === 'pushups') {
+        if (this.nameOfExercise === 'pushups') {
           if (isNotAtStageFour) {
-            assessment.assess_pushups(pose.keypoints);
+            assessment.assess_pushups(pose.keypoints, this.exerciseValues);
           }
-        } else if (nameOfExercise === 'situps') {
+        } else if (this.nameOfExercise === 'situps') {
           if (isNotAtStageFour) {
-            assessment.assess_situps(pose.keypoints);
+            assessment.assess_situps(pose.keypoints, this.exerciseValues);
           }
         } else {
           console.log("No exercise detected, check Redux state for the value of nameOfExercise")
@@ -108,6 +112,10 @@ export class Camera {
     // camera.video.width = videoWidth;
     // camera.video.height = videoHeight;
 
+    camera.nameOfExercise = selectNameOfExercise(store.getState());
+
+    //todo terrible software design, but the whole webcam / exercise start page needs a rewrite
+    camera.exerciseValues = valuesFactory();
     return camera;
   }
 }

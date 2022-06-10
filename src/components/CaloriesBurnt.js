@@ -1,5 +1,7 @@
 import { Typography, Card, Grid } from '@mui/material';
 
+const caloriesburnttoday = 1000;
+
 const CaloriesBurnt = () => {
     return (
         <Card>
@@ -9,7 +11,7 @@ const CaloriesBurnt = () => {
                         Calories Burnt Today:
                     </Typography>
                     <Typography variant="h2" align="center">
-                        960
+                        {caloriesburnttoday}
                     </Typography>
                 </Grid>
             </Grid>

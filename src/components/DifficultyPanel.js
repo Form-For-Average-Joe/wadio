@@ -1,7 +1,7 @@
 import {Button, Card, Grid, Typography} from '@mui/material';
 import {useState} from 'react';
 import {useDispatch} from "react-redux";
-import {setDifficultyLevel} from "../features/userValues/userValuesSlice";
+import {setDifficultyLevel} from "../features/exercise/exerciseSlice";
 
 const DifficultyPanel = () => {
     const [difficulty, setDifficulty] = useState(1);

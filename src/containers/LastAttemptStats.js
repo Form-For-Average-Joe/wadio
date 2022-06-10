@@ -3,19 +3,19 @@ import {Typography, Card, Grid} from '@mui/material';
 import {doc, getFirestore, getDoc} from 'firebase/firestore';
 import {getAuth} from "firebase/auth";
 
-//todo add name of exercise here, like pushups or situps, and update code elsewher, like Firebase fetching code
+// the stats prop prevents an additional query from being sent to Firestore, as the current session stats are sent over from AssessmentFinished
 const LastAttemptStats = ({stats}) => {
   const generateDisplayTimeString = (workoutTime) => Math.floor(workoutTime / 60) + ' minutes ' + (workoutTime % 60) + ' seconds'
   const [displayString, setDisplayString] = useState('No previous workout: let\'s get started!');
-  const generateDisplayString = (workoutTime, repCount, nameOfExercise) => {
+  const generateDisplayString = (workoutTime, repCount, nameOfExercise, caloriesBurnt) => {
     const displayTimeString = generateDisplayTimeString(workoutTime);
-    return 'Last Attempt: ' + repCount + ' ' + nameOfExercise + ' reps in ' + displayTimeString + '.';
+    return 'Last Attempt: ' + repCount + ' ' + nameOfExercise + ' reps in ' + displayTimeString + '. You burnt ' + caloriesBurnt + " calories.";
   }
 
   useEffect(() => {
-    if (stats) {
-      setDisplayString(generateDisplayString(stats.workoutTime, stats.repCount, stats.nameOfExercise));
-    } else {
+    if (stats) { // stats prop has been passed in
+      setDisplayString(generateDisplayString(stats.workoutTime, stats.repCount, stats.nameOfExercise, stats.caloriesBurnt));
+    } else { // get the stats from Firestore
       //todo use ReactFire hook to check to reload if user signs in? Clashes with useEffect
       const firestore = getFirestore();
       const auth = getAuth();
@@ -28,8 +28,8 @@ const LastAttemptStats = ({stats}) => {
         };
         inner().then(res => {
           const data = res.data();
-          if (data) {
-            setDisplayString(generateDisplayString(data.workoutTime, data.repCount, data.nameOfExercise));
+          if (data) { // not a first-time user
+            setDisplayString(generateDisplayString(data.workoutTime, data.repCount, data.nameOfExercise, data.caloriesBurnt));
           }
         });
       } else {
@@ -41,8 +41,8 @@ const LastAttemptStats = ({stats}) => {
   return (
     <Card>
       <Grid container justifyContent="center" alignItems="center">
-        <Grid item style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
-          <Typography variant="subtitle1" align="center">
+        <Grid item sx={{paddingTop: "1rem", paddingBottom: "1rem"}}>
+          <Typography variant="subtitle1" align="center" sx={{marginLeft: "0.5rem", marginRight: "0.5rem"}}>
             {displayString}
           </Typography>
         </Grid>

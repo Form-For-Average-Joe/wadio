@@ -45,7 +45,7 @@ async function renderResult() {
   // The null check makes sure the UI is not in the middle of changing to a
   // different model. If during model change, the result is from an old model,
   // which shouldn't be rendered.
-  if (poses && poses.length > 0) {
+  if (camera.isPostureDetectionEnabled && poses && poses.length > 0) {
     camera.drawResults(poses);
   }
 }
@@ -53,11 +53,12 @@ async function renderResult() {
 async function renderPrediction() {
   await renderResult();
 
-  requestAnimationFrame(renderPrediction);
-};
+  camera.frameId = requestAnimationFrame(renderPrediction);
+}
 
-async function app(stream) {
-  camera = await Camera.setupCamera(STATE.camera, stream);
+async function app(streamRef, setWebcamInstance) {
+  camera = await Camera.setupCamera(STATE.camera, streamRef);
+  setWebcamInstance(camera);
 
   let isBackendSet = false;
   let i = 0;
@@ -81,7 +82,8 @@ async function app(stream) {
 
   detector = await createDetector();
 
-  renderPrediction();
+  //todo for issue #34, we save the animation frame ID, as even when we stop the webcam stream, the pose detection code runs
+  camera.frameId = requestAnimationFrame(renderPrediction);
 
   return camera;
 }

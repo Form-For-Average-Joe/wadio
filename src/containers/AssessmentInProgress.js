@@ -1,5 +1,6 @@
-import {Box, CardMedia, Dialog, Grid, Card} from "@mui/material";
+import {Box, CardMedia, Dialog, Grid} from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import {useEffect} from "react";
 import {useSelector} from "react-redux";
 import {selectIsStarted} from "../features/exercise/exerciseSlice";
 import {webcamStyles} from "../util";
@@ -7,13 +8,25 @@ import AssesmentNotStarted from "./AssessmentNotStarted";
 import AssessmentStart from "./AssessmentStart";
 import rotate from '../assets/rotate.gif'
 
-export default function AssessmentInProgress() {
+export default function AssessmentInProgress({webcam}) {
   //todo if isStarted is only used in pushupsassessment, there is no need to use global redux, can use local state
   const isStarted = useSelector(selectIsStarted);
 
   const isLandscape = useMediaQuery('(orientation: landscape)');
 
   const sidebar = isStarted ? <AssessmentStart/> : <AssesmentNotStarted/>;
+
+  useEffect(() => {
+    if (isStarted && webcam) {
+      webcam.isPostureDetectionEnabled = true;
+    }
+    //todo below is another potential fix for issue #34
+    // return () => {
+    //     if (isStarted && webcam) {
+    //     cancelAnimationFrame(webcam.frameId);
+    //   }
+    // }
+  }, [isStarted, webcam])
 
   return (
     <>

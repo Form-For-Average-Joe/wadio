@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserTime} from "../features/userProfile/userProfileSlice";
 import {setIsStarted} from "../features/exercise/exerciseSlice";
-import {selectDuration} from '../features/userValues/userValuesSlice';
+import {selectDuration} from '../features/exercise/exerciseSlice';
 import {getDeadlineTime, getFlooredMinutes, getFlooredSeconds} from "../util";
 
 //todo the LastAttemptStats is broken because of the timer issue, but we are looking to migrate anyways to another JS package

@@ -4,7 +4,7 @@ import RepCounter from "../components/RepCounter";
 import {useRef} from "react";
 import { setIsStarted } from '../features/exercise/exerciseSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectIsCanStart } from "../features/userValues/userValuesSlice";
+import { selectIsCanStart } from "../features/exercise/exerciseSlice";
 import { useNavigate } from "react-router-dom";
 
 const DummyTimer = () => {

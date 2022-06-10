@@ -1,4 +1,4 @@
-module.exports = {
+const valuesFactory = () => structuredClone({
   pushupval: {
     depthLimit: 0,
     side: 0,
@@ -13,4 +13,6 @@ module.exports = {
     side: 0,
     isCalibrated: false,
   }
-};
+});
+
+export default valuesFactory;
