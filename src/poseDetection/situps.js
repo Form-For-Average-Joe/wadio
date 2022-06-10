@@ -1,5 +1,4 @@
 import calculateCorrelation from 'calculate-correlation';
-import values from './values';
 
 /*
 calibration for situp needs to include checking if hip point is level with ankle point,
@@ -19,9 +18,9 @@ const hiptoanklethreshold = 0.3;
 const differenceEpsilon = 0.01; // epsilon val, to check difference
 const calibrationThreshold = 0.45;
 
-export function checkShoulderDepth(keypoints) {
+export function checkShoulderDepth(keypoints, exerciseValues) {
     let bdpoints;
-    if (values.situpval.side === 1) {
+    if (exerciseValues.situpval.side === 1) {
         bdpoints = leftside;
     } else {
         bdpoints = rightside;
@@ -33,9 +32,9 @@ export function checkShoulderDepth(keypoints) {
 
 }
 
-export function checkElbowRaise(keypoints) {
+export function checkElbowRaise(keypoints, exerciseValues) {
     let bdpoints;
-    if (values.situpval.side === 1) {
+    if (exerciseValues.situpval.side === 1) {
         bdpoints = leftside;
     } else {
         bdpoints = rightside;
@@ -43,19 +42,19 @@ export function checkElbowRaise(keypoints) {
     const xpos = Math.abs(keypoints[bdpoints[1]].x - keypoints[bdpoints[3]].x);
     const ypos = Math.abs(keypoints[bdpoints[1]].y - keypoints[bdpoints[3]].y);
     const currentdepth = Math.sqrt((xpos * xpos) + (ypos * ypos));
-    return currentdepth < values.situpval.elbowLimit;
+    return currentdepth < exerciseValues.situpval.elbowLimit;
 
 }
 
-export function checkHipMovement(keypoints) {
+export function checkHipMovement(keypoints, exerciseValues) {
     let bdpoints;
-    if (values.situpval.side === 1) {
+    if (exerciseValues.situpval.side === 1) {
         bdpoints = leftside;
     } else {
         bdpoints = rightside;
     }
     const ydiff = Math.abs(keypoints[bdpoints[2]].y - keypoints[bdpoints[4]].y);
-    return ydiff < values.situpval.hipLimit;
+    return ydiff < exerciseValues.situpval.hipLimit;
 
 }
 
@@ -67,22 +66,22 @@ function isBodyInFrame(keypoints, ankle) {
     return b;
 }
 
-function isStablised(keypoints) {
+function isStablised(keypoints, exerciseValues) {
     let bdpoints;
-    if (values.pushupval.side === 1) {
+    if (exerciseValues.pushupval.side === 1) {
         bdpoints = leftside;
     } else {
         bdpoints = rightside;
     }
     //hipLimit will assume whatever value it is when elbowLimit value is stable, ie. will not be
     //used for checking stabilisaion
-    values.situpval.hipLimit = Math.abs((keypoints[bdpoints[3]].y - keypoints[bdpoints[4]].y) * hiptoanklethreshold);
+    exerciseValues.situpval.hipLimit = Math.abs((keypoints[bdpoints[3]].y - keypoints[bdpoints[4]].y) * hiptoanklethreshold);
     const xdiff = Math.abs(keypoints[bdpoints[1]].x - keypoints[bdpoints[0]].x);
     const ydiff = Math.abs(keypoints[bdpoints[1]].y - keypoints[bdpoints[0]].y);
     const newElbowLimit = elbowtokneethreshold * Math.sqrt((xdiff * xdiff) + (ydiff * ydiff));
-    const diff = Math.abs((values.situpval.elbowLimit - newElbowLimit) / newElbowLimit);
+    const diff = Math.abs((exerciseValues.situpval.elbowLimit - newElbowLimit) / newElbowLimit);
     //console.log('Diff: ' + diff);
-    values.situpval.elbowLimit = newElbowLimit;
+    exerciseValues.situpval.elbowLimit = newElbowLimit;
     // if diff < differenceEpsilon, is stalbe
     return diff < differenceEpsilon;
 }
@@ -90,19 +89,19 @@ function isStablised(keypoints) {
 //todo check for confidence, check if number here
 //todo normalise
 // todo constraints for head and feet
-function calculateDepthLimit(keypoints) {
+function calculateDepthLimit(keypoints, exerciseValues) {
     let bdpoints;
     if (keypoints[0].x < keypoints[12].x) {
-        values.situpval.side = 1;
+        exerciseValues.situpval.side = 1;
         bdpoints = leftside;
     }
     else {
-        values.situpval.side = 2;
+        exerciseValues.situpval.side = 2;
         bdpoints = rightside;
     }
-    let ankle = values.situpval.side === 1 ? 15 : 16;
+    let ankle = exerciseValues.situpval.side === 1 ? 15 : 16;
     if (isBodyInFrame(keypoints, ankle)) {
-        values.situpval.isCalibrated = isStablised(keypoints);
+        exerciseValues.situpval.isCalibrated = isStablised(keypoints, exerciseValues);
     }
     else {
         //console.log("Out of Frame");

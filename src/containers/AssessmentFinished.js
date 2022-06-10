@@ -7,8 +7,7 @@ import { clearExerciseState, selectNameOfExercise, setFeedback } from "../featur
 import { resetStageAndCount, selectCount, selectDuration, setIsCanStart } from '../features/exercise/exerciseSlice'
 import { resetUserTime, selectMinutes, selectSeconds } from '../features/userProfile/userProfileSlice';
 import { useUser } from 'reactfire';
-import {Link, Navigate} from "react-router-dom";
-import exerciseValues from '../poseDetection/values';
+import {Link} from "react-router-dom";
 
 export default function AssessmentFinished() {
   const dispatch = useDispatch();
@@ -22,6 +21,13 @@ export default function AssessmentFinished() {
 
   useEffect(() => {
     return () => {
+      const clearValues = () => {
+        dispatch(clearExerciseState());
+        dispatch(setIsCanStart(false));
+        dispatch(resetStageAndCount());
+        dispatch(resetUserTime());
+        dispatch(setFeedback(""));
+      }
       if (user) {
         const sendToFirestore = async () => {
           await setDoc(doc(getFirestore(), "userStatistics", user.uid), {
@@ -32,23 +38,18 @@ export default function AssessmentFinished() {
           });
         }
         sendToFirestore().then(() => {
-          dispatch(clearExerciseState());
-          dispatch(setIsCanStart(false));
-          dispatch(resetStageAndCount());
-          dispatch(resetUserTime());
-          dispatch(setFeedback(""));
-          exerciseValues.pushupval.isCalibrated = false;
+          clearValues();
         })
+      }
+      else {
+        clearValues();
       }
     }
   }, [])
 
   //todo anonymous user also must persist stats in local cache or online - figure out if need to save in Firebase
   //todo fetch lastsessionstats from local cache if possible
-  if (!user) {
-    //todo remind user to sign in to save stats
-    return <Navigate to="/" replace={true} />
-  }
+  //todo remind user to sign in to save stats
 
   const workoutTime = (minutes * 60 + seconds) === 0 ? duration : duration - (minutes * 60 + seconds);
   const caloriesBurnt = repCount * duration * 0.1;

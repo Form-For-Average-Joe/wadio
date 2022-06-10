@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 
 import calculateCorrelation from 'calculate-correlation';
-import values from './values';
 import { selectDifficultyLevel } from "../features/exercise/exerciseSlice";
 import {store} from "../app/store";
 
@@ -12,13 +11,13 @@ const differenceEpsilon = 0.01; // epsilon val, to check difference
 const calibrationThreshold = 0.45;
 //const difficultySet = selectDifficultyLevel(store.getState());
 
-// const depthThreshold = values.pushupval.depthThres[selectDifficultyLevel(store.getState())];
-// const armThreshold = values.pushupval.armThres[selectDifficultyLevel(store.getState())];
-// const backThreshold = values.pushupval.backThres[selectDifficultyLevel(store.getState())];
+// const depthThreshold = exerciseValues.pushupval.depthThres[selectDifficultyLevel(store.getState())];
+// const armThreshold = exerciseValues.pushupval.armThres[selectDifficultyLevel(store.getState())];
+// const backThreshold = exerciseValues.pushupval.backThres[selectDifficultyLevel(store.getState())];
 
-export function checkDepth(keypoints) {
+export function checkDepth(keypoints, exerciseValues) {
   let bdpoints;
-  if (values.pushupval.side === 1) {
+  if (exerciseValues.pushupval.side === 1) {
     bdpoints = leftside;
   } else {
     bdpoints = rightside;
@@ -26,12 +25,12 @@ export function checkDepth(keypoints) {
   const xpos = Math.abs(keypoints[bdpoints[0]].x - keypoints[bdpoints[2]].x);
   const ypos = Math.abs(keypoints[bdpoints[0]].y - keypoints[bdpoints[2]].y);
   const currentdepth = Math.sqrt((xpos * xpos) + (ypos * ypos));
-  return currentdepth < values.pushupval.depthLimit;
+  return currentdepth < exerciseValues.pushupval.depthLimit;
 }
 
-export function checkArmStraight(keypoints) {
+export function checkArmStraight(keypoints, exerciseValues) {
   let bdpoints;
-  if (values.pushupval.side === 1) {
+  if (exerciseValues.pushupval.side === 1) {
     bdpoints = leftside;
   } else {
     bdpoints = rightside;
@@ -39,16 +38,13 @@ export function checkArmStraight(keypoints) {
   const xpoints = [keypoints[bdpoints[0]].x, keypoints[bdpoints[1]].x, keypoints[bdpoints[2]].x];
   const ypoints = [keypoints[bdpoints[0]].y, keypoints[bdpoints[1]].y, keypoints[bdpoints[2]].y];
   let corr = calculateCorrelation(xpoints, ypoints);
-  if (Math.abs(corr) > values.pushupval.armThres[selectDifficultyLevel(store.getState())]) {
-    //console.log("ARM IS STRAIGHTENED");
-    return true;
-  }
-  return false;
+  return Math.abs(corr) > exerciseValues.pushupval.armThres[selectDifficultyLevel(store.getState())]; // return true if arm is straight
+
 }
 
-export function checkBackStraight(keypoints) {
+export function checkBackStraight(keypoints, exerciseValues) {
   let bdpoints;
-  if (values.pushupval.side === 1) {
+  if (exerciseValues.pushupval.side === 1) {
     bdpoints = leftside;
   } else {
     bdpoints = rightside;
@@ -56,7 +52,7 @@ export function checkBackStraight(keypoints) {
   const xpoints = [keypoints[bdpoints[0]].x, keypoints[bdpoints[3]].x, keypoints[bdpoints[4]].x];
   const ypoints = [keypoints[bdpoints[0]].y, keypoints[bdpoints[3]].y, keypoints[bdpoints[4]].y];
   let corr = calculateCorrelation(xpoints, ypoints);
-  return Math.abs(corr) > values.pushupval.backThres[selectDifficultyLevel(store.getState())];
+  return Math.abs(corr) > exerciseValues.pushupval.backThres[selectDifficultyLevel(store.getState())];
 
 }
 
@@ -64,35 +60,35 @@ function isBodyInFrame(keypoints, knee) {
   return keypoints[0].score > calibrationThreshold && keypoints[knee].score > calibrationThreshold;
 }
 
-function isStablised(keypoints) {
+function isStablised(keypoints, exerciseValues) {
   let bdpoints;
-  if (values.pushupval.side === 1) {
+  if (exerciseValues.pushupval.side === 1) {
     bdpoints = leftside;
   } else {
     bdpoints = rightside;
   }
   const xdiff = Math.abs(keypoints[bdpoints[1]].x - keypoints[bdpoints[2]].x);
   const ydiff = Math.abs(keypoints[bdpoints[1]].y - keypoints[bdpoints[2]].y);
-  const newDepthLimit = values.pushupval.depthThres[selectDifficultyLevel(store.getState())] * Math.sqrt((xdiff * xdiff) + (ydiff * ydiff));
-  const diff = Math.abs((values.pushupval.depthLimit - newDepthLimit) / newDepthLimit);
+  const newDepthLimit = exerciseValues.pushupval.depthThres[selectDifficultyLevel(store.getState())] * Math.sqrt((xdiff * xdiff) + (ydiff * ydiff));
+  const diff = Math.abs((exerciseValues.pushupval.depthLimit - newDepthLimit) / newDepthLimit);
   //console.log('Diff: ' + diff);
-  values.pushupval.depthLimit = newDepthLimit;
+  exerciseValues.pushupval.depthLimit = newDepthLimit;
   // if diff < differenceEpsilon, is stalbe
   return diff < differenceEpsilon;
 }
 
 //todo normalise
-export function calibrate(keypoints) {
+export function calibrate(keypoints, exerciseValues) {
   let bdpoints;
   if (keypoints[0].x < keypoints[12].x) {
-    values.pushupval.side = 1;
+    exerciseValues.pushupval.side = 1;
   }
   else {
-    values.pushupval.side = 2;
+    exerciseValues.pushupval.side = 2;
   }
-  let knee = values.pushupval.side === 1 ? 13 : 14;
+  let knee = exerciseValues.pushupval.side === 1 ? 13 : 14;
   if (isBodyInFrame(keypoints, knee)) {
-    values.pushupval.isCalibrated = isStablised(keypoints);
+    exerciseValues.pushupval.isCalibrated = isStablised(keypoints, exerciseValues);
   }
   else {
     //console.log("Out of Frame");
