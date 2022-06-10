@@ -6,12 +6,10 @@ import ScaleIcon from '@mui/icons-material/Scale';
 import HeightIcon from '@mui/icons-material/Height';
 import MonitorWeightIcon from '@mui/icons-material/MonitorWeight';
 
-const bmi = 18.2;
-
 const BodyStatsPanel = ({stats}) => {
     const weightToPrint = stats.weight + ' kg';
     const heightToPrint = stats.height + ' cm';
-    const bmiToPrint = parseFloat(weightToPrint) / ((parseFloat(heightToPrint) / 100) * (parseFloat(heightToPrint) / 100))
+    const bmiToPrint = parseFloat(weightToPrint) / ((parseFloat(heightToPrint) / 100) * (parseFloat(heightToPrint) / 100)) || 0;
 
     return (
         <Card sx={{paddingLeft: "1rem", paddingRight:"1rem"}}>

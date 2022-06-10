@@ -5,45 +5,18 @@ import CaloriesBurnt from './components/CaloriesBurnt';
 import { theme } from "./index";
 import LogoutButton from './components/LogoutButton';
 import { AuthWrapper } from "./components/AuthWrapper";
-import { useUser } from 'reactfire';
-import {doc, getFirestore, getDoc} from 'firebase/firestore';
-import {getAuth} from "firebase/auth";
-import { useSelector, setState } from "react-redux";
-import { useState } from 'react';
-import { selectNicknameR, selectAgeR, selectWeightR, selectHeightR } from './features/userProfile/userProfileSlice';
+import { useUser, useFirestoreDocData } from 'reactfire';
+import {doc, getFirestore } from 'firebase/firestore';
 
 const Dashboard = () => {
-  const { status, data } = useUser();
-  const [nickname, setNickname] = useState((data?.displayName || data?.email.match(/.*(?=@)/ || 'Guest')));
-  const [weight, setWeight] = useState("0");
-  const [height, setHeight] = useState("0");
+  const { status, data: user } = useUser();
 
   const firestore = getFirestore();
-  const auth = getAuth();
-  const user = auth.currentUser;
   const ref = doc(firestore, 'userData', user.uid);
+  const { status: firestoreDataStatus, data: userProfileData } = useFirestoreDocData(ref);
 
-  const inner = async () => {
-    return await getDoc(ref);
-  };
-  inner().then(res => {
-    const data = res.data();
-    if (data) { // not a first-time user
-      setNickname(data.nickname);
-      setWeight(data.weight);
-      setHeight(data.height);
-    }
-  });
-
-  //const nameCheck = useSelector(selectNicknameR);
-  // const age = useSelector(selectAgeR);
-  // const weight = useSelector(selectWeightR);
-  // const height = useSelector(selectHeightR);
-
-  if (status === 'loading') {
-    return (
-      <div>Loading</div>
-    )
+  if (status === 'loading' || firestoreDataStatus === 'loading') {
+    return <p>Loading</p>;
   }
 
   return (
@@ -56,7 +29,7 @@ const Dashboard = () => {
       <Grid>
         <Grid item>
           <Typography variant="h5" align="center" style={{ paddingTop: "2rem" }}>
-            Welcome Back, {nickname}!
+            Welcome Back, {userProfileData?.nickname || user?.displayName || user?.email.match(/.*(?=@)/) || 'Guest'}!
           </Typography>
         </Grid>
         <Grid container spacing={2} direction="row" justifyContent="center" paddingTop="1rem">
@@ -68,7 +41,7 @@ const Dashboard = () => {
       <Container sx={{ px: theme.spacing(0), py: theme.spacing(3) }}>
         <Grid container spacing={3} justifyContent="center" style={{ marginBottom: "0.5rem" }}>
           <Grid item xs={10} sm={6} md={4}>
-            <BodyStatsPanel stats={{ weight, height }} />
+            <BodyStatsPanel stats={{ weight: userProfileData?.weight || 0, height: userProfileData?.height || 0}} />
           </Grid>
           <Grid item xs={10} sm={6} md={4}>
             <LastAttemptStats />
