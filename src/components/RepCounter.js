@@ -1,6 +1,9 @@
 import { Card, Typography, Grid } from '@mui/material';
-import { useSelector } from "react-redux";
-import { selectCount, selectDifficultyLevel } from '../features/exercise/exerciseSlice';
+// import Button from "@mui/material/Button";
+// import {useDispatch} from "react-redux";
+// import {incrementCount, setStage} from '../features/exercise/exerciseSlice';
+import {useSelector} from "react-redux";
+import {selectCount, selectDifficultyLevel} from '../features/exercise/exerciseSlice';
 import { selectFeedback } from '../features/exercise/exerciseSlice';
 
 function difficulty(e) {
@@ -22,9 +25,10 @@ const RepCounter = () => {
     const difficultyIndex = useSelector(selectDifficultyLevel);
 
     // const dispatch = useDispatch();
-
+    //
     // function handleIncrease() {
     //     dispatch(incrementCount());
+    //     dispatch(setStage(2));
     // }
 
     return (
@@ -44,23 +48,16 @@ const RepCounter = () => {
                     <Grid item>
                         <Typography variant="h6"> Difficulty: {difficulty(difficultyIndex)} </Typography>
                     </Grid>
+                    {/*<Grid item>*/}
+                    {/*    <Grid container direction="row" spacing={2} style={{ marginBottom: "1rem" }}>*/}
+                    {/*        <Grid item>*/}
+                    {/*            <Button variant="contained" onClick={() => handleIncrease()}>Do a Push-Up!</Button>*/}
+                    {/*        </Grid>*/}
+                    {/*    </Grid>*/}
+                    {/*</Grid>*/}
                 </Grid>
             </Card>
         </Card>
-        // <Card>
-        //     <Grid container spacing={1} direction="column" alignItems="center">
-        //         <Grid item alignItems="center" style={{ marginTop: "1rem" }}>
-        //             <Typography variant="h1"> {count} </Typography>
-        //         </Grid>
-        //         <Grid item>
-        //             <Grid container direction="row" spacing={2} style={{ marginBottom: "1rem" }}>
-        //                 <Grid item>
-        //                     <Button variant="contained" onClick={() => handleIncrease()}>Do a Push-Up!</Button>
-        //                 </Grid>
-        //             </Grid>
-        //         </Grid>
-        //     </Grid>
-        // </Card>
     )
 }
 

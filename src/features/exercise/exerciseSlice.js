@@ -23,7 +23,7 @@ export const exerciseSlice = createSlice({
     },
     clearExerciseState: (state) => {
       //performs a shallow reset/copy!!!!
-      state = {...initialState};
+      return initialState;
     },
     setFeedback: (state, action) => {
       state.feedback = action.payload;
