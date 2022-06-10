@@ -25,7 +25,7 @@ export default function CountdownButton(actiontype) {
 
   return (
     <div>
-      <Button variant="contained" sx={{ backgroundColor: "#013220", color: "#FFFFFF" }} onClick={handleClickOpen}>
+      <Button variant="contained" sx={{ backgroundColor: "#19a119", color: "#FFFFFF" }} onClick={handleClickOpen}>
         Start
       </Button>
       <Dialog
@@ -45,7 +45,7 @@ export default function CountdownButton(actiontype) {
             <Countdown handleClose={handleClose} />
           </Grid>
           <Grid item sx={{paddingTop: "1rem"}}>
-            <Button variant="contained" sx={{ backgroundColor: "#666666", color: "#FFFFFF"}} onClick={handleSkip}>
+            <Button variant="contained" sx={{ backgroundColor: "#555555", color: "#FFFFFF"}} onClick={handleSkip}>
               Skip
             </Button>
           </Grid>

@@ -49,7 +49,7 @@ export default function SimpleListMenu() {
                         sx={{ backgroundColor: "#FFFFFF" }}
                     >
                         <ListItem>
-                            <Button variant="contained" onClick={handleClickListItem}>
+                            <Button variant="contained" onClick={handleClickListItem} sx={{backgroundColor: "#555555"}}>
                                 Select Difficulty
                             </Button>
                         </ListItem>

@@ -1,5 +1,5 @@
-import {Button, Grid} from "@mui/material";
-import {Link} from "react-router-dom";
+import { Button, Grid } from "@mui/material";
+import { Link } from "react-router-dom";
 import DifficultyPanel from "../components/DifficultyPanel";
 import TimeInput from "../components/TimeInput";
 import CountdownButton from "../components/CountdownButton";
@@ -9,25 +9,29 @@ import NewDifficultyPanel from "../components/NewDifficultyPanel";
 export default function AssessmentNotStarted() {
   return (
     <Grid container spacing={2} direction="column">
-      <Grid item justifyContent="center">
-        <NewDifficultyPanel/>
+      <Grid item>
+        <NewDifficultyPanel />
       </Grid>
       <Grid item>
-        <TimeInput/>
+        <TimeInput />
       </Grid>
       <Grid item>
-        <LastAttemptStats/>
+        <LastAttemptStats />
       </Grid>
-      <Grid item>
-        <CountdownButton />
-      </Grid>
-      <Grid item>
-        <Button
-          variant="contained"
-          component={Link} to="/"
-        >
-          Home
-        </Button>
+      <Grid item margin="auto">
+        <Grid container spacing={2} direction="row">
+          <Grid item>
+            <CountdownButton />
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              component={Link} to="/"
+            >
+              Home
+            </Button>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   )

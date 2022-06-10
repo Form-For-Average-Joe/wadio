@@ -33,10 +33,10 @@ const TimeInput = () => {
                 <Grid item>
                     <Grid container direction="row" spacing={2} sx={{ marginBottom: "1rem" }}>
                         <Grid item>
-                            <Button variant="contained" onClick={() => handleIncrease()}>Increase</Button>
+                            <Button variant="contained" onClick={() => handleIncrease()} sx={{backgroundColor: "#555555"}}>Increase</Button>
                         </Grid>
                         <Grid item>
-                            <Button variant="contained" onClick={() => handleDecrease()}>Decrease</Button>
+                            <Button variant="contained" onClick={() => handleDecrease()} sx={{backgroundColor: "#555555"}}>Decrease</Button>
                         </Grid>
                     </Grid>
                 </Grid>
