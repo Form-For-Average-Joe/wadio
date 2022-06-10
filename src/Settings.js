@@ -1,28 +1,36 @@
 import React from 'react';
 import { Typography, Grid, Container, Box, TextField, Button, Stack } from '@mui/material';
 import { AuthWrapper } from "./components/AuthWrapper";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
 import { useUser } from 'reactfire';
-import { Navigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import {useDispatch, useSelector} from "react-redux";
+import { selectNicknameR, setNicknameR, selectAgeR, setAgeR, selectWeightR, setWeightR, selectHeightR, setHeightR } from './features/userProfile/userProfileSlice';
 
 const Settings = () => {
-  const [nickname, setNickname] = useState("Joe");
-  const [age, setAge] = useState(0);
-  const [weight, setWeight] = useState(0);
-  const [height, setHeight] = useState(0);
-
   const { data: user } = useUser();
+  const dispatch = useDispatch();
+
+  const [nickname, setNickname] = useState(useSelector(selectNicknameR));
+  const [age, setAge] = useState(useSelector(selectAgeR));
+  const [weight, setWeight] = useState(useSelector(selectWeightR));
+  const [height, setHeight] = useState(useSelector(selectHeightR));
 
   const makeSave = (e) => {
     e.preventDefault();
     setDoc(doc(getFirestore(), "userData", user.uid), {
-      nickname: nickname,
-      age: age,
-      weight: weight,
-      height: height,
+      nickname,
+      age,
+      weight,
+      height,
     });
+
+    dispatch(setNicknameR(nickname));
+    dispatch(setAgeR(age));
+    dispatch(setWeightR(weight));
+    dispatch(setHeightR(height));
+
+    alert("Your data has been successfully saved!")
   }
 
   return (
@@ -77,10 +85,10 @@ const Settings = () => {
           onChange={(e) => setHeight(e.target.value)}
         />
       </Stack>
-      <Grid align="center" sx={{marginTop: "1rem"}}>
+      <Grid align="center" sx={{ marginTop: "1rem" }}>
         <Button variant="contained"
-                onClick={makeSave}
-                sx={{backgroundColor: "#666666"}}>
+          onClick={makeSave}
+          sx={{ backgroundColor: "#666666" }}>
           Save
         </Button>
       </Grid>
