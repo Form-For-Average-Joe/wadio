@@ -1,11 +1,11 @@
-import { useEffect } from "react";
-import { doc, setDoc, getFirestore } from "firebase/firestore";
-import { Grid, Card, Typography } from '@mui/material';
-import { useDispatch, useSelector } from "react-redux";
+import {useEffect} from "react";
+import {doc, setDoc, getFirestore} from "firebase/firestore";
+import {Grid, Card, Typography} from '@mui/material';
+import {useDispatch, useSelector} from "react-redux";
 import LastAttemptStats from "./LastAttemptStats";
-import { resetStageAndCount, selectCount, selectDuration, setIsCanStart, clearExerciseState, selectNameOfExercise, setFeedback } from "../features/exercise/exerciseSlice";
-import { resetUserTime, selectMinutes, selectSeconds } from '../features/userProfile/userProfileSlice';
-import { useUser } from 'reactfire';
+import {resetStageAndCount, selectCount, selectDuration, setIsCanStart, clearExerciseState, selectNameOfExercise, setFeedback} from "../features/exercise/exerciseSlice";
+import {resetUserTime, selectMinutes, selectSeconds} from '../features/userProfile/userProfileSlice';
+import {useUser} from 'reactfire';
 import {Link, Navigate} from "react-router-dom";
 import GenericHeaderButton from "../components/GenericHeaderButton";
 
@@ -17,33 +17,27 @@ export default function AssessmentFinished() {
   const seconds = useSelector(selectSeconds);
   const nameOfExercise = useSelector(selectNameOfExercise);
 
-  const { data: user } = useUser();
+  const {data: user} = useUser();
+
+  const saveData = () => {
+    if (user) {
+      setDoc(doc(getFirestore(), "userStatistics", user.uid), {
+        repCount,
+        workoutTime,
+        nameOfExercise,
+        caloriesBurnt,
+      });
+    }
+  }
+
 
   useEffect(() => {
     return () => {
-      const clearValues = () => {
-        dispatch(clearExerciseState());
-        dispatch(setIsCanStart(false));
-        dispatch(resetStageAndCount());
-        dispatch(resetUserTime());
-        dispatch(setFeedback(""));
-      }
-      if (user) {
-        const sendToFirestore = async () => {
-          await setDoc(doc(getFirestore(), "userStatistics", user.uid), {
-            repCount,
-            workoutTime,
-            nameOfExercise,
-            caloriesBurnt,
-          });
-        }
-        sendToFirestore().then(() => {
-          clearValues();
-        })
-      }
-      else {
-        clearValues();
-      }
+      dispatch(clearExerciseState());
+      dispatch(setIsCanStart(false));
+      dispatch(resetStageAndCount());
+      dispatch(resetUserTime());
+      dispatch(setFeedback(""));
     }
   }, [])
 
@@ -70,7 +64,7 @@ export default function AssessmentFinished() {
           </Typography>
         </Grid>
         <Grid item>
-          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} component={Link} to="/profile">
+          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} onClick={saveData} component={Link} to="/profile">
             Continue
           </GenericHeaderButton>
         </Grid>
