@@ -20,6 +20,10 @@ export const getFlooredMinutes = (total) => {
   return Math.floor((total / 1000 / 60) % 60);
 }
 
+export const getCaloriesBurnt = (repCount, workoutTime, nameOfExercise, difficulty, gender, age, weight) => {
+  return parseInt(age);
+}
+
 // function handleStart() {
 //   if (intervalRef.current) clearInterval(intervalRef.current);
 //   clearTimer(getDeadlineTime());

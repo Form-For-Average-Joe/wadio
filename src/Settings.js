@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Grid, Box, TextField, Button, Stack } from '@mui/material';
+import { Typography, Grid, Box, TextField, Button, Stack, Switch } from '@mui/material';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { AuthWrapper } from "./components/AuthWrapper";
@@ -16,12 +16,12 @@ const Settings = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [gender, setGender] = useState("0");
-
+  const [anonymous, setAnonymous] = useState(false)
 
   useEffect(() => {
     if (user) {
       const firestore = getFirestore();
-      const ref = doc(firestore, 'userData', user.uid);
+      const ref = doc(firestore, user.uid, 'userData');
 
       const inner = async () => {
         return await getDoc(ref);
@@ -34,23 +34,29 @@ const Settings = () => {
           setWeight(data.weight);
           setHeight(data.height);
           setGender(data.gender);
+          setAnonymous(data.anonymous);
         }
       });
     }
   }, [user])
 
   const makeSave = (e) => {
-    setDoc(doc(getFirestore(), "userData", user.uid), {
+    setDoc(doc(getFirestore(), user.uid, 'userData'), {
       nickname,
       age: +age,
       weight: +weight,
       height: +height,
       gender,
+      anonymous,
     });
   }
 
-  const handleChange = (event, newGender) => {
+  const handleGender = (event, newGender) => {
     setGender(newGender);
+  };
+
+  const handleAnonymous = (event, newAnonymous) => {
+    setAnonymous(newAnonymous);
   };
 
   return (
@@ -112,12 +118,24 @@ const Settings = () => {
           color="standard"
           value={gender}
           exclusive
-          onChange={handleChange}
+          onChange={handleGender}
         >
           <ToggleButton value="0">Male</ToggleButton>
           <ToggleButton value="1">Female</ToggleButton>
           <ToggleButton value="2">Others</ToggleButton>
         </ToggleButtonGroup>
+        <Grid container spacing={0} direction="column" alignItems="center">
+          <Grid item>
+            <Switch checked={anonymous} onChange={handleAnonymous}>
+              Anonymous
+            </Switch>
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle2" sx={{ color: "#000000" }}>
+              Stay Anonymous?
+            </Typography>
+          </Grid>
+        </Grid>
       </Stack>
 
       <Grid align="center" sx={{ marginTop: "1rem" }}>

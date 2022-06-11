@@ -14,9 +14,6 @@ export default function AssessmentNotStarted() {
       <Grid item>
         <TimeInput />
       </Grid>
-      <Grid item>
-        <LastAttemptStats />
-      </Grid>
       <Grid item margin="auto">
         <Grid container spacing={2} direction="row">
           <Grid item>

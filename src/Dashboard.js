@@ -12,7 +12,7 @@ const Dashboard = () => {
   const { status, data: user } = useUser();
 
   const firestore = getFirestore();
-  const ref = doc(firestore, 'userData', user.uid);
+  const ref = doc(firestore, user.uid, 'userData');
   const { status: firestoreDataStatus, data: userProfileData } = useFirestoreDocData(ref);
 
   if (status === 'loading' || firestoreDataStatus === 'loading') {
@@ -42,9 +42,6 @@ const Dashboard = () => {
         <Grid container spacing={3} justifyContent="center" style={{ marginBottom: "0.5rem" }}>
           <Grid item xs={10} sm={6} md={4}>
             <BodyStatsPanel stats={{ weight: userProfileData?.weight || 0, height: userProfileData?.height || 0}} />
-          </Grid>
-          <Grid item xs={10} sm={6} md={4}>
-            <LastAttemptStats />
           </Grid>
           <Grid item xs={10} sm={6} md={4}>
             <CaloriesBurnt />
