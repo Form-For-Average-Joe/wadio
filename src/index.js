@@ -12,6 +12,7 @@ import DashBoard from './Dashboard';
 import Settings from './Settings';
 import {ThemeProvider, createTheme, responsiveFontSizes} from '@mui/material/styles';
 import {FirebaseAppProvider} from 'reactfire';
+import Leaderboard from './Leaderboard';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -86,6 +87,7 @@ root.render((
                 <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
                 <Route exact path="profile" element={<DashBoard/>}/>
                 <Route exact path="settings" element={<Settings/>}/>
+                <Route exact path="leaderboard" element={<Leaderboard/>}/>
               </Route>
               <Route path="/exercise">
                 <Route exact path="pushups" element={<ExerciseAssessment nameOfExercise={"pushups"}/>}/>

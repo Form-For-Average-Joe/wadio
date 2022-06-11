@@ -3,7 +3,7 @@ import AnalyticsIcon from '@mui/icons-material/Analytics';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
-import {AppBar, Avatar, Box, Grid, Toolbar, Typography, useScrollTrigger} from '@mui/material';
+import {AppBar, Avatar, Box, Toolbar, Typography, useScrollTrigger} from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -11,6 +11,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ListItemButton from '@mui/material/ListItemButton';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
@@ -51,6 +52,12 @@ const navigationItems = {
     displayName: 'Home',
     to: '/',
     guestAccess: true
+  },
+  leaderboard: {
+    icon: <LeaderboardIcon/>,
+    displayName: 'Leaderboard',
+    to: '/leaderboard',
+    guestAccess: false
   },
   profile: {
     icon: <AnalyticsIcon/>,
@@ -140,6 +147,8 @@ function MainHeader() {
             </Box>
             {signedIn && <Box sx={{display: {xs: 'none', sm: 'inline'}, px: 1}}>
               <Box sx={{display: 'flex'}}>
+                <GenericHeaderButton component={Link}
+                                     to={navigationItems.leaderboard.to}>{navigationItems.leaderboard.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.profile.to}>{navigationItems.profile.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}
