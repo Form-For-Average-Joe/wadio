@@ -1,18 +1,22 @@
 import React from 'react';
-import {Typography, Grid, Box, TextField, Button, Stack} from '@mui/material';
-import {AuthWrapper} from "./components/AuthWrapper";
-import {useState, useEffect} from 'react';
-import {doc, setDoc, getDoc, getFirestore} from "firebase/firestore";
-import {useUser} from 'reactfire';
-import {Link} from 'react-router-dom';
+import { Typography, Grid, Box, TextField, Button, Stack } from '@mui/material';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { AuthWrapper } from "./components/AuthWrapper";
+import { useState, useEffect } from 'react';
+import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
+import { useUser } from 'reactfire';
+import { Link } from 'react-router-dom';
 
 const Settings = () => {
-  const {data: user} = useUser();
+  const { data: user } = useUser();
 
   const [nickname, setNickname] = useState("");
   const [age, setAge] = useState("");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
+  const [gender, setGender] = useState("0");
+
 
   useEffect(() => {
     if (user) {
@@ -29,6 +33,7 @@ const Settings = () => {
           setAge(data.age);
           setWeight(data.weight);
           setHeight(data.height);
+          setGender(data.gender);
         }
       });
     }
@@ -40,19 +45,25 @@ const Settings = () => {
       age: +age,
       weight: +weight,
       height: +height,
+      gender,
     });
   }
+
+  const handleChange = (event, newGender) => {
+    setGender(newGender);
+  };
 
   return (
     <AuthWrapper fallback={
       <Box>
-        <Typography sx={{width: '100vw', height: '100vh'}} align='center' variant={"h1"}>Sign in to view this
+        <Typography sx={{ width: '100vw', height: '100vh' }} align='center' variant={"h1"}>Sign in to view this
           page!</Typography>
       </Box>
     }>
-      <Typography align="center" variant="h4" sx={{paddingTop: "1rem"}}>Settings</Typography>
+      <Typography align="center" variant="h4" sx={{ paddingTop: "1rem" }}>Settings</Typography>
       <Stack
         component="form"
+        alignItems="center"
         sx={{
           width: "30ch",
           paddingTop: "1rem", paddingLeft: "1rem", paddingRight: "1rem", paddingBottom: "1rem",
@@ -67,7 +78,7 @@ const Settings = () => {
           variant="outlined"
           type={'text'}
           size="small"
-          sx={{backgroundColor: "#FFFFFF"}}
+          sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
           onChange={(e) => setNickname(e.target.value)}
         />
         <TextField
@@ -75,7 +86,7 @@ const Settings = () => {
           value={age}
           variant="outlined"
           size="small"
-          sx={{backgroundColor: "#FFFFFF"}}
+          sx={{ backgroundColor: "#FFFFFF" }}
           onChange={(e) => setAge(e.target.value)}
           type="number"
         />
@@ -84,7 +95,7 @@ const Settings = () => {
           value={weight}
           variant="outlined"
           size="small"
-          sx={{backgroundColor: "#FFFFFF"}}
+          sx={{ backgroundColor: "#FFFFFF" }}
           onChange={(e) => setWeight(e.target.value)}
           type="number"
         />
@@ -93,17 +104,28 @@ const Settings = () => {
           value={height}
           variant="outlined"
           size="small"
-          sx={{backgroundColor: "#FFFFFF"}}
+          sx={{ backgroundColor: "#FFFFFF" }}
           onChange={(e) => setHeight(e.target.value)}
           type="number"
         />
+        <ToggleButtonGroup
+          color="standard"
+          value={gender}
+          exclusive
+          onChange={handleChange}
+        >
+          <ToggleButton value="0">Male</ToggleButton>
+          <ToggleButton value="1">Female</ToggleButton>
+          <ToggleButton value="2">Others</ToggleButton>
+        </ToggleButtonGroup>
       </Stack>
-      <Grid align="center" sx={{marginTop: "1rem"}}>
+
+      <Grid align="center" sx={{ marginTop: "1rem" }}>
         <Button variant="contained"
-                component={Link}
-                to={"/profile"}
-                onClick={makeSave}
-                sx={{backgroundColor: "#666666"}}>
+          component={Link}
+          to={"/profile"}
+          onClick={makeSave}
+          sx={{ backgroundColor: "#666666" }}>
           Save
         </Button>
       </Grid>
