@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LastAttemptStats from "./containers/LastAttemptStats";
 import { selectCount, selectDuration, clearExerciseState, selectNameOfExercise, selectDifficultyLevel } from "./features/exercise/exerciseSlice";
 import { resetUserTime, selectMinutes, selectSeconds } from './features/userProfile/userProfileSlice';
-import { useUser } from 'reactfire';
+import { useFirestoreDocData, useUser } from 'reactfire';
 import { Link } from "react-router-dom";
 import GenericHeaderButton from "./components/GenericHeaderButton";
 import { getCaloriesBurnt } from "./util";
@@ -20,35 +20,14 @@ export default function AssessmentFinished() {
   const difficulty = useSelector(selectDifficultyLevel);
   const workoutTime = (minutes * 60 + seconds) === 0 ? duration : duration - (minutes * 60 + seconds);
   const pastExercise = "/exercise/" + nameOfExercise;
-  const [age, setAge] = useState("0");
-  const [weight, setWeight] = useState("0");
-  const [gender, setGender] = useState("0");
-  const { data: user } = useUser();
-
-  useEffect(() => {
-    if (user) {
-      const firestore = getFirestore();
-      const ref = doc(firestore, user.uid, 'userData');
-
-      const inner = async () => {
-        return await getDoc(ref);
-      };
-      inner().then(res => {
-        const data = res.data();
-        if (data) { // not a first-time user
-          setAge(data.age);
-          setWeight(data.weight);
-          setGender(data.gender);
-        }
-      });
-    }
-  }, [user])
-
-  const caloriesBurnt = getCaloriesBurnt(repCount, workoutTime, nameOfExercise, difficulty, gender, age, weight);
-  console.log(caloriesBurnt);
-  var today = new Date();
-  var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  const { status, data: user } = useUser();
+  const firestore = getFirestore();
+  const ref = doc(firestore, user.uid, 'userData');
+  const { status: firestoreDataStatus, data: userProfileData } = useFirestoreDocData(ref);
+  const today = new Date();
+  const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  const caloriesBurnt = getCaloriesBurnt(repCount, workoutTime, nameOfExercise, difficulty, userProfileData?.gender, userProfileData?.age, userProfileData?.weight);
 
   const [lastAttemptStats, setLastAttemptStats] = useState({
     repCount,
@@ -60,6 +39,17 @@ export default function AssessmentFinished() {
     time,
   })
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearExerciseState());
+      dispatch(resetUserTime());
+    }
+  })
+
+  if (status === 'loading' || firestoreDataStatus === 'loading') {
+    return <p>Loading</p>;
+  }
+
   const saveData = () => {
     if (user) {
       setDoc(doc(getFirestore(), user.uid, date + " " + time), { //chose to use time stamp
@@ -67,14 +57,6 @@ export default function AssessmentFinished() {
       });
     }
   }
-
-
-  useEffect(() => {
-    return () => {
-      dispatch(clearExerciseState());
-      dispatch(resetUserTime());
-    }
-  })
 
   //todo anonymous user also must persist stats in local cache or online - figure out if need to save in Firebase
   //todo fetch lastsessionstats from local cache if possible
