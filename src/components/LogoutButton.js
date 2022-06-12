@@ -2,7 +2,7 @@ import {useAuth} from 'reactfire';
 import { Link } from 'react-router-dom';
 import GenericProfileButton from "./GenericProfileButton";
 
-const signOut = auth => auth.signOut().then(() => console.log('signed out'));
+const signOut = auth => auth.signOut();
 
 export default function LogoutButton() {
   const auth = useAuth();
