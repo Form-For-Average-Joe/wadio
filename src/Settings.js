@@ -2,7 +2,6 @@ import React from 'react';
 import { Typography, Grid, Box, TextField, Button, Stack } from '@mui/material';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { AuthWrapper } from "./components/AuthWrapper";
 import { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
 import { useUser } from 'reactfire';
@@ -54,12 +53,7 @@ const Settings = () => {
   };
 
   return (
-    <AuthWrapper fallback={
-      <Box>
-        <Typography sx={{ width: '100vw', height: '100vh' }} align='center' variant={"h1"}>Sign in to view this
-          page!</Typography>
-      </Box>
-    }>
+    <>
       <Typography align="center" variant="h4" sx={{ paddingTop: "1rem" }}>Settings</Typography>
       <Stack
         component="form"
@@ -122,14 +116,14 @@ const Settings = () => {
 
       <Grid align="center" sx={{ marginTop: "1rem" }}>
         <Button variant="contained"
-          component={Link}
-          to={"/profile"}
-          onClick={makeSave}
-          sx={{ backgroundColor: "#666666" }}>
+                component={Link}
+                to={"/profile"}
+                onClick={makeSave}
+                sx={{ backgroundColor: "#666666" }}>
           Save
         </Button>
       </Grid>
-    </AuthWrapper>
+    </>
   )
 }
 

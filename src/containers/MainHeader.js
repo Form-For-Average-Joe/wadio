@@ -49,20 +49,17 @@ const navigationItems = {
   home: {
     icon: <HomeIcon/>,
     displayName: 'Home',
-    to: '/',
-    guestAccess: true
+    to: '/'
   },
   profile: {
     icon: <AnalyticsIcon/>,
     displayName: 'Profile',
-    to: '/profile',
-    guestAccess: false
+    to: '/profile'
   },
   settings: {
     icon: <SettingsApplicationsIcon/>,
     displayName: 'Settings',
-    to: '/settings',
-    guestAccess: false
+    to: '/settings'
   }
 }
 
@@ -76,7 +73,7 @@ function MainHeader() {
   }
 
   const {signedIn} = data;
-  const guest = signedIn ? <Member/> : <LoginDialog/>;
+  const authenticatedHeader = signedIn ? <Member/> : <LoginDialog/>;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -147,7 +144,7 @@ function MainHeader() {
               </Box>
             </Box>}
             <Box sx={{alignItems: 'center', textAlign: 'center'}}>
-              {guest}
+              {authenticatedHeader}
             </Box>
           </Toolbar>
         </AppBar>

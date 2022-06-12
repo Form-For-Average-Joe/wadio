@@ -6,7 +6,7 @@ import LastAttemptStats from "./containers/LastAttemptStats";
 import {selectCount, selectDuration, clearExerciseState, selectNameOfExercise} from "./features/exercise/exerciseSlice";
 import {resetUserTime, selectMinutes, selectSeconds} from './features/userProfile/userProfileSlice';
 import {useUser} from 'reactfire';
-import {Link} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import GenericHeaderButton from "./components/GenericHeaderButton";
 
 export default function AssessmentFinished() {
@@ -43,9 +43,7 @@ export default function AssessmentFinished() {
     }
   })
 
-  //todo anonymous user also must persist stats in local cache or online - figure out if need to save in Firebase
-  //todo fetch lastsessionstats from local cache if possible
-  //todo write unit tests first
+  if (!user) return <Navigate to={"/"} replace/>;
 
   return (
     <Card sx={{backgroundColor: "#000000"}}>

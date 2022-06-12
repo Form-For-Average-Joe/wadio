@@ -4,28 +4,29 @@ import LastAttemptStats from './containers/LastAttemptStats';
 import CaloriesBurnt from './components/CaloriesBurnt';
 import { theme } from "./index";
 import LogoutButton from './components/LogoutButton';
-import { AuthWrapper } from "./components/AuthWrapper";
 import { useUser, useFirestoreDocData } from 'reactfire';
-import {doc, getFirestore } from 'firebase/firestore';
+import {doc, getFirestore, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 
 const Dashboard = () => {
   const { status, data: user } = useUser();
+  const [userProfileData, setUserProfileData] = useState({});
 
-  const firestore = getFirestore();
-  const ref = doc(firestore, 'userData', user.uid);
-  const { status: firestoreDataStatus, data: userProfileData } = useFirestoreDocData(ref);
+  useEffect(() => {
+    const firestore = getFirestore();
+    const ref = doc(firestore, 'userData', user.uid);
+    getDoc(ref).then((docSnap) => {
+      setUserProfileData(docSnap.data());
+    })
+    // const { status: firestoreDataStatus, data: userProfileData } = useFirestoreDocData(ref);
+  }, [user])
 
-  if (status === 'loading' || firestoreDataStatus === 'loading') {
+  if (status === 'loading') {
     return <p>Loading</p>;
   }
 
   return (
-    <AuthWrapper fallback={
-      <Box>
-        <Typography sx={{ width: '100vw', height: '100vh' }} align='center' variant={"h1"}>Sign in to view this
-          page!</Typography>
-      </Box>
-    }>
+    <>
       <Grid>
         <Grid item>
           <Typography variant="h5" align="center" style={{ paddingTop: "2rem" }}>
@@ -51,7 +52,7 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </Container>
-    </AuthWrapper>
+    </>
   );
 }
 
