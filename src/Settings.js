@@ -17,6 +17,7 @@ const Settings = () => {
   const [height, setHeight] = useState("");
   const [gender, setGender] = useState("0");
   const [anonymous, setAnonymous] = useState(false)
+  const [totalCal, setTotalCal] = useState("0");
 
   useEffect(() => {
     if (user) {
@@ -35,6 +36,7 @@ const Settings = () => {
           setHeight(data.height);
           setGender(data.gender);
           setAnonymous(data.anonymous);
+          setTotalCal(data.totalCal);
         }
       });
     }
@@ -48,6 +50,7 @@ const Settings = () => {
       height: +height,
       gender,
       anonymous,
+      totalCal,
     });
   }
 

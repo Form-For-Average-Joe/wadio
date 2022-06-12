@@ -44,7 +44,7 @@ const Dashboard = () => {
             <BodyStatsPanel stats={{ weight: userProfileData?.weight || 0, height: userProfileData?.height || 0}} />
           </Grid>
           <Grid item xs={10} sm={6} md={4}>
-            <CaloriesBurnt />
+            <CaloriesBurnt cal={userProfileData?.totalCal} />
           </Grid>
         </Grid>
       </Container>

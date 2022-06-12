@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { doc, setDoc, getFirestore, getDoc } from "firebase/firestore";
+import { doc, setDoc, getFirestore, getDoc, updateDoc, increment } from "firebase/firestore";
 import { Grid, Card, Typography } from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
 import LastAttemptStats from "./containers/LastAttemptStats";
@@ -54,6 +54,11 @@ export default function AssessmentFinished() {
     if (user) {
       setDoc(doc(getFirestore(), user.uid, date + " " + time), { //chose to use time stamp
         lastAttemptStats,
+      });
+      const caloriesToAdd = parseInt(lastAttemptStats.caloriesBurnt);
+      const Ref = doc(getFirestore(), user.uid, 'userData');
+      updateDoc(Ref, {
+        totalCal: increment(caloriesToAdd)
       });
     }
   }
