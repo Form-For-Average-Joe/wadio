@@ -18,7 +18,6 @@ export default function AssessmentFinished() {
   const nameOfExercise = useSelector(selectNameOfExercise);
   const workoutTime = (minutes * 60 + seconds) === 0 ? duration : duration - (minutes * 60 + seconds);
   const caloriesBurnt = repCount * duration * 0.1;
-  const pastExercise = "/exercise/" + nameOfExercise;
 
   const [lastAttemptStats, setLastAttemptStats] = useState({
     repCount,
@@ -62,7 +61,7 @@ export default function AssessmentFinished() {
           </GenericHeaderButton>
         </Grid>
         <Grid item>
-          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} component={Link} to={pastExercise}>
+          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} component={Link} to={"/exercise/" + lastAttemptStats.nameOfExercise}>
             Try Again
           </GenericHeaderButton>
         </Grid>
