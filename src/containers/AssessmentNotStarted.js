@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import DifficultyPanel from "../components/DifficultyPanel";
 import TimeInput from "../components/TimeInput";
 import CountdownButton from "../components/CountdownButton";
-import LastAttemptStats from "./LastAttemptStats";
 
 export default function AssessmentNotStarted() {
   return (
