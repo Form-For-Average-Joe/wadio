@@ -1,11 +1,10 @@
 import { Typography, Card, Grid } from '@mui/material';
 
-
-const CaloriesBurnt = ({cal}) => {
+const CaloriesBurnt = ({ cal }) => {
     return (
         <Card>
-            <Grid container justifyContent="center" alignItems="center">
-                <Grid item style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
+            <Grid container justifyContent="center" alignItems="center" direction="column">
+                <Grid item style={{ paddingTop: "1rem" }}>
                     <Typography variant="subtitle1" align="center">
                         Cumulative Calories Burnt:
                     </Typography>

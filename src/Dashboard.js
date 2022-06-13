@@ -5,8 +5,10 @@ import CaloriesBurnt from './components/CaloriesBurnt';
 import { theme } from "./index";
 import LogoutButton from './components/LogoutButton';
 import { useUser, useFirestoreDocData } from 'reactfire';
-import {doc, getFirestore, getDoc } from 'firebase/firestore';
+import { doc, getFirestore, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import ProgressLine from './components/ProgressLine';
+
 
 const Dashboard = () => {
   const { status, data: user } = useUser();
@@ -42,13 +44,18 @@ const Dashboard = () => {
       <Container sx={{ px: theme.spacing(0), py: theme.spacing(3) }}>
         <Grid container spacing={3} justifyContent="center" style={{ marginBottom: "0.5rem" }}>
           <Grid item xs={10} sm={6} md={4}>
-            <BodyStatsPanel stats={{ weight: userProfileData?.weight || 0, height: userProfileData?.height || 0}} />
+            <BodyStatsPanel stats={{ weight: userProfileData?.weight || 0, height: userProfileData?.height || 0 }} />
           </Grid>
           <Grid item xs={10} sm={6} md={4}>
             <CaloriesBurnt cal={userProfileData?.totalCal} />
           </Grid>
         </Grid>
       </Container>
+      <Grid>
+        <Grid item align="center" xs={10} sm={6} md={4}>
+          <ProgressLine cal={userProfileData?.totalCal} />
+        </Grid>
+      </Grid>
     </>
   );
 }
