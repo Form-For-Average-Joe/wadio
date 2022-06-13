@@ -28,6 +28,7 @@ export default function AssessmentFinished() {
   const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   const caloriesBurnt = getCaloriesBurnt(repCount, workoutTime, nameOfExercise, difficulty, userProfileData?.gender, userProfileData?.age, userProfileData?.weight);
 
+  //todo to save the last attempt stats before clearExerciseState is dispatched, as the component might render a few times and clear stats before sending to Firestore
   const [lastAttemptStats, setLastAttemptStats] = useState({
     repCount,
     workoutTime,

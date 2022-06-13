@@ -7,12 +7,7 @@ import Menu from '@mui/material/Menu';
 import { useDispatch } from "react-redux";
 import { setDifficultyLevel } from '../features/exercise/exerciseSlice';
 import { Typography, Grid, Button } from '@mui/material';
-
-const options = [
-    'Hellish',
-    'IPPT',
-    'Heavenly',
-];
+import {difficulties} from '../util';
 
 export default function SimpleListMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -35,46 +30,46 @@ export default function SimpleListMenu() {
     };
 
     return (
-        <div>
-            <Grid container direction="column" sx={{ backgroundColor: "#FFFFFF" }}>
-                <Grid item margin="auto" sx={{ paddingTop: "0.5rem" }}>
-                    <Typography margin="auto" variant="h4" sx={{ color: "#000000" }}>
-                        {options[selectedIndex]}
-                    </Typography>
-                </Grid>
-                <Grid item margin="auto">
-                    <List
-                        component="nav"
-                        aria-label="Difficulty settings"
-                        sx={{ backgroundColor: "#FFFFFF" }}
-                    >
-                        <ListItem>
-                            <Button variant="contained" onClick={handleClickListItem} sx={{backgroundColor: "#555555"}}>
-                                Select Difficulty
-                            </Button>
-                        </ListItem>
-                    </List>
-                    <Menu
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                            'aria-labelledby': 'lock-button',
-                            role: 'listbox',
-                        }}
-                    >
-                        {options.map((option, index) => (
-                            <MenuItem
-                                key={option}
-                                selected={index === selectedIndex}
-                                onClick={(event) => handleMenuItemClick(event, index)}
-                            >
-                                {option}
-                            </MenuItem>
-                        ))}
-                    </Menu>
-                </Grid>
-            </Grid>
-        </div>
+      <div>
+          <Grid container direction="column" sx={{ backgroundColor: "#FFFFFF" }}>
+              <Grid item margin="auto" sx={{ paddingTop: "0.5rem" }}>
+                  <Typography margin="auto" variant="h4" sx={{ color: "#000000" }}>
+                      {difficulties[selectedIndex]}
+                  </Typography>
+              </Grid>
+              <Grid item margin="auto">
+                  <List
+                    component="nav"
+                    aria-label="Difficulty settings"
+                    sx={{ backgroundColor: "#FFFFFF" }}
+                  >
+                      <ListItem>
+                          <Button variant="contained" onClick={handleClickListItem} sx={{backgroundColor: "#555555"}}>
+                              Select Difficulty
+                          </Button>
+                      </ListItem>
+                  </List>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        'aria-labelledby': 'lock-button',
+                        role: 'listbox',
+                    }}
+                  >
+                      {difficulties.map((option, index) => (
+                        <MenuItem
+                          key={option}
+                          selected={index === selectedIndex}
+                          onClick={(event) => handleMenuItemClick(event, index)}
+                        >
+                            {option}
+                        </MenuItem>
+                      ))}
+                  </Menu>
+              </Grid>
+          </Grid>
+      </div>
     );
 }
