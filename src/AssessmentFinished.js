@@ -1,13 +1,14 @@
-import {useEffect, useState} from "react";
-import {doc, setDoc, getFirestore} from "firebase/firestore";
-import {Grid, Card, Typography} from '@mui/material';
-import {useDispatch, useSelector} from "react-redux";
+import { useEffect, useState } from "react";
+import { doc, setDoc, getFirestore, getDoc, updateDoc, increment } from "firebase/firestore";
+import { Grid, Card, Typography } from '@mui/material';
+import { useDispatch, useSelector } from "react-redux";
 import LastAttemptStats from "./containers/LastAttemptStats";
-import {selectCount, selectDuration, clearExerciseState, selectNameOfExercise} from "./features/exercise/exerciseSlice";
-import {resetUserTime, selectMinutes, selectSeconds} from './features/userProfile/userProfileSlice';
-import {useUser} from 'reactfire';
-import {Link} from "react-router-dom";
+import { selectCount, selectDuration, clearExerciseState, selectNameOfExercise, selectDifficultyLevel } from "./features/exercise/exerciseSlice";
+import { resetUserTime, selectMinutes, selectSeconds } from './features/userProfile/userProfileSlice';
+import { useFirestoreDocData, useUser } from 'reactfire';
+import { Link } from "react-router-dom";
 import GenericHeaderButton from "./components/GenericHeaderButton";
+import { getCaloriesBurnt } from "./util";
 
 export default function AssessmentFinished() {
   const dispatch = useDispatch();
@@ -16,25 +17,27 @@ export default function AssessmentFinished() {
   const minutes = useSelector(selectMinutes);
   const seconds = useSelector(selectSeconds);
   const nameOfExercise = useSelector(selectNameOfExercise);
+  const difficulty = useSelector(selectDifficultyLevel);
   const workoutTime = (minutes * 60 + seconds) === 0 ? duration : duration - (minutes * 60 + seconds);
-  const caloriesBurnt = repCount * duration * 0.1;
   const pastExercise = "/exercise/" + nameOfExercise;
+  const { status, data: user } = useUser();
+  const firestore = getFirestore();
+  const ref = doc(firestore, user.uid, 'userData');
+  const { status: firestoreDataStatus, data: userProfileData } = useFirestoreDocData(ref);
+  const today = new Date();
+  const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  const caloriesBurnt = getCaloriesBurnt(repCount, workoutTime, nameOfExercise, difficulty, userProfileData?.gender, userProfileData?.age, userProfileData?.weight);
 
   const [lastAttemptStats, setLastAttemptStats] = useState({
     repCount,
     workoutTime,
     nameOfExercise,
     caloriesBurnt,
+    difficulty,
+    date,
+    time,
   })
-
-  const {data: user} = useUser();
-
-  const saveData = () => {
-    if (user) {
-      setDoc(doc(getFirestore(), "userStatistics", user.uid), lastAttemptStats);
-    }
-  }
-
 
   useEffect(() => {
     return () => {
@@ -43,18 +46,35 @@ export default function AssessmentFinished() {
     }
   })
 
+  if (status === 'loading' || firestoreDataStatus === 'loading') {
+    return <p>Loading</p>;
+  }
+
+  const saveData = () => {
+    if (user) {
+      setDoc(doc(getFirestore(), user.uid, date + " " + time), { //chose to use time stamp
+        lastAttemptStats,
+      });
+      const caloriesToAdd = parseInt(lastAttemptStats.caloriesBurnt);
+      const Ref = doc(getFirestore(), user.uid, 'userData');
+      updateDoc(Ref, {
+        totalCal: increment(caloriesToAdd)
+      });
+    }
+  }
+
   //todo anonymous user also must persist stats in local cache or online - figure out if need to save in Firebase
   //todo fetch lastsessionstats from local cache if possible
   //todo write unit tests first
 
   return (
-    <Card sx={{backgroundColor: "#000000"}}>
+    <Card sx={{ backgroundColor: "#000000" }}>
       <Grid container spacing={3} direction="column" alignItems="center">
-        <Grid item sx={{marginTop: "3rem"}}>
+        <Grid item sx={{ marginTop: "3rem" }}>
           <LastAttemptStats stats={{ repCount, workoutTime, nameOfExercise, caloriesBurnt }} />
         </Grid>
         <Grid item>
-          <Typography sx={{color: "#FFFFFF"}}>
+          <Typography sx={{ color: "#FFFFFF" }}>
             Select continue to save your workout!
           </Typography>
         </Grid>
