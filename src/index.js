@@ -7,6 +7,7 @@ import { store } from './app/store';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AssessmentFinished from "./AssessmentFinished";
 import AuthWrapper from "./containers/AuthWrapper";
+import SettingsWrapper from "./containers/SettingsWrapper";
 import MainHeader from "./containers/MainHeader";
 import Home from './Home'
 import ExerciseAssessment from './ExerciseAssessment';
@@ -95,11 +96,11 @@ root.render((
                   <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
                   <Route exact path="profile" element={<AuthWrapper fallback={fallback}><DashBoard/></AuthWrapper>}/>
                   <Route exact path="settings" element={<AuthWrapper fallback={fallback}><Settings/></AuthWrapper>}/>
-                  <Route exact path="leaderboard" element={<AuthWrapper fallback={fallback}><Leaderboard/></AuthWrapper>}/>
+                  <Route exact path="leaderboard" element={<AuthWrapper fallback={fallback}><Home/></AuthWrapper>}/>
                 </Route>
                 <Route path="/exercise">
-                  <Route exact path="pushups" element={<ExerciseAssessment nameOfExercise={"pushups"}/>}/>
-                  <Route exact path="situps" element={<ExerciseAssessment nameOfExercise={"situps"}/>}/>
+                  <Route exact path="pushups" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={"pushups"}/></SettingsWrapper>}/>
+                  <Route exact path="situps" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={"situps"}/></SettingsWrapper>}/>
                 </Route>
               </Route>
             </Routes>
