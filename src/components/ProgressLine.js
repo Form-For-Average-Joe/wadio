@@ -33,7 +33,10 @@ const steps = [
 
 const ProgressLine = ({cal}) => {
   return (
-    <Box sx={{overflow: "hidden", overflowX: "scroll"}}>
+    <Box display="flex"
+         justifyContent="center"
+         alignItems="center"
+         sx={{overflow: "hidden", overflowX: "scroll"}}>
       <div style={{ margin: 50 }}>
         <ProgressBar
           width={750}
