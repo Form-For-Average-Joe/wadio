@@ -14,7 +14,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const firestore = getFirestore();
-    const ref = doc(firestore, 'userData', user.uid);
+    const ref = doc(firestore, user.uid, 'userData');
     getDoc(ref).then((docSnap) => {
       setUserProfileData(docSnap.data());
     })
@@ -45,10 +45,7 @@ const Dashboard = () => {
             <BodyStatsPanel stats={{ weight: userProfileData?.weight || 0, height: userProfileData?.height || 0}} />
           </Grid>
           <Grid item xs={10} sm={6} md={4}>
-            <LastAttemptStats />
-          </Grid>
-          <Grid item xs={10} sm={6} md={4}>
-            <CaloriesBurnt />
+            <CaloriesBurnt cal={userProfileData?.totalCal} />
           </Grid>
         </Grid>
       </Container>
