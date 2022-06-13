@@ -1,6 +1,5 @@
 import { Typography, Grid, Container, Box } from '@mui/material';
 import BodyStatsPanel from './components/BodyStatsPanel';
-import LastAttemptStats from './containers/LastAttemptStats';
 import CaloriesBurnt from './components/CaloriesBurnt';
 import { theme } from "./index";
 import LogoutButton from './components/LogoutButton';
@@ -37,25 +36,29 @@ const Dashboard = () => {
         </Grid>
         <Grid container spacing={2} direction="row" justifyContent="center" paddingTop="1rem">
           <Grid item align="center" sx={{ paddingTop: "1rem" }}>
-            <LogoutButton />
+            <LogoutButton/>
           </Grid>
         </Grid>
       </Grid>
       <Container sx={{ px: theme.spacing(0), py: theme.spacing(3) }}>
         <Grid container spacing={3} justifyContent="center" style={{ marginBottom: "0.5rem" }}>
           <Grid item xs={10} sm={6} md={4}>
-            <BodyStatsPanel stats={{ weight: userProfileData?.weight || 0, height: userProfileData?.height || 0 }} />
+            <BodyStatsPanel stats={{ weight: userProfileData?.weight || 0, height: userProfileData?.height || 0 }}/>
           </Grid>
           <Grid item xs={10} sm={6} md={4}>
-            <CaloriesBurnt cal={userProfileData?.totalCal} />
+            <CaloriesBurnt cal={userProfileData?.totalCal}/>
           </Grid>
         </Grid>
       </Container>
-      <Grid>
-        <Grid item align="center" xs={10} sm={6} md={4}>
-          <ProgressLine cal={userProfileData?.totalCal} />
+      <Box sx={{display: {xs: 'none', sm: 'block'}}}>
+      <Grid container>
+        <Grid item xs={1} sm={1} xs={1}>
+        </Grid>
+        <Grid item xs={10} sm={10} xs={10}>
+          <ProgressLine cal={userProfileData?.totalCal}/>
         </Grid>
       </Grid>
+      </Box>
     </>
   );
 }
