@@ -10,7 +10,7 @@ export const getDeadlineTime = (duration) => {
   let deadline = new Date();
   deadline.setTime(deadline.getTime() + duration * 1000);
   return deadline;
-}
+};
 
 export const getFlooredSeconds = (total) => {
   return Math.floor((total / 1000) % 60);
@@ -19,6 +19,16 @@ export const getFlooredSeconds = (total) => {
 export const getFlooredMinutes = (total) => {
   return Math.floor((total / 1000 / 60) % 60);
 }
+
+export const exercises = ['Pushups', 'Situps'];
+
+export const difficulties = [
+  'Hellish',
+  'IPPT',
+  'Heavenly',
+];
+
+export const typesOfRanking = ['Cumulative', 'Personal Best'];
 
 function getBaseCal(rate, repCount, nameOfExercise) {
   const rateCorrection = rate * 0.2;
