@@ -64,7 +64,6 @@ const Settings = () => {
       };
       inner().then(res => {
         const data = res.data();
-        console.log(data)
         if (data) { // not a first-time user
           setNickname(data.nickname);
           setAge(data.age);
