@@ -7,34 +7,13 @@ import { useUser } from 'reactfire';
 import { doc, getFirestore, getDoc, collection, query, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import ProgressLine from './components/ProgressLine';
-
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { createData, renameForTable,  } from './util';
+import PastExerciseTable from './components/PastExerciseTable';
 
 const Dashboard = () => {
   const { status, data: user } = useUser();
   const [userProfileData, setUserProfileData] = useState({});
   const [rows, setRows] = useState([{}]);
-
-  function createData(Date, Time, Exercise, Reps, Duration, Calories) {
-    return { Date, Time, Exercise, Reps, Duration, Calories };
-  }
-
-  function rename(e) {
-    switch(e) {
-      case "pushups":
-        return "Push-Ups"
-      case "situps":
-        return "Sit-Ups"
-      default:
-        return "Undefined"
-    }
-  }
 
   async function getStats(firestore) {
     const temp = [];
@@ -45,7 +24,7 @@ const Dashboard = () => {
         temp.unshift(createData(
           document.data().lastAttemptStats.date,
           document.data().lastAttemptStats.time,
-          rename(document.data().lastAttemptStats.nameOfExercise),
+          renameForTable(document.data().lastAttemptStats.nameOfExercise),
           document.data().lastAttemptStats.repCount,
           document.data().lastAttemptStats.workoutTime,
           document.data().lastAttemptStats.caloriesBurnt))
@@ -103,35 +82,7 @@ const Dashboard = () => {
         </Typography>
         <Grid container sx={{ paddingTop: "1rem" }}>
           <Grid item margin="auto" xs={10} sm={10} md={7} lg={7} xl={7}>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">Date</TableCell>
-                    <TableCell align="center">Time</TableCell>
-                    <TableCell align="center">Exercise</TableCell>
-                    <TableCell align="center">Reps</TableCell>
-                    <TableCell align="center">Duration</TableCell>
-                    <TableCell align="center">Calories</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow
-                      key={row.TimeStamp}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell align="center">{row.Date}</TableCell>
-                      <TableCell align="center">{row.Time}</TableCell>
-                      <TableCell align="center">{row.Exercise}</TableCell>
-                      <TableCell align="center">{row.Reps}</TableCell>
-                      <TableCell align="center">{row.Duration}</TableCell>
-                      <TableCell align="center">{row.Calories}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <PastExerciseTable rows={rows} />
           </Grid>
         </Grid>
       </Box>
