@@ -3,7 +3,7 @@ import BodyStatsPanel from './components/BodyStatsPanel';
 import CaloriesBurnt from './components/CaloriesBurnt';
 import { theme } from "./index";
 import LogoutButton from './components/LogoutButton';
-import { useUser, useFirestoreDocData } from 'reactfire';
+import { useUser } from 'reactfire';
 import { doc, getFirestore, getDoc, collection, query, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import ProgressLine from './components/ProgressLine';
@@ -21,19 +21,31 @@ const Dashboard = () => {
   const [userProfileData, setUserProfileData] = useState({});
   const [rows, setRows] = useState([{}]);
 
-  function createData(TimeStamp, Exercise, Reps, Duration, Calories) {
-    return { TimeStamp, Exercise, Reps, Duration, Calories };
+  function createData(Date, Time, Exercise, Reps, Duration, Calories) {
+    return { Date, Time, Exercise, Reps, Duration, Calories };
   }
 
+  function rename(e) {
+    switch(e) {
+      case "pushups":
+        return "Push-Ups"
+      case "situps":
+        return "Sit-Ups"
+      default:
+        return "Undefined"
+    }
+  }
 
   async function getStats(firestore) {
     const temp = [];
     const q = query(collection(firestore, user.uid));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((document) => {
-      if (document.id != "userData") {
-        temp.unshift(createData(document.id,
-          document.data().lastAttemptStats.nameOfExercise,
+      if (document.id !== "userData") {
+        temp.unshift(createData(
+          document.data().lastAttemptStats.date,
+          document.data().lastAttemptStats.time,
+          rename(document.data().lastAttemptStats.nameOfExercise),
           document.data().lastAttemptStats.repCount,
           document.data().lastAttemptStats.workoutTime,
           document.data().lastAttemptStats.caloriesBurnt))
@@ -86,20 +98,21 @@ const Dashboard = () => {
             <ProgressLine cal={userProfileData?.totalCal} />
           </Grid>
         </Grid>
-        <Typography variant="h6" align="center" sx={{paddingTop: "2rem"}}>
-            Your Exercise History
-          </Typography>
-        <Grid container sx={{paddingTop: "1rem"}}>
+        <Typography variant="h6" align="center" sx={{ paddingTop: "2rem" }}>
+          Your Exercise History
+        </Typography>
+        <Grid container sx={{ paddingTop: "1rem" }}>
           <Grid item margin="auto" xs={10} sm={10} md={7} lg={7} xl={7}>
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>TimeStamp</TableCell>
-                    <TableCell align="right">Exercise</TableCell>
-                    <TableCell align="right">Reps</TableCell>
-                    <TableCell align="right">Duration</TableCell>
-                    <TableCell align="right">Calories</TableCell>
+                    <TableCell align="center">Date</TableCell>
+                    <TableCell align="center">Time</TableCell>
+                    <TableCell align="center">Exercise</TableCell>
+                    <TableCell align="center">Reps</TableCell>
+                    <TableCell align="center">Duration</TableCell>
+                    <TableCell align="center">Calories</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -108,13 +121,12 @@ const Dashboard = () => {
                       key={row.TimeStamp}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                      <TableCell component="th" scope="row">
-                        {row.TimeStamp}
-                      </TableCell>
-                      <TableCell align="right">{row.Exercise}</TableCell>
-                      <TableCell align="right">{row.Reps}</TableCell>
-                      <TableCell align="right">{row.Duration}</TableCell>
-                      <TableCell align="right">{row.Calories}</TableCell>
+                      <TableCell align="center">{row.Date}</TableCell>
+                      <TableCell align="center">{row.Time}</TableCell>
+                      <TableCell align="center">{row.Exercise}</TableCell>
+                      <TableCell align="center">{row.Reps}</TableCell>
+                      <TableCell align="center">{row.Duration}</TableCell>
+                      <TableCell align="center">{row.Calories}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
