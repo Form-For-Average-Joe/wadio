@@ -1,17 +1,25 @@
 import { Typography, Card, Grid } from '@mui/material';
 
-const caloriesburnttoday = 1000;
+const CaloriesBurnt = ({ cal }) => {
+    const levelData = cal > 5000 ? 0 : 1000 - (cal % 1000);
 
-const CaloriesBurnt = () => {
     return (
-        <Card>
-            <Grid container justifyContent="center" alignItems="center">
-                <Grid item style={{paddingTop: "1rem", paddingBottom: "1rem"}}>
+        <Card sx={{paddingTop: "1rem"}}>
+            <Grid container justifyContent="center" alignItems="center" direction="column">
+                <Grid item style={{ paddingTop: "1rem" }}>
                     <Typography variant="subtitle1" align="center">
-                        Calories Burnt Today:
+                        Cumulative Calories Burnt:
                     </Typography>
                     <Typography variant="h2" align="center">
-                        {caloriesburnttoday}
+                        {cal}
+                    </Typography>
+                </Grid>
+                <Grid item style={{ paddingTop: "2rem" }}>
+                    <Typography variant="subtitle1" align="center">
+                        Calories required to reach next level:
+                    </Typography>
+                    <Typography variant="h2" align="center">
+                        {levelData}
                     </Typography>
                 </Grid>
             </Grid>

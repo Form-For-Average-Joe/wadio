@@ -1,7 +1,6 @@
 import { useSigninCheck } from 'reactfire';
 
-// Use this wrapper to paywall our users
-export const AuthWrapper = ({ children, fallback }) => {
+const AuthWrapper = ({ children, fallback }) => {
   const { status, data } = useSigninCheck();
 
   if (!children) {
@@ -14,3 +13,5 @@ export const AuthWrapper = ({ children, fallback }) => {
   }
   return fallback;
 };
+
+export default AuthWrapper;

@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "wadio",
   "version": "0.3.0",
   "private": true,
   "engines": {
@@ -23,12 +23,14 @@
     "@testing-library/user-event": "^13.5.0",
     "calculate-correlation": "^1.2.3",
     "firebase": "^9.8.1",
+    "firebaseui": "^6.0.1",
     "howler": "^2.2.3",
     "prop-types": "^15.8.1",
     "react": "^18.1.0",
     "react-dom": "^18.0.0",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
+    "react-step-progress-bar": "^1.0.3",
     "reactfire": "^4.2.1",
     "typescript": "^4.6.4",
     "web-vitals": "^2.1.4"

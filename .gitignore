@@ -10,6 +10,7 @@
 
 /.firebase
 /.idea
+/emulator-export
 
 # production
 /build
