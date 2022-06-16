@@ -19,7 +19,7 @@ const Settings = () => {
   const [height, setHeight] = useState("");
   const [gender, setGender] = useState("0");
   const [anonymous, setAnonymous] = useState(false)
-  const [totalCal, setTotalCal] = useState("0");
+  const [totalCal, setTotalCal] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const { state } = useLocation();
   const isFormValid = () => {

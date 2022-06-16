@@ -4,8 +4,8 @@ import Dialog from '@mui/material/Dialog';
 import GenericHeaderButton from "./GenericHeaderButton";
 import { Link } from "react-router-dom";
 
-import pushups from '../assets/pushups.jpeg';
-import situps from '../assets/situps.png';
+import pushups from '../assets/pushups.gif';
+import situps from '../assets/situps.gif';
 import comingsoon from '../assets/comingsoon.webp';
 
 function getInfo(exerciseName) {
@@ -14,13 +14,13 @@ function getInfo(exerciseName) {
       return {
         description: 'Login or reach calories requirement to unlock!',
         instruction: '',
-        exercise: 'This exercise is Locked',
+        exercise: 'This Exercise is Locked',
         to: '/'
       }
     case 'pushups':
       return {
         image: pushups,
-        description: 'A classic exercise performed in a prone position by raising and lowering the body with the straightening and bending of the arms while keeping the back straight and supporting the body on the hands and toes',
+        description: 'A classic exercise performed in a prone position by raising and lowering the body with the straightening and bending of the arms while keeping the back straight and supporting the body on the hands and toes.',
         instruction: 'After pressing the start button, quickly get into the push-up position with your back and arms straightened. Keep you body still to ensure proper calibration. Once calibration is done, a bell sound can be heard to indicate the start of the exercise.',
         exercise: 'Push-Ups',
         to: '/exercise/pushups'

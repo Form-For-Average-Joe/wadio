@@ -4,10 +4,11 @@ import cover from './assets/cover.jpeg';
 import ExerciseInfo from './components/ExerciseInfo';
 import GenericHeaderButton from './components/GenericHeaderButton';
 import { useUser } from 'reactfire';
-import { doc, getFirestore, getDoc, collection, query, getDocs } from 'firebase/firestore';
+import { doc, getFirestore, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 import pushups from './assets/pushups.jpeg';
+import pushupsG from './assets/pushupsG.jpeg';
 import situps from './assets/situps.png';
 import situpsG from './assets/situpsG.jpeg';
 import comingsoon from './assets/comingsoon.webp';
@@ -15,10 +16,10 @@ import comingsoon from './assets/comingsoon.webp';
 const exerciseInformation = [
   {
     image: pushups,
-    locked: pushups,
+    locked: pushupsG,
     title: 'pushups',
     description: 'Choose your custom timings and difficulty',
-    toUnlock: 'Choose your custom timings and difficulty',
+    toUnlock: 'Login to Unlock!',
     exercise: 'Push-Ups',
     to: '/exercise/pushups'
   },
@@ -100,7 +101,7 @@ const ExerciseCards = () => {
                     <GenericHeaderButton variant="contained"
                       style={{ justifyContent: "center" }}
                       component={Link}
-                      to={unlock ? exerciseInfo.to : '/'}>Attempt Now!</GenericHeaderButton>
+                      to={unlock ? exerciseInfo.to : '/'}>Attempt</GenericHeaderButton>
                   </Grid>
                   <Grid item>
                     <ExerciseInfo exerciseName={name} />
