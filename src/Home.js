@@ -1,17 +1,16 @@
-import { Card, CardContent, CardMedia, Container, Grid, Stack, Typography, Box, Paper, tableSortLabelClasses } from '@mui/material';
+import { Card, CardContent, CardMedia, Container, Grid, Typography, Box, Paper } from '@mui/material';
 import { Link } from "react-router-dom";
 import cover from './assets/cover.jpeg';
 import ExerciseInfo from './components/ExerciseInfo';
 import GenericHeaderButton from './components/GenericHeaderButton';
-import { useUser } from 'reactfire';
-import { doc, getFirestore, getDoc } from 'firebase/firestore';
+import { useUser, useSigninCheck } from 'reactfire';
 import { useEffect, useState } from 'react';
-
 import pushups from './assets/pushups.jpeg';
 import pushupsG from './assets/pushupsG.jpeg';
 import situps from './assets/situps.png';
 import situpsG from './assets/situpsG.jpeg';
 import comingsoon from './assets/comingsoon.webp';
+import { fetchUserData } from "./util";
 
 const exerciseInformation = [
   {
@@ -66,23 +65,24 @@ function checkUnlocked(cal, ex) {
 const ExerciseCards = () => {
   const { status, data: user } = useUser();
   const [userProfileData, setUserProfileData] = useState({});
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { status: signInCheckStatus, data: signInCheckData } = useSigninCheck();
 
   useEffect(() => {
     if (user) {
-      const firestore = getFirestore();
-      const ref = doc(firestore, user.uid, 'userData');
-      getDoc(ref).then((docSnap) => {
-        setUserProfileData(docSnap.data());
+      fetchUserData(user.uid, (data) => {
+        setUserProfileData(data);
       })
-      setLoggedIn(true);
     }
   }, [user])
+
+  if (status === 'loading' || signInCheckStatus === 'loading') {
+    return <p>Loading</p>;
+  }
 
   return (
     <Grid container spacing={2}>
       {exerciseInformation.map(exerciseInfo => {
-        const unlock = loggedIn && checkUnlocked(userProfileData?.totalCal, exerciseInfo.title) ? true : false
+        const unlock = signInCheckData.signedIn && checkUnlocked(userProfileData?.totalCal, exerciseInfo.title)
         const name = unlock ? exerciseInfo.title : "locked"
         return (
           <Grid key={exerciseInfo.title} item xs={6} sm={6} md={6} lg={6} xl={6}>

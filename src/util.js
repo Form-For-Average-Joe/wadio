@@ -1,4 +1,6 @@
 // to mirror the webcam
+import axios from "axios";
+
 export const webcamStyles = {
   video: {
     WebkitTransform: "scaleX(-1)",
@@ -11,7 +13,7 @@ export const createData = (Date, Time, Exercise, Reps, Duration, Calories) => {
 }
 
 export const renameForTable = (e) => {
-  switch(e) {
+  switch (e) {
     case "pushups":
       return "Push-Ups"
     case "situps":
@@ -35,7 +37,7 @@ export const getFlooredMinutes = (total) => {
   return Math.floor((total / 1000 / 60) % 60);
 }
 
-export const exercises = ['Pushups', 'Situps'];
+export const exercises = ['pushups', 'situps'];
 
 export const difficulties = [
   'Hellish',
@@ -59,8 +61,7 @@ function getWeightCorrectedCal(baseCal, weight) {
       cal *= 0.96; //calories burnt drops 4% (compounding) per 5kg
       benchmark -= 5;
     }
-  }
-  else { //if weight of user is already 85kg, not correction is done
+  } else { //if weight of user is already 85kg, not correction is done
     while (weight > benchmark) {
       cal *= 1.04; //calories burnt rises 4% (compounding) per 5kg
       benchmark += 5;
@@ -77,8 +78,7 @@ function getAgeCorrectedCal(baseCal, age) {
       cal *= 0.95; //calories burnt drops 5% (compounding) per 5years
       benchmark -= 5;
     }
-  }
-  else { //if weight of user is already 85kg, not correction is done
+  } else { //if weight of user is already 85kg, not correction is done
     while (age > benchmark) {
       cal *= 0.95; //calories burnt drops 5% (compounding) per 5years
       benchmark += 5;
@@ -91,23 +91,31 @@ function getFinalCal(baseCal, difficulty, gender) {
   let cal = baseCal;
   switch (difficulty) {
     case 0: //hellish
-      cal *= 1.2; break;
+      cal *= 1.2;
+      break;
     case 1: //IPPT
-      cal *= 1.0; break;
+      cal *= 1.0;
+      break;
     case 2: //heavenly
-      cal *= 0.8; break;
+      cal *= 0.8;
+      break;
     default:
-      console.log("error, invalid difficulty to compute calories"); break;
+      console.log("error, invalid difficulty to compute calories");
+      break;
   }
   switch (gender) {
     case "0": //male
-      cal *= 1.0; break;
+      cal *= 1.0;
+      break;
     case "1": //female
-      cal *= 0.9; break;
+      cal *= 0.9;
+      break;
     case "2": //others
-      cal *= 0.95; break;
+      cal *= 0.95;
+      break;
     default:
-      console.log("error, invalid gender to compute calories"); break;
+      console.log("error, invalid gender to compute calories");
+      break;
   }
   return cal;
 }
@@ -119,6 +127,62 @@ export const getCaloriesBurnt = (repCount, workoutTime, nameOfExercise, difficul
   const ageCorrectedCal = getAgeCorrectedCal(weightCorrectedCal, age);
   const finalCal = getFinalCal(ageCorrectedCal, difficulty, gender);
   return finalCal.toFixed(1);
+}
+
+export const fetchUserData = async (uid, callback) => {
+  const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/user/getUserStatistics/' + uid);
+  try {
+    const { data } = await makeReq();
+    if (data) {
+      callback(data);
+    }
+  } catch (err) {
+    console.log("Error fetching user data")
+  }
+}
+
+export const fetchUserPhotoURL = async (uid, callback) => {
+  const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/user/getUserPhotoURL/' + uid);
+  try {
+    const { data: userAddedPhotoURL } = await makeReq();
+    if (userAddedPhotoURL) {
+      callback(userAddedPhotoURL);
+    }
+  } catch (err) {
+    console.log("Error fetching user data")
+  }
+}
+
+export const fetchUserCumulativeCalories = async (uid, callback) => {
+  const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/calories/user/' + uid);
+  try {
+    const { data } = await makeReq();
+    if (data.score) {
+      callback(data.score);
+    }
+  } catch (err) {
+    console.log("Error fetching user data")
+  }
+}
+
+export const getUserNickname = (firebaseUserData, userProfileData) => {
+  return userProfileData?.nickname || firebaseUserData?.displayName || firebaseUserData?.email.match(/.*(?=@)/) || 'Guest'
+};
+
+export const makeTitleCase = str => `${str[0].toUpperCase()}${str.slice(1).toLowerCase()}`;
+
+export const exercisesWithCalories = () => {
+  const arr = [...exercises];
+  arr.push('calories');
+  return arr;
+}
+
+export const exercisesWithCaloriesTitleCase = () => {
+  const arr = [];
+  exercisesWithCalories().forEach((exercise) => {
+    arr.push(makeTitleCase(exercise));
+  });
+  return arr;
 }
 
 // function handleStart() {
