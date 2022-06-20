@@ -121,7 +121,10 @@ const Settings = () => {
           type={'text'}
           size="small"
           sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
-          onChange={(e) => setNickname(e.target.value)}
+          onChange={(e) => {
+            setNickname(e.target.value);
+            updateProfile(user, {displayName: e.target.value});
+          }}
         />
         <TextField
           required
@@ -174,9 +177,8 @@ const Settings = () => {
           size="small"
           sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
           onChange={(e) => {
-            setPhotoURL(e.target.value)
-            console.log(e.target.value)
-            updateProfile(user, {photoURL: e.target.value})
+            setPhotoURL(e.target.value);
+            updateProfile(user, {photoURL: e.target.value});
           }}
         />
         <Grid container spacing={0} direction="column" alignItems="center">

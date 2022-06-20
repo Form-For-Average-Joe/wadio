@@ -157,6 +157,22 @@ export const getUserNickname = (firebaseUserData, userProfileData) => {
   return userProfileData?.nickname || firebaseUserData?.displayName || firebaseUserData?.email.match(/.*(?=@)/) || 'Guest'
 };
 
+export const makeTitleCase = str => `${str[0].toUpperCase()}${str.slice(1).toLowerCase()}`;
+
+export const exercisesWithCalories = () => {
+  const arr = [...exercises];
+  arr.push('Calories');
+  return arr;
+}
+
+export const exercisesWithCaloriesTitleCase = () => {
+  const arr = [];
+  exercisesWithCalories().forEach((exercise) => {
+    arr.push(makeTitleCase(exercise));
+  });
+  return arr;
+}
+
 // function handleStart() {
 //   if (intervalRef.current) clearInterval(intervalRef.current);
 //   clearTimer(getDeadlineTime());

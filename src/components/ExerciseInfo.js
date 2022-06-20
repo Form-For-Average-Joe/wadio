@@ -62,7 +62,6 @@ function getInfo(exerciseName) {
 const ExerciseInfo = ({ exerciseName }) => {
   const [open, setOpen] = useState(false);
   const Exercise = getInfo(exerciseName);
-  //console.log(exerciseName);
 
   return (
     <>
