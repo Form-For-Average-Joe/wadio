@@ -69,7 +69,7 @@ export default function AssessmentFinished() {
     <Card sx={{ backgroundColor: "#000000" }}>
       <Grid container spacing={3} direction="column" alignItems="center">
         <Grid item sx={{ marginTop: "3rem" }}>
-          <LastAttemptStats stats={{ repCount, workoutTime, nameOfExercise, caloriesBurnt }} />
+          <LastAttemptStats lastAttemptStats={lastAttemptStats} />
         </Grid>
         <Grid item>
           <Typography sx={{ color: "#FFFFFF" }}>
