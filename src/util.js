@@ -11,7 +11,7 @@ export const createData = (Date, Time, Exercise, Reps, Duration, Calories) => {
 }
 
 export const renameForTable = (e) => {
-  switch(e) {
+  switch (e) {
     case "pushups":
       return "Push-Ups"
     case "situps":
@@ -113,20 +113,10 @@ function getFinalCal(baseCal, difficulty, gender) {
 }
 
 export const getCaloriesBurnt = (repCount, workoutTime, nameOfExercise, difficulty, gender, age, weight) => {
-  const rate = repCount / (workoutTime / 60); //rate of exercise, reps per minute
-  const baseCal = getBaseCal(rate, repCount, nameOfExercise);
-  const weightCorrectedCal = getWeightCorrectedCal(baseCal, weight);
-  const ageCorrectedCal = getAgeCorrectedCal(weightCorrectedCal, age);
-  const finalCal = getFinalCal(ageCorrectedCal, difficulty, gender);
-  return finalCal.toFixed(1);
+    const rate = repCount / (workoutTime / 60); //rate of exercise, reps per minute
+    const baseCal = getBaseCal(rate, repCount, nameOfExercise);
+    const weightCorrectedCal = getWeightCorrectedCal(baseCal, weight);
+    const ageCorrectedCal = getAgeCorrectedCal(weightCorrectedCal, age);
+    const finalCal = getFinalCal(ageCorrectedCal, difficulty, gender);
+    return finalCal.toFixed(1);
 }
-
-// function handleStart() {
-//   if (intervalRef.current) clearInterval(intervalRef.current);
-//   clearTimer(getDeadlineTime());
-// }
-//
-// function handleStop() {
-//   if (intervalRef.current) clearInterval(intervalRef.current);
-//   clearTimer(getDeadlineTime() - duration);
-// }
