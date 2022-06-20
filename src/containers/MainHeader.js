@@ -16,12 +16,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
 import PropTypes from 'prop-types';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Link, NavLink, Outlet} from "react-router-dom";
 import {useSigninCheck, useUser} from 'reactfire';
 import logo from '../assets/OrbitalLogo.png';
 import GenericHeaderButton from "../components/GenericHeaderButton";
 import LoginDialog from '../components/LoginDialog';
+import { fetchUserPhotoURL } from "../util";
 
 function HideOnScroll(props) {
   const {children} = props;
@@ -40,9 +41,15 @@ HideOnScroll.propTypes = {
 };
 
 const Member = () => {
-  const {data} = useUser();
+  const {data: user} = useUser();
+  const [photoURL, setPhotoURL] = useState(user.photoURL);
+  useEffect(() => {
+    fetchUserPhotoURL(user.uid, (userAddedPhotoURL) => {
+        setPhotoURL(userAddedPhotoURL);
+    });
+  })
   // const matches = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  return data.photoURL ? <Avatar src={data.photoURL}/> : <Avatar><AccountCircleIcon/></Avatar>;
+  return photoURL ? <Avatar src={photoURL}/> : <Avatar><AccountCircleIcon/></Avatar>;
 }
 
 const drawerWidth = 240;

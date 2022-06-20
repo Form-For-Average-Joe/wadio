@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { doc, setDoc, getFirestore, getDoc, updateDoc, increment } from "firebase/firestore";
+import { doc, setDoc, getFirestore, updateDoc, increment } from "firebase/firestore";
 import { Grid, Card, Typography } from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
 import LastAttemptStats from "./containers/LastAttemptStats";
@@ -28,7 +28,7 @@ export default function AssessmentFinished() {
   const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   const caloriesBurnt = getCaloriesBurnt(repCount, workoutTime, nameOfExercise, difficulty, userProfileData?.gender, userProfileData?.age, userProfileData?.weight);
 
-  //todo to save the last attempt stats before clearExerciseState is dispatched, as the component might render a few times and clear stats before sending to Firestore
+  //todo this is a hacky approach to save the last attempt stats before clearExerciseState is dispatched, as the component might render a few times and clear stats before sending to Firestore
   const [lastAttemptStats, setLastAttemptStats] = useState({
     repCount,
     workoutTime,

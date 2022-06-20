@@ -8,6 +8,7 @@ import { Link, useLocation } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { fetchUserData } from "./util";
+import { updateProfile, reload } from 'firebase/auth';
 
 const isInvalidValue = (value) => value === "0" || value === "";
 
@@ -22,6 +23,7 @@ const Settings = () => {
   const [anonymous, setAnonymous] = useState(false)
   const [totalCal, setTotalCal] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [photoURL, setPhotoURL] = useState(user.photoURL);
   const { state } = useLocation();
   const isFormValid = () => {
     return !(isInvalidValue(age) || isInvalidValue(weight) || isInvalidValue(height));
@@ -65,6 +67,7 @@ const Settings = () => {
         setGender(data.gender);
         setAnonymous(data.anonymous);
         setTotalCal(data.totalCal);
+        setPhotoURL(data.photoURL || "");
       });
     }
   }, [user])
@@ -79,9 +82,11 @@ const Settings = () => {
           height: +height,
           gender,
           anonymous,
-          totalCal
+          totalCal,
+          photoURL
         }
       });
+      reload(user);
     } else {
       e.preventDefault();
     }
@@ -161,6 +166,19 @@ const Settings = () => {
           <ToggleButton value="1">Female</ToggleButton>
           <ToggleButton value="2">Others</ToggleButton>
         </ToggleButtonGroup>
+        <TextField
+          label="URL of your photo"
+          value={photoURL}
+          variant="outlined"
+          type={'text'}
+          size="small"
+          sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
+          onChange={(e) => {
+            setPhotoURL(e.target.value)
+            console.log(e.target.value)
+            updateProfile(user, {photoURL: e.target.value})
+          }}
+        />
         <Grid container spacing={0} direction="column" alignItems="center">
           <Grid item>
             <Switch checked={anonymous} onChange={handleAnonymous}>

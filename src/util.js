@@ -141,6 +141,18 @@ export const fetchUserData = async (uid, callback) => {
   }
 }
 
+export const fetchUserPhotoURL = async (uid, callback) => {
+  const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/user/getUserPhotoURL/' + uid);
+  try {
+    const { data: userAddedPhotoURL } = await makeReq();
+    if (userAddedPhotoURL) {
+      callback(userAddedPhotoURL);
+    }
+  } catch (err) {
+    console.log("Error fetching user data")
+  }
+}
+
 // function handleStart() {
 //   if (intervalRef.current) clearInterval(intervalRef.current);
 //   clearTimer(getDeadlineTime());
