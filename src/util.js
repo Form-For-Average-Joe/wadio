@@ -153,6 +153,18 @@ export const fetchUserPhotoURL = async (uid, callback) => {
   }
 }
 
+export const fetchUserCumulativeCalories = async (uid, callback) => {
+  const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/calories/user/' + uid);
+  try {
+    const { data } = await makeReq();
+    if (data.score) {
+      callback(data.score);
+    }
+  } catch (err) {
+    console.log("Error fetching user data")
+  }
+}
+
 export const getUserNickname = (firebaseUserData, userProfileData) => {
   return userProfileData?.nickname || firebaseUserData?.displayName || firebaseUserData?.email.match(/.*(?=@)/) || 'Guest'
 };
