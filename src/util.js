@@ -173,7 +173,7 @@ export const makeTitleCase = str => `${str[0].toUpperCase()}${str.slice(1).toLow
 
 export const exercisesWithCalories = () => {
   const arr = [...exercises];
-  arr.push('Calories');
+  arr.push('calories');
   return arr;
 }
 

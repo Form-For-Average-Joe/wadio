@@ -1,4 +1,5 @@
 import { Avatar, Box } from "@mui/material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
@@ -9,13 +10,13 @@ import TableContainer from '@mui/material/TableContainer';
 import Typography from '@mui/material/Typography';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import logo from './assets/OrbitalLogo.png';
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { difficulties, exercises, typesOfRanking } from './util';
+import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 
 //todo need to maintain cumulative (update query), personal best (write) and last attempt (write) in profile
 // device --> first to firestore, second to server to update the red-black
@@ -27,18 +28,20 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 // keep pagination, or infinite scrolling?
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
 // need to store exercise datestamp, time when leaderboard function was last run, then access the relevant rows to be added to the leaderboard
-const columns = [
-  { id: 'rank', label: 'rank' },
-  { id: 'name', label: 'Name' },
+
+
+// const columns = [
+//   { id: 'rank', label: 'rank' },
+//   { id: 'name', label: 'Name' },
   // { id: 'exercise', label: 'Exercise' },
-  { id: 'reps', label: 'Reps' },
+  // { id: 'reps', label: 'Reps' },
   // {
   // id: 'duration',
   // label: 'Duration',
   // align: 'right',
   // minWidth: 170
   // },
-];
+// ];
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -148,7 +151,7 @@ export default function Leaderboard() {
 
   useEffect(() => {
     const getLeaderboardData = async () => {
-      const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + exercises[exerciseSelectedIndex] + '/leaderboard');
+      const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard');
       try {
         const { data } = await makeReq();
         setRowData(data);
@@ -162,7 +165,8 @@ export default function Leaderboard() {
   return (
     <Paper sx={{ width: '100%', overflow: 'scroll' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-around', my: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 } }}>
-        <GenericSelectionMenu nameOfVariable={'exercise'} options={exercises} variableSelected={exerciseSelectedIndex} setVariableSelected={setExerciseSelectedIndex} />
+        <GenericSelectionMenu nameOfVariable={'exercise'} options={exercisesWithCaloriesTitleCase()}
+                              variableSelected={exerciseSelectedIndex} setVariableSelected={setExerciseSelectedIndex}/>
         {/*<GenericSelectionMenu nameOfVariable={'difficulty'} options={difficulties} variableSelected={difficultySelected} setVariableSelected={setDifficultySelected} />*/}
         {/*<GenericSelectionMenu nameOfVariable={'typeOfRanking'} options={typesOfRanking} variableSelected={typeOfRanking} setVariableSelected={setTypeOfRanking} />*/}
       </Box>
@@ -178,10 +182,11 @@ export default function Leaderboard() {
                       <Typography variant={"h6"}>{row.rank}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Avatar variant="rounded" src={logo}/>
+                      {row.photoURL ? <Avatar variant="rounded" src={row.photoURL}/> :
+                       <Avatar><AccountCircleIcon/></Avatar>}
                     </TableCell>
                     <TableCell>
-                      <Typography variant={"h6"}>{row.uid}</Typography>
+                      <Typography variant={"h6"}>{row.nickname || row.uid}</Typography>
                       <Typography>{row.results + ' reps'}</Typography>
                     </TableCell>
                   </TableRow>
