@@ -96,7 +96,7 @@ root.render((
                   <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
                   <Route exact path="profile" element={<AuthWrapper fallback={fallback}><DashBoard/></AuthWrapper>}/>
                   <Route exact path="settings" element={<AuthWrapper fallback={fallback}><Settings/></AuthWrapper>}/>
-                  <Route exact path="leaderboard" element={<AuthWrapper fallback={fallback}><Home/></AuthWrapper>}/>
+                  <Route exact path="leaderboard" element={<AuthWrapper fallback={fallback}><Leaderboard/></AuthWrapper>}/>
                 </Route>
                 <Route path="/exercise">
                   <Route exact path="pushups" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={"pushups"}/></SettingsWrapper>}/>

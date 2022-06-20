@@ -35,7 +35,7 @@ export const getFlooredMinutes = (total) => {
   return Math.floor((total / 1000 / 60) % 60);
 }
 
-export const exercises = ['Pushups', 'Situps'];
+export const exercises = ['pushups', 'situps'];
 
 export const difficulties = [
   'Hellish',
