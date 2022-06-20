@@ -8,6 +8,7 @@ const AuthWrapper = ({ children, fallback }) => {
   }
   if (status === 'loading') {
     //todo loadingSpinner
+    return <p>Loading</p>;
   } else if (data.signedIn === true) {
     return children;
   }
