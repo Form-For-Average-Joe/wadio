@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { doc, setDoc, getFirestore, updateDoc, increment } from "firebase/firestore";
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 import { Grid, Card, Typography } from '@mui/material';
 import { useDispatch } from "react-redux";
 import LastAttemptStats from "./containers/LastAttemptStats";

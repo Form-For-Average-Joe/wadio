@@ -1,6 +1,14 @@
+import { Box, Typography } from "@mui/material";
 import { useSigninCheck } from 'reactfire';
 
-const AuthWrapper = ({ children, fallback }) => {
+const defaultFallback = (
+  <Box>
+    <Typography sx={{ width: '100vw', height: '100vh' }} align='center' variant={"h2"}>Sign in to view
+      this
+      page!</Typography>
+  </Box>);
+
+const AuthWrapper = ({ children }) => {
   const { status, data } = useSigninCheck();
 
   if (!children) {
@@ -12,7 +20,7 @@ const AuthWrapper = ({ children, fallback }) => {
   } else if (data.signedIn === true) {
     return children;
   }
-  return fallback;
+  return defaultFallback;
 };
 
 export default AuthWrapper;

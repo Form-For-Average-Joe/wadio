@@ -4,7 +4,7 @@ import CaloriesBurnt from './components/CaloriesBurnt';
 import { theme } from "./index";
 import LogoutButton from './components/LogoutButton';
 import { useUser } from 'reactfire';
-import { doc, getFirestore, getDoc, collection, query, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import ProgressLine from './components/ProgressLine';
 import { createData, fetchUserData, getUserNickname, renameForTable, } from './util';

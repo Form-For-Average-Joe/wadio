@@ -19,16 +19,13 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 
 //todo need to maintain cumulative (update query), personal best (write) and last attempt (write) in profile
-// device --> first to firestore, second to server to update the red-black
 // friends
-// need to maintain all previous exercises
 // https://dribbble.com/tags/mobile_leaderboard
 // https://dribbble.com/shots/14650665-Daily-UI-Leaderboard/attachments/6345922?mode=media
 // add a label/marker for friends, and a button to only show friends vs global
 // keep pagination, or infinite scrolling?
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
 // need to store exercise datestamp, time when leaderboard function was last run, then access the relevant rows to be added to the leaderboard
-
 
 // const columns = [
 //   { id: 'rank', label: 'rank' },

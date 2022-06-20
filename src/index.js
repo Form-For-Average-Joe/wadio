@@ -76,12 +76,6 @@ export const theme = responsiveFontSizes(createTheme({
 
 const container = document.getElementById('root');
 const root = createRoot(container);
-const fallback = (
-  <Box>
-    <Typography sx={{ width: '100vw', height: '100vh' }} align='center' variant={"h2"}>Sign in to view
-      this
-      page!</Typography>
-  </Box>);
 
 root.render((
   <StrictMode>
@@ -94,9 +88,9 @@ root.render((
                 <Route element={<MainHeader/>}>
                   <Route index path="/" element={<Home/>}/>
                   <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
-                  <Route exact path="profile" element={<AuthWrapper fallback={fallback}><DashBoard/></AuthWrapper>}/>
-                  <Route exact path="settings" element={<AuthWrapper fallback={fallback}><Settings/></AuthWrapper>}/>
-                  <Route exact path="leaderboard" element={<AuthWrapper fallback={fallback}><Leaderboard/></AuthWrapper>}/>
+                  <Route exact path="profile" element={<AuthWrapper><DashBoard/></AuthWrapper>}/>
+                  <Route exact path="settings" element={<AuthWrapper><Settings/></AuthWrapper>}/>
+                  <Route exact path="leaderboard" element={<AuthWrapper><Leaderboard/></AuthWrapper>}/>
                 </Route>
                 <Route path="/exercise">
                   <Route exact path="pushups" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={"pushups"}/></SettingsWrapper>}/>
