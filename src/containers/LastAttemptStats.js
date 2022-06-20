@@ -4,7 +4,7 @@ import {doc, getFirestore, getDoc} from 'firebase/firestore';
 import {getAuth} from "firebase/auth";
 
 // the stats prop prevents an additional query from being sent to Firestore, as the current session stats are sent over from AssessmentFinished
-const LastAttemptStats = ({stats}) => {
+const LastAttemptStats = ({lastAttemptStats}) => {
   const generateDisplayTimeString = (workoutTime) => Math.floor(workoutTime / 60) + ' minutes ' + (workoutTime % 60) + ' seconds'
   const [displayString, setDisplayString] = useState('No previous workout: let\'s get started!');
   const generateDisplayString = (workoutTime, repCount, nameOfExercise, caloriesBurnt) => {
@@ -13,8 +13,8 @@ const LastAttemptStats = ({stats}) => {
   }
 
   useEffect(() => {
-    if (stats) { // stats prop has been passed in
-      setDisplayString(generateDisplayString(stats.workoutTime, stats.repCount, stats.nameOfExercise, stats.caloriesBurnt));
+    if (lastAttemptStats) { // lastAttemptStats prop has been passed in
+      setDisplayString(generateDisplayString(lastAttemptStats.workoutTime, lastAttemptStats.repCount, lastAttemptStats.nameOfExercise, lastAttemptStats.caloriesBurnt));
     } else { // get the stats from Firestore
       //todo use ReactFire hook to check to reload if user signs in? Clashes with useEffect
       const firestore = getFirestore();
