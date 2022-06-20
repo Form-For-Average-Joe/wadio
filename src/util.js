@@ -153,6 +153,10 @@ export const fetchUserPhotoURL = async (uid, callback) => {
   }
 }
 
+export const getUserNickname = (firebaseUserData, userProfileData) => {
+  return userProfileData?.nickname || firebaseUserData?.displayName || firebaseUserData?.email.match(/.*(?=@)/) || 'Guest'
+};
+
 // function handleStart() {
 //   if (intervalRef.current) clearInterval(intervalRef.current);
 //   clearTimer(getDeadlineTime());

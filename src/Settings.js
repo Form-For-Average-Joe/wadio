@@ -7,7 +7,7 @@ import { useUser } from 'reactfire';
 import { Link, useLocation } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { fetchUserData } from "./util";
+import { fetchUserData, getUserNickname } from "./util";
 import { updateProfile, reload } from 'firebase/auth';
 
 const isInvalidValue = (value) => value === "0" || value === "";
@@ -15,7 +15,7 @@ const isInvalidValue = (value) => value === "0" || value === "";
 const Settings = () => {
   const { data: user } = useUser();
 
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState(getUserNickname(user));
   const [age, setAge] = useState("");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
