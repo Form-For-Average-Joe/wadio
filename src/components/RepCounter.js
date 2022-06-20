@@ -39,7 +39,7 @@ const RepCounter = () => {
             <Card sx={{ marginBottom: "0.5rem", paddingTop: "1rem", paddingBottom: "1rem" }}>
                 <Typography variant="h1" align="center"> {count} </Typography>
             </Card>
-            <Card sx={{ marginBottom: "0.5rem", paddingTop: "1rem", paddingBottom: "1rem" }}>
+            <Card sx={{ minHeight: "6rem", marginBottom: "0.5rem", paddingTop: "1rem", paddingBottom: "1rem" }}>
                 <Typography variant="h5" align="center"> {feedback} </Typography>
             </Card>
             <Card>

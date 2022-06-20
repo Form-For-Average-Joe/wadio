@@ -6,37 +6,43 @@ import { Typography, Grid, Box } from "@mui/material";
 const steps = [
   {
     level: "I",
-    name: "Rookie"
+    name: "Rookie",
+    //calorieRequirement: 0
   },
   {
     level: "II",
-    name: "Amateur"
+    name: "Regular",
+    //calorieRequirement: 300
   },
   {
     level: "III",
-    name: "Semi-Pro"
+    name: "Semi-Pro",
+    //calorieRequirement: 800
   },
   {
     level: "IV",
-    name: "Professional"
+    name: "Pro",
+    //calorieRequirement: 1600
   },
   {
     level: "V",
-    name: "World Class"
+    name: "Master",
+    //calorieRequirement: 3000
   },
   {
     level: "VI",
-    name: "Legendary"
+    name: "Legend",
+    //calorieRequirement: 5000
   }
 ];
 
 
 const ProgressLine = ({cal}) => {
   return (
-    <Box sx={{overflow: "hidden", overflowX: "scroll"}}>
+    <Box display="flex" justifyContent="center">
       <div style={{ margin: 50 }}>
         <ProgressBar
-          width={750}
+          width="65vw"
           percent={100 * (parseInt(cal) / 5000)}
           filledBackground="linear-gradient(to right, #fefb72, #f0bb31)"
         >

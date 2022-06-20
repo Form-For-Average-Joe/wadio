@@ -78,7 +78,7 @@ const container = document.getElementById('root');
 const root = createRoot(container);
 const fallback = (
   <Box>
-    <Typography sx={{ width: '100vw', height: '100vh' }} align='center' variant={"h1"}>Sign in to view
+    <Typography sx={{ width: '100vw', height: '100vh' }} align='center' variant={"h2"}>Sign in to view
       this
       page!</Typography>
   </Box>);

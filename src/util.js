@@ -6,6 +6,21 @@ export const webcamStyles = {
   }
 };
 
+export const createData = (Date, Time, Exercise, Reps, Duration, Calories) => {
+  return { Date, Time, Exercise, Reps, Duration, Calories };
+}
+
+export const renameForTable = (e) => {
+  switch(e) {
+    case "pushups":
+      return "Push-Ups"
+    case "situps":
+      return "Sit-Ups"
+    default:
+      return "Undefined"
+  }
+}
+
 export const getDeadlineTime = (duration) => {
   let deadline = new Date();
   deadline.setTime(deadline.getTime() + duration * 1000);
