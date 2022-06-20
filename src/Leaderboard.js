@@ -16,7 +16,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-
+import GenericProfileButton from './components/GenericProfileButton';
 
 //todo need to maintain cumulative (update query), personal best (write) and last attempt (write) in profile
 // friends
@@ -96,7 +96,7 @@ const GenericSelectionMenu = ({ nameOfVariable, options, variableSelected, setVa
 
   return (
     <>
-      <Button
+      <GenericProfileButton
         id={nameOfVariable + "-selection-button"}
         aria-controls={openVariable ? nameOfVariable + '-selection-button' : undefined}
         aria-haspopup="true"
@@ -107,7 +107,7 @@ const GenericSelectionMenu = ({ nameOfVariable, options, variableSelected, setVa
         endIcon={<KeyboardArrowDownIcon/>}
       >
         {options[variableSelected]}
-      </Button>
+      </GenericProfileButton>
       <StyledMenu
         id={nameOfVariable + "-selection-menu"}
         MenuListProps={{
