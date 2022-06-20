@@ -1,12 +1,13 @@
+import axios from "axios";
 import { Fragment, useState, useEffect } from 'react';
 import { Typography, Grid, Box, TextField, Button, Stack, Switch, Snackbar, Alert } from '@mui/material';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
 import { useUser } from 'reactfire';
 import { Link, useLocation } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { fetchUserData } from "./util";
 
 const isInvalidValue = (value) => value === "0" || value === "";
 
@@ -49,47 +50,39 @@ const Settings = () => {
 
   useEffect(() => {
     if (state?.openSnackbar) {
-    setOpenSnackbar(true);
+      setOpenSnackbar(true);
     }
   }, [state]);
 
 
   useEffect(() => {
     if (user) {
-      const firestore = getFirestore();
-      const ref = doc(firestore, user.uid, 'userData');
-
-      const inner = async () => {
-        return await getDoc(ref);
-      };
-      inner().then(res => {
-        const data = res.data();
-        if (data) { // not a first-time user
-          setNickname(data.nickname);
-          setAge(data.age);
-          setWeight(data.weight);
-          setHeight(data.height);
-          setGender(data.gender);
-          setAnonymous(data.anonymous);
-          setTotalCal(data.totalCal);
-        }
+      fetchUserData(user.uid, (data) => {
+        setNickname(data.nickname);
+        setAge(data.age);
+        setWeight(data.weight);
+        setHeight(data.height);
+        setGender(data.gender);
+        setAnonymous(data.anonymous);
+        setTotalCal(data.totalCal);
       });
     }
   }, [user])
 
   const makeSave = (e) => {
     if (isFormValid()) {
-      setDoc(doc(getFirestore(), user.uid, 'userData'), {
-        nickname,
-        age: +age,
-        weight: +weight,
-        height: +height,
-        gender,
-        anonymous,
-        totalCal
+      axios.post('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/user/addUserStatistics/' + user.uid, {
+        userProfileStatistics: {
+          nickname,
+          age: +age,
+          weight: +weight,
+          height: +height,
+          gender,
+          anonymous,
+          totalCal
+        }
       });
-    }
-    else {
+    } else {
       e.preventDefault();
     }
   }

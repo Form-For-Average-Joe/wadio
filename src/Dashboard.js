@@ -7,7 +7,7 @@ import { useUser } from 'reactfire';
 import { doc, getFirestore, getDoc, collection, query, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import ProgressLine from './components/ProgressLine';
-import { createData, renameForTable,  } from './util';
+import { createData, fetchUserData, renameForTable, } from './util';
 import PastExerciseTable from './components/PastExerciseTable';
 
 const Dashboard = () => {
@@ -35,9 +35,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     const firestore = getFirestore();
-    const ref = doc(firestore, user.uid, 'userData');
-    getDoc(ref).then((docSnap) => {
-      setUserProfileData(docSnap.data());
+    fetchUserData(user.uid, (data) => {
+      setUserProfileData(data);
     })
     getStats(firestore);
   }, [user])

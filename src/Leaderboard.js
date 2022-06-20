@@ -153,7 +153,7 @@ export default function Leaderboard() {
         const { data } = await makeReq();
         setRowData(data);
       } catch (err) {
-        console.log("Error fetching data")
+        console.log("Error fetching leaderboard data")
       }
     };
     getLeaderboardData();
