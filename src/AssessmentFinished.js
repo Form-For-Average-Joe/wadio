@@ -1,23 +1,22 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { doc, setDoc, getFirestore, getDoc, updateDoc, increment } from "firebase/firestore";
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 import { Grid, Card, Typography } from '@mui/material';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import LastAttemptStats from "./containers/LastAttemptStats";
-import { selectCount, selectDuration, clearExerciseState, selectNameOfExercise, selectDifficultyLevel } from "./features/exercise/exerciseSlice";
-import { resetUserTime, selectMinutes, selectSeconds } from './features/userProfile/userProfileSlice';
+import { clearExerciseState } from "./features/exercise/exerciseSlice";
+import { resetUserTime } from './features/userProfile/userProfileSlice';
 import { useFirestoreDocData, useUser } from 'reactfire';
 import { Link, Navigate } from "react-router-dom";
 import GenericHeaderButton from "./components/GenericHeaderButton";
 import { getCaloriesBurnt } from "./util";
+import { store } from './app/store';
 
 export default function AssessmentFinished() {
   const dispatch = useDispatch();
-  const repCount = useSelector(selectCount);
-  const duration = useSelector(selectDuration);
-  const minutes = useSelector(selectMinutes);
-  const seconds = useSelector(selectSeconds);
-  const nameOfExercise = useSelector(selectNameOfExercise);
-  const difficulty = useSelector(selectDifficultyLevel);
+  const { exercise, userProfile  } = store.getState();
+  const { count, duration, nameOfExercise, difficultyLevel } = exercise;
+  const { minutes, seconds } = userProfile;
   const workoutTime = (minutes * 60 + seconds) === 0 ? duration : duration - (minutes * 60 + seconds);
   const { status, data: user } = useUser();
   const firestore = getFirestore();
@@ -26,15 +25,15 @@ export default function AssessmentFinished() {
   const today = new Date();
   const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
   const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  const caloriesBurnt = getCaloriesBurnt(repCount, workoutTime, nameOfExercise, difficulty, userProfileData?.gender, userProfileData?.age, userProfileData?.weight);
+  const caloriesBurnt = getCaloriesBurnt(count, workoutTime, nameOfExercise, difficultyLevel, userProfileData?.gender, userProfileData?.age, userProfileData?.weight);
 
-  //todo to save the last attempt stats before clearExerciseState is dispatched, as the component might render a few times and clear stats before sending to Firestore
+  //todo this is a hacky approach to save the last attempt stats before clearExerciseState is dispatched, as the component might render a few times and clear stats before sending to Firestore
   const [lastAttemptStats, setLastAttemptStats] = useState({
-    repCount,
+    repCount: count,
     workoutTime,
     nameOfExercise,
     caloriesBurnt,
-    difficulty,
+    difficultyLevel,
     date,
     time,
   })
@@ -55,10 +54,13 @@ export default function AssessmentFinished() {
       setDoc(doc(getFirestore(), user.uid, date + " " + time), { //chose to use time stamp
         lastAttemptStats,
       });
-      const caloriesToAdd = parseInt(lastAttemptStats.caloriesBurnt);
-      const Ref = doc(getFirestore(), user.uid, 'userData');
-      updateDoc(Ref, {
-        totalCal: increment(caloriesToAdd)
+      axios.post('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/calories/addToUserCumulative/', {
+        uid: user.uid,
+        scoreOfLatest: lastAttemptStats.caloriesBurnt,
+      });
+      axios.post('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + lastAttemptStats.nameOfExercise + '/addToUserCumulative/', {
+        uid: user.uid,
+        scoreOfLatest: lastAttemptStats.repCount,
       });
     }
   }
@@ -69,7 +71,7 @@ export default function AssessmentFinished() {
     <Card sx={{ backgroundColor: "#000000" }}>
       <Grid container spacing={3} direction="column" alignItems="center">
         <Grid item sx={{ marginTop: "3rem" }}>
-          <LastAttemptStats stats={{ repCount, workoutTime, nameOfExercise, caloriesBurnt }} />
+          <LastAttemptStats lastAttemptStats={lastAttemptStats} />
         </Grid>
         <Grid item>
           <Typography sx={{ color: "#FFFFFF" }}>
@@ -77,12 +79,14 @@ export default function AssessmentFinished() {
           </Typography>
         </Grid>
         <Grid item>
-          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} onClick={saveData} component={Link} to={user ? "/profile" : "/"}>
+          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} onClick={saveData}
+                               component={Link} to={user ? "/profile" : "/"}>
             Continue
           </GenericHeaderButton>
         </Grid>
         <Grid item>
-          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} component={Link} to={"/exercise/" + lastAttemptStats.nameOfExercise}>
+          <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} component={Link}
+                               to={"/exercise/" + lastAttemptStats.nameOfExercise}>
             Try Again
           </GenericHeaderButton>
         </Grid>

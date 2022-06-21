@@ -1,5 +1,7 @@
 import { Avatar, Box } from "@mui/material";
-import { useState } from 'react';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import axios from "axios";
+import { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,56 +10,35 @@ import TableContainer from '@mui/material/TableContainer';
 import Typography from '@mui/material/Typography';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import logo from './assets/OrbitalLogo.png';
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { difficulties, exercises, typesOfRanking } from './util';
+import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import GenericProfileButton from './components/GenericProfileButton';
 
-// need to maintain cumulative (update query), personal best (write) and last attempt (write) in profile
-
-// device --> first to firestore, second to server to update the red-black
-
-// top 10 - firestore
-// everyone's ranking - red-black
+//todo need to maintain cumulative (update query), personal best (write) and last attempt (write) in profile
 // friends
-
-// need to maintain all previous exercises
 // https://dribbble.com/tags/mobile_leaderboard
 // https://dribbble.com/shots/14650665-Daily-UI-Leaderboard/attachments/6345922?mode=media
 // add a label/marker for friends, and a button to only show friends vs global
 // keep pagination, or infinite scrolling?
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
 // need to store exercise datestamp, time when leaderboard function was last run, then access the relevant rows to be added to the leaderboard
-const columns = [
-  { id: 'rank', label: 'rank' },
-  { id: 'name', label: 'Name' },
+
+// const columns = [
+//   { id: 'rank', label: 'rank' },
+//   { id: 'name', label: 'Name' },
   // { id: 'exercise', label: 'Exercise' },
-  { id: 'reps', label: 'Reps' },
+  // { id: 'reps', label: 'Reps' },
   // {
   // id: 'duration',
   // label: 'Duration',
   // align: 'right',
   // minWidth: 170
   // },
-];
-
-function createData(name, exercise, reps, duration, rank) {
-  return { name, displayString: reps + ' reps in ' + duration, rank };
-}
-
-const rows = [
-  createData('India', 'IN', 1324171354, 3287263, 1),
-  createData('China', 'CN', 1403500365, 9596961, 2),
-  createData('Italy', 'IT', 60483973, 301340, 3),
-  createData('United States', 'US', 327167434, 9833520, 4),
-  createData('Canada', 'CA', 37602103, 9984670, 5),
-  createData('Australia', 'AU', 25475400, 7692024, 6),
-  createData('Germany', 'DE', 83019200, 357578, 7),
-  createData('Nigeria', 'NG', 200962417, 923768, 8),
-];
+// ];
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -115,7 +96,7 @@ const GenericSelectionMenu = ({ nameOfVariable, options, variableSelected, setVa
 
   return (
     <>
-      <Button
+      <GenericProfileButton
         id={nameOfVariable + "-selection-button"}
         aria-controls={openVariable ? nameOfVariable + '-selection-button' : undefined}
         aria-haspopup="true"
@@ -126,7 +107,7 @@ const GenericSelectionMenu = ({ nameOfVariable, options, variableSelected, setVa
         endIcon={<KeyboardArrowDownIcon/>}
       >
         {options[variableSelected]}
-      </Button>
+      </GenericProfileButton>
       <StyledMenu
         id={nameOfVariable + "-selection-menu"}
         MenuListProps={{
@@ -147,12 +128,14 @@ const GenericSelectionMenu = ({ nameOfVariable, options, variableSelected, setVa
 }
 
 export default function Leaderboard() {
-  const [exerciseSelected, setExerciseSelected] = useState(0);
-  const [difficultySelected, setDifficultySelected] = useState(1);
-  const [typeOfRanking, setTypeOfRanking] = useState(0);
+  const [exerciseSelectedIndex, setExerciseSelectedIndex] = useState(0);
+  // const [difficultySelectedIndex, setDifficultySelectedIndex] = useState(1);
+  // const [typeOfRanking, setTypeOfRanking] = useState(0);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const [rowData, setRowData] = useState([]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -163,30 +146,45 @@ export default function Leaderboard() {
     setPage(0);
   };
 
+  useEffect(() => {
+    const getLeaderboardData = async () => {
+      const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard');
+      try {
+        const { data } = await makeReq();
+        setRowData(data);
+      } catch (err) {
+        console.log("Error fetching leaderboard data")
+      }
+    };
+    getLeaderboardData();
+  }, [exerciseSelectedIndex])
+
   return (
     <Paper sx={{ width: '100%', overflow: 'scroll' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-around', my: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 } }}>
-        <GenericSelectionMenu nameOfVariable={'exercise'} options={exercises} variableSelected={exerciseSelected} setVariableSelected={setExerciseSelected} />
-        <GenericSelectionMenu nameOfVariable={'difficulty'} options={difficulties} variableSelected={difficultySelected} setVariableSelected={setDifficultySelected} />
-        <GenericSelectionMenu nameOfVariable={'typeOfRanking'} options={typesOfRanking} variableSelected={typeOfRanking} setVariableSelected={setTypeOfRanking} />
+        <GenericSelectionMenu nameOfVariable={'exercise'} options={exercisesWithCaloriesTitleCase()}
+                              variableSelected={exerciseSelectedIndex} setVariableSelected={setExerciseSelectedIndex}/>
+        {/*<GenericSelectionMenu nameOfVariable={'difficulty'} options={difficulties} variableSelected={difficultySelected} setVariableSelected={setDifficultySelected} />*/}
+        {/*<GenericSelectionMenu nameOfVariable={'typeOfRanking'} options={typesOfRanking} variableSelected={typeOfRanking} setVariableSelected={setTypeOfRanking} />*/}
       </Box>
       <TableContainer>
         <Table /*stickyHeader*/ aria-label="sticky table">
           <TableBody>
-            {rows
+            {rowData
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                    <TableCell key={row.name} /*align={column.align}*/>
+                    <TableCell key={row.uid} /*align={column.align}*/>
                       <Typography variant={"h6"}>{row.rank}</Typography>
                     </TableCell>
                     <TableCell>
-                      <Avatar variant="rounded" src={logo}/>
+                      {row.photoURL ? <Avatar variant="rounded" src={row.photoURL}/> :
+                       <Avatar><AccountCircleIcon/></Avatar>}
                     </TableCell>
                     <TableCell>
-                      <Typography variant={"h6"}>{row.name}</Typography>
-                      <Typography>{row.displayString}</Typography>
+                      <Typography variant={"h6"}>{row.nickname || row.uid}</Typography>
+                      <Typography>{row.results + ' reps'}</Typography>
                     </TableCell>
                   </TableRow>
                 );
@@ -197,7 +195,7 @@ export default function Leaderboard() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={rowData.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
