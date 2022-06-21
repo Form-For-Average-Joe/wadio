@@ -9,7 +9,6 @@ import AssessmentStart from "./AssessmentStart";
 import rotate from '../assets/rotate.gif'
 
 export default function AssessmentInProgress({webcam}) {
-  //todo if isStarted is only used in pushupsassessment, there is no need to use global redux, can use local state
   const isStarted = useSelector(selectIsStarted);
 
   const isLandscape = useMediaQuery('(orientation: landscape)');

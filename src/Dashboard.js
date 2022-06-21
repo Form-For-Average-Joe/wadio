@@ -4,20 +4,20 @@ import CaloriesBurnt from './components/CaloriesBurnt';
 import { theme } from "./index";
 import LogoutButton from './components/LogoutButton';
 import { useUser } from 'reactfire';
-import { doc, getFirestore, getDoc, collection, query, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import ProgressLine from './components/ProgressLine';
-import { createData, renameForTable,  } from './util';
+import { createData, fetchUserData, getUserNickname, renameForTable, } from './util';
 import PastExerciseTable from './components/PastExerciseTable';
 
 const Dashboard = () => {
-  const { status, data: user } = useUser();
+  const { status, data: firebaseUserData } = useUser();
   const [userProfileData, setUserProfileData] = useState({});
   const [rows, setRows] = useState([{}]);
 
   async function getStats(firestore) {
     const temp = [];
-    const q = query(collection(firestore, user.uid));
+    const q = query(collection(firestore, firebaseUserData.uid));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((document) => {
       if (document.id !== "userData") {
@@ -35,12 +35,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     const firestore = getFirestore();
-    const ref = doc(firestore, user.uid, 'userData');
-    getDoc(ref).then((docSnap) => {
-      setUserProfileData(docSnap.data());
+    fetchUserData(firebaseUserData.uid, (data) => {
+      setUserProfileData(data);
     })
     getStats(firestore);
-  }, [user])
+  }, [firebaseUserData])
   if (status === 'loading') {
     return <p>Loading</p>;
   }
@@ -50,7 +49,7 @@ const Dashboard = () => {
       <Grid>
         <Grid item>
           <Typography variant="h5" align="center" style={{ paddingTop: "2rem" }}>
-            Welcome Back, {userProfileData?.nickname || user?.displayName || user?.email.match(/.*(?=@)/) || 'Guest'}!
+            Welcome Back, {getUserNickname(firebaseUserData, userProfileData)}!
           </Typography>
         </Grid>
         <Grid container spacing={2} direction="row" justifyContent="center" paddingTop="1rem">
