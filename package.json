@@ -23,7 +23,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "calculate-correlation": "^1.2.3",
-    "firebase": "^9.8.1",
+    "firebase": "^9.8.3",
     "firebaseui": "^6.0.1",
     "howler": "^2.2.3",
     "prop-types": "^15.8.1",
