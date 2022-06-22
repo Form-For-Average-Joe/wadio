@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { styled, alpha } from '@mui/material/styles';
-import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
@@ -23,7 +22,6 @@ import GenericProfileButton from './components/GenericProfileButton';
 // https://dribbble.com/tags/mobile_leaderboard
 // https://dribbble.com/shots/14650665-Daily-UI-Leaderboard/attachments/6345922?mode=media
 // add a label/marker for friends, and a button to only show friends vs global
-// keep pagination, or infinite scrolling?
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
 // need to store exercise datestamp, time when leaderboard function was last run, then access the relevant rows to be added to the leaderboard
 
@@ -134,6 +132,7 @@ export default function Leaderboard() {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const displayString = exercisesWithCalories()[exerciseSelectedIndex];
 
   const [rowData, setRowData] = useState([]);
 
@@ -184,7 +183,7 @@ export default function Leaderboard() {
                     </TableCell>
                     <TableCell>
                       <Typography variant={"h6"}>{row.nickname || row.uid}</Typography>
-                      <Typography>{row.results + ' reps'}</Typography>
+                      <Typography>{row.results + ' ' + displayString}</Typography>
                     </TableCell>
                   </TableRow>
                 );
@@ -193,7 +192,7 @@ export default function Leaderboard() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10, 25, 50]}
         component="div"
         count={rowData.length}
         rowsPerPage={rowsPerPage}
