@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia, Grid, Typography, Divider } from "@mui/material";
+import { Card, CardContent, CardMedia, Typography, Divider } from "@mui/material";
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import GenericHeaderButton from "./GenericHeaderButton";
