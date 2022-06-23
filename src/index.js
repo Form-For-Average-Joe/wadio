@@ -16,7 +16,8 @@ import Settings from './Settings';
 import NavLeaderboard from './NavLeaderboard';
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { FirebaseAppProvider } from 'reactfire';
-import Leaderboard from './Leaderboard';
+// import Leaderboard from './Leaderboard';
+// import MinorProfile from './MinorProfile';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional

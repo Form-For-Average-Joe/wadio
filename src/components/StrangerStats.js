@@ -2,14 +2,12 @@ import { Typography, Card, Grid } from '@mui/material';
 import { useUser } from "reactfire";
 import { fetchUserCumulativeCalories } from "../util";
 import { useState, useEffect } from "react";
+import { findCurrentLevel } from '../util';
 
-const CaloriesBurnt = ({ cal }) => {
-    //todo fix levelData formula
-    const levelData = cal > 5000 ? 0 : 1000 - (cal % 1000);
-
+const StrangerStats = ({ cal }) => {
     return (
-        <Card sx={{paddingTop: "1rem"}}>
-            <Grid container justifyContent="center" alignItems="center" direction="column">
+        <Card sx={{paddingTop: "1rem", paddingBottom: "1rem", width: "55vw"}}>
+            <Grid container direction="row" justifyContent="space-evenly">
                 <Grid item style={{ paddingTop: "1rem" }}>
                     <Typography variant="subtitle1" align="center">
                         Cumulative Calories Burnt:
@@ -18,12 +16,12 @@ const CaloriesBurnt = ({ cal }) => {
                         {cal}
                     </Typography>
                 </Grid>
-                <Grid item style={{ paddingTop: "2rem" }}>
+                <Grid item style={{ paddingTop: "1rem", paddingBottom: "0.5rem" }}>
                     <Typography variant="subtitle1" align="center">
-                        Calories required to reach next level:
+                        Current Level
                     </Typography>
-                    <Typography variant="h2" align="center">
-                        {levelData}
+                    <Typography variant="h3" align="center">
+                        {findCurrentLevel(cal)}
                     </Typography>
                 </Grid>
             </Grid>
@@ -31,4 +29,4 @@ const CaloriesBurnt = ({ cal }) => {
     );
 }
 
-export default CaloriesBurnt;
+export default StrangerStats;
