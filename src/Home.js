@@ -56,8 +56,7 @@ export function checkUnlocked(cal, ex) {
     case 'pushups':
       return true;
     case 'situps':
-      return true;
-      //return cal >= 50;
+      return cal >= 50;
     default:
       return false;
   }
