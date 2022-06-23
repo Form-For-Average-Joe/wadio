@@ -5,11 +5,11 @@ import ExerciseInfo from './components/ExerciseInfo';
 import GenericHeaderButton from './components/GenericHeaderButton';
 import { useUser, useSigninCheck } from 'reactfire';
 import { useEffect, useState } from 'react';
-import pushups from './assets/pushups.jpeg';
+import pushups from './assets/pushups.png';
 import pushupsG from './assets/pushupsG.jpeg';
 import situps from './assets/situps.png';
 import situpsG from './assets/situpsG.jpeg';
-import comingsoon from './assets/comingsoon.webp';
+import comingsoon from './assets/comingsoon.png';
 import { fetchUserData } from "./util";
 
 const exerciseInformation = [
@@ -56,7 +56,8 @@ export function checkUnlocked(cal, ex) {
     case 'pushups':
       return true;
     case 'situps':
-      return cal >= 50;
+      return true;
+      //return cal >= 50;
     default:
       return false;
   }
