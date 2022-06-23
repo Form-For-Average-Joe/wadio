@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { fetchUserData, getUserNickname } from "./util";
 import { updateProfile, reload } from 'firebase/auth';
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 
 const isInvalidValue = (value) => value === "0" || value === "";
 
@@ -28,6 +29,10 @@ const Settings = () => {
   const isFormValid = () => {
     return !(isInvalidValue(age) || isInvalidValue(weight) || isInvalidValue(height));
   };
+  const leaderboards = [{
+    id: "global",
+    name: "Global Leaderboard"
+  }];
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
@@ -90,6 +95,9 @@ const Settings = () => {
     } else {
       e.preventDefault();
     }
+    setDoc(doc(getFirestore(), user.uid, 'leaderboards'), {
+      leaderboards
+    });
   }
 
   const handleGender = (event, newGender) => {
