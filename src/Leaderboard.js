@@ -120,18 +120,22 @@ const GenericSelectionMenu = ({
 }
 
 const getUserTableRow = (currentUserData, index, currentUserUid, displayString) => {
-  return <TableRow sx={currentUserData.uid === currentUserUid ? { bgcolor: '#b5f7c7' } : {}} hover role="checkbox"
-                   tabIndex={-1}
+  const isCurrentUserRow = currentUserData.uid === currentUserUid;
+  const rowDisplayName = currentUserData.nickname || currentUserData.uid;
+  const getCurrentUserDisplayName = isCurrentUserRow ? rowDisplayName + ' (You)' : rowDisplayName;
+  return <TableRow sx={isCurrentUserRow ? { bgcolor: '#83d6fc' } : {}} hover
+                   tabIndex={0}
                    key={index}>
-    <TableCell key={currentUserData.uid} /*align={column.align}*/>
+    <TableCell align={'center'} key={currentUserData.uid} /*align={column.align}*/>
       <Typography variant={"h6"}>{currentUserData.rank}</Typography>
     </TableCell>
     <TableCell>
-      {currentUserData.photoURL ? <Avatar variant="rounded" src={currentUserData.photoURL}/> :
+      {currentUserData.photoURL ? <Avatar style={{ alignItems: "center", justifyContent: "center", display: "flex" }}
+                                          variant="rounded" src={currentUserData.photoURL}/> :
        <Avatar><AccountCircleIcon/></Avatar>}
     </TableCell>
     <TableCell>
-      <Typography variant={"h6"}>{currentUserData.nickname || currentUserData.uid}</Typography>
+      <Typography variant={"h6"}>{getCurrentUserDisplayName}</Typography>
       <Typography>{currentUserData.results + ' ' + displayString}</Typography>
     </TableCell>
   </TableRow>
@@ -162,19 +166,6 @@ export default function Leaderboard() {
   };
 
   useEffect(() => {
-    const getCurrentUserData = async () => {
-      const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + exercisesWithCalories()[exerciseSelectedIndex] + '/user/' + user.uid);
-      try {
-        const { data } = await makeReq();
-        setCurrentUserData(data);
-      } catch (err) {
-        console.log("Error fetching leaderboard data");
-      }
-    };
-    if (user) getCurrentUserData();
-  }, [])
-
-  useEffect(() => {
     const getLeaderboardData = async () => {
       const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + rowsPerPage + '/' + page);
       try {
@@ -185,6 +176,16 @@ export default function Leaderboard() {
         console.log("Error fetching leaderboard data");
       }
     };
+    const getCurrentUserData = async () => {
+      const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + exercisesWithCalories()[exerciseSelectedIndex] + '/user/' + user.uid);
+      try {
+        const { data } = await makeReq();
+        setCurrentUserData(data);
+      } catch (err) {
+        console.log("Error fetching leaderboard data");
+      }
+    };
+    if (user) getCurrentUserData();
     getLeaderboardData();
   }, [exerciseSelectedIndex, page, rowsPerPage])
 
@@ -193,7 +194,7 @@ export default function Leaderboard() {
   }
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'scroll' }}>
+    <Paper sx={{ width: '100%' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-around', my: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 } }}>
         <GenericSelectionMenu nameOfVariable={'exercise'} options={exercisesWithCaloriesTitleCase()}
                               variableSelected={exerciseSelectedIndex} setVariableSelected={setExerciseSelectedIndex}
@@ -208,7 +209,18 @@ export default function Leaderboard() {
               .map((row, index) =>
                 getUserTableRow(row, index, user.uid, displayString))}
             {currentUserData ? !(currentUserData.rank >= ((page * rowsPerPage) + 1) && currentUserData.rank <= (page + 1) * rowsPerPage) &&
-              getUserTableRow(currentUserData, -1, user.uid, displayString) : null}
+              <>
+                <TableRow>
+                  <TableCell
+                    align={'center'}>
+                    <Typography component={'h1'}>
+                      {'⋮'}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>{'⋮'}</TableCell>
+                  <TableCell>{'⋮'}</TableCell>
+                </TableRow>{getUserTableRow(currentUserData, -1, user.uid, displayString)}
+              </> : null}
           </TableBody>
         </Table>
       </TableContainer>
