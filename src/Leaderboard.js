@@ -11,34 +11,19 @@ import Typography from '@mui/material/Typography';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { styled, alpha } from '@mui/material/styles';
-import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useUser } from "reactfire";
 import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import GenericProfileButton from './components/GenericProfileButton';
 
-//todo need to maintain cumulative (update query), personal best (write) and last attempt (write) in profile
+//todo need to maintain personal best (write) and last attempt (write) in profile
 // friends
 // https://dribbble.com/tags/mobile_leaderboard
 // https://dribbble.com/shots/14650665-Daily-UI-Leaderboard/attachments/6345922?mode=media
 // add a label/marker for friends, and a button to only show friends vs global
-// keep pagination, or infinite scrolling?
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
-// need to store exercise datestamp, time when leaderboard function was last run, then access the relevant rows to be added to the leaderboard
-
-// const columns = [
-//   { id: 'rank', label: 'rank' },
-//   { id: 'name', label: 'Name' },
-  // { id: 'exercise', label: 'Exercise' },
-  // { id: 'reps', label: 'Reps' },
-  // {
-  // id: 'duration',
-  // label: 'Duration',
-  // align: 'right',
-  // minWidth: 170
-  // },
-// ];
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -80,7 +65,7 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-const GenericSelectionMenu = ({ nameOfVariable, options, variableSelected, setVariableSelected }) => {
+const GenericSelectionMenu = ({ nameOfVariable, options, variableSelected, setVariableSelected, handleSelectVariableCallback }) => {
   const [anchorElVariable, setAnchorElVariable] = useState(null);
   const openVariable = Boolean(anchorElVariable);
   const handleClickVariable = (event) => {
@@ -92,6 +77,7 @@ const GenericSelectionMenu = ({ nameOfVariable, options, variableSelected, setVa
   const handleSelectVariable = (index) => {
     setVariableSelected(index);
     handleCloseVariable();
+    handleSelectVariableCallback();
   };
 
   return (
@@ -128,14 +114,18 @@ const GenericSelectionMenu = ({ nameOfVariable, options, variableSelected, setVa
 }
 
 export default function Leaderboard() {
+  const { status, data: user } = useUser();
+
   const [exerciseSelectedIndex, setExerciseSelectedIndex] = useState(0);
   // const [difficultySelectedIndex, setDifficultySelectedIndex] = useState(1);
   // const [typeOfRanking, setTypeOfRanking] = useState(0);
-
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const displayString = exercisesWithCalories()[exerciseSelectedIndex];
+
   const [rowData, setRowData] = useState([]);
+  const [count, setCount] = useState(rowsPerPage);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -148,33 +138,39 @@ export default function Leaderboard() {
 
   useEffect(() => {
     const getLeaderboardData = async () => {
-      const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard');
+      const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + rowsPerPage + '/' + page);
       try {
         const { data } = await makeReq();
-        setRowData(data);
+        setRowData(data.rankings);
+        setCount(data.totalNumberOfElements);
       } catch (err) {
-        console.log("Error fetching leaderboard data")
+        console.log("Error fetching leaderboard data");
       }
     };
     getLeaderboardData();
-  }, [exerciseSelectedIndex])
+  }, [exerciseSelectedIndex, page, rowsPerPage])
+
+  if (status === 'loading') {
+    return <p>Loading</p>;
+  }
 
   return (
     <Paper sx={{ width: '100%', overflow: 'scroll' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-around', my: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 } }}>
         <GenericSelectionMenu nameOfVariable={'exercise'} options={exercisesWithCaloriesTitleCase()}
-                              variableSelected={exerciseSelectedIndex} setVariableSelected={setExerciseSelectedIndex}/>
+                              variableSelected={exerciseSelectedIndex} setVariableSelected={setExerciseSelectedIndex}
+                              handleSelectVariableCallback={() => setPage(0)}/>
         {/*<GenericSelectionMenu nameOfVariable={'difficulty'} options={difficulties} variableSelected={difficultySelected} setVariableSelected={setDifficultySelected} />*/}
         {/*<GenericSelectionMenu nameOfVariable={'typeOfRanking'} options={typesOfRanking} variableSelected={typeOfRanking} setVariableSelected={setTypeOfRanking} />*/}
       </Box>
       <TableContainer>
-        <Table /*stickyHeader*/ aria-label="sticky table">
+        <Table aria-label="leaderboard">
           <TableBody>
             {rowData
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                  <TableRow sx={row.uid === user.uid ? { bgcolor: '#b5f7c7' } : {}} hover role="checkbox" tabIndex={-1}
+                            key={index}>
                     <TableCell key={row.uid} /*align={column.align}*/>
                       <Typography variant={"h6"}>{row.rank}</Typography>
                     </TableCell>
@@ -184,7 +180,7 @@ export default function Leaderboard() {
                     </TableCell>
                     <TableCell>
                       <Typography variant={"h6"}>{row.nickname || row.uid}</Typography>
-                      <Typography>{row.results + ' reps'}</Typography>
+                      <Typography>{row.results + ' ' + displayString}</Typography>
                     </TableCell>
                   </TableRow>
                 );
@@ -193,9 +189,9 @@ export default function Leaderboard() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10, 25, 50]}
         component="div"
-        count={rowData.length}
+        count={count}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -204,31 +200,3 @@ export default function Leaderboard() {
     </Paper>
   );
 }
-
-/*
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-
-
-                                // columns.map((column) => {
-                      //   const value = row[column.id];
-                      //   return (
-                      //     <TableCell key={column.id} align={column.align}>
-                      //       {column.format && typeof value === 'number'
-                      //        ? column.format(value)
-                      //        : value}
-                      //     </TableCell>
-                      //   );
-                      // })
- */

@@ -77,13 +77,14 @@ const ExerciseInfo = ({ exerciseName }) => {
       >
         <Card sx={{minWidth: "30vw"}}>
           <CardMedia
+            component={'img'}
             image={Exercise.image}
           />
           <CardContent>
             <Typography gutterBottom variant="h4">{Exercise.exercise}</Typography>
             <Typography variant="h5">Description</Typography>
             <Typography variant="body1">{Exercise.description}</Typography>
-            <Divider sx={{ paddingTop: "1rem" }}></Divider>
+            <Divider sx={{ paddingTop: "1rem" }}/>
             <Typography variant="h5">Calibration Instructions</Typography>
             <Typography variant="body1">{Exercise.instruction}</Typography>
             <GenericHeaderButton
