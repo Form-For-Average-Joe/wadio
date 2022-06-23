@@ -51,7 +51,7 @@ const exerciseInformation = [
   },
 ]
 
-function checkUnlocked(cal, ex) {
+export function checkUnlocked(cal, ex) {
   switch(ex) {
     case 'pushups':
       return true;
