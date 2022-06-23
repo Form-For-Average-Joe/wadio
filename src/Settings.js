@@ -110,7 +110,7 @@ const Settings = () => {
 
   return (
     <>
-      <Typography align="center" variant="h4" sx={{ paddingTop: "1rem" }}>Settings</Typography>
+      <Typography align="center" variant="h4" sx={{ paddingTop: "2rem" }}>Settings</Typography>
       <Stack
         component="form"
         alignItems="center"

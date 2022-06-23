@@ -99,7 +99,7 @@ const ExerciseCards = () => {
                 <Grid container spacing={2} sx={{ paddingTop: 1 }}>
                   <Grid item>
                     <GenericHeaderButton variant="contained"
-                      style={{ justifyContent: "center" }}
+                      style={{ justifyContent: "center", backgroundColor: "#FA9C1B", color: "#000000" }}
                       component={Link}
                       to={unlock ? exerciseInfo.to : '/'}>Attempt</GenericHeaderButton>
                   </Grid>

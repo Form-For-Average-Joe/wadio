@@ -67,6 +67,7 @@ const ExerciseInfo = ({ exerciseName }) => {
       <GenericHeaderButton
         label="Sign in/Sign up"
         variant="contained"
+        sx = {{backgroundColor: "#000000"}}
         onClick={() => setOpen(true)}>
         More Info
       </GenericHeaderButton>
@@ -75,10 +76,10 @@ const ExerciseInfo = ({ exerciseName }) => {
         onClose={() => setOpen(false)}
       >
         <Card sx={{minWidth: "30vw"}}>
-          <CardMedia
+          {/* <CardMedia
             component={'img'}
             image={Exercise.image}
-          />
+          /> */}
           <CardContent>
             <Typography gutterBottom variant="h4">{Exercise.exercise}</Typography>
             <Typography variant="h5">Description</Typography>
@@ -90,7 +91,7 @@ const ExerciseInfo = ({ exerciseName }) => {
               variant="contained"
               component={Link}
               to={Exercise.to}
-              sx={{ marginTop: "1rem" }}>Attempt Now!</GenericHeaderButton>
+              sx={{ marginTop: "1rem", backgroundColor: "#FA9C1B", color: "#000000" }}>Attempt Now!</GenericHeaderButton>
           </CardContent>
         </Card>
       </Dialog>
