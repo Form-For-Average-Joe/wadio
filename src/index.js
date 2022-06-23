@@ -1,4 +1,3 @@
-import { Box, Typography } from "@mui/material";
 import { createRoot } from 'react-dom/client';
 import App from './app/App';
 import { StrictMode } from 'react';
@@ -9,6 +8,7 @@ import AssessmentFinished from "./AssessmentFinished";
 import AuthWrapper from "./containers/AuthWrapper";
 import SettingsWrapper from "./containers/SettingsWrapper";
 import MainHeader from "./containers/MainHeader";
+import Friends from "./Friends";
 import Home from './Home'
 import ExerciseAssessment from './ExerciseAssessment';
 import DashBoard from './Dashboard';
@@ -91,6 +91,7 @@ root.render((
                   <Route exact path="profile" element={<AuthWrapper><DashBoard/></AuthWrapper>}/>
                   <Route exact path="settings" element={<AuthWrapper><Settings/></AuthWrapper>}/>
                   <Route exact path="leaderboard" element={<AuthWrapper><Leaderboard/></AuthWrapper>}/>
+                  <Route exact path="friends" element={<AuthWrapper><Friends/></AuthWrapper>}/>
                 </Route>
                 <Route path="/exercise">
                   <Route exact path="pushups" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={"pushups"}/></SettingsWrapper>}/>

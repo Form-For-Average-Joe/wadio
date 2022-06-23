@@ -12,6 +12,7 @@ import ListItem from '@mui/material/ListItem';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ListItemButton from '@mui/material/ListItemButton';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import GroupsIcon from '@mui/icons-material/Groups';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
@@ -63,7 +64,11 @@ const navigationItems = {
     icon: <LeaderboardIcon/>,
     displayName: 'Leaderboard',
     to: '/leaderboard',
-    guestAccess: false
+  },
+  friends: {
+    icon: <GroupsIcon/>,
+    displayName: 'Friends',
+    to: '/friends',
   },
   profile: {
     icon: <AnalyticsIcon/>,
@@ -153,6 +158,8 @@ function MainHeader() {
               <Box sx={{display: 'flex'}}>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.leaderboard.to}>{navigationItems.leaderboard.displayName}</GenericHeaderButton>
+                <GenericHeaderButton component={Link}
+                                     to={navigationItems.friends.to}>{navigationItems.friends.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.profile.to}>{navigationItems.profile.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}

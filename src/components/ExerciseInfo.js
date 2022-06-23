@@ -1,9 +1,8 @@
-import { Card, CardContent, CardMedia, Grid, Typography, Divider } from "@mui/material";
+import { Card, CardContent, CardMedia, Typography, Divider } from "@mui/material";
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import GenericHeaderButton from "./GenericHeaderButton";
 import { Link } from "react-router-dom";
-
 import pushups from '../assets/pushups.gif';
 import situps from '../assets/situps.gif';
 import comingsoon from '../assets/comingsoon.webp';
