@@ -1,6 +1,5 @@
 import { Card } from '@mui/material';
-import { get } from "axios";
-import { updateProfile } from "firebase/auth";
+import { get, put } from "axios";
 import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { useEffect, useState } from 'react';
 import { Typography, Grid, Box, TextField, Button, Stack } from '@mui/material';
@@ -14,7 +13,6 @@ const FriendsStuff = () => {
   const [newCode, setNewCode] = useState("");
   const [leaderboardName, setLeaderboardName] = useState("");
 
-  // need to gen code
   // need to filter res by code
   // need to check display of such code on leaderboard.js
 
@@ -37,8 +35,16 @@ const FriendsStuff = () => {
   }
 
   const submitNewCode = () => {
-    const newArray = [{id: newCode, name: leaderboardName}];
+    const newArray = [{ id: newCode, name: leaderboardName }];
     const ref = doc(getFirestore(), user.uid, 'groupCodes');
+    const associateUserIdToGroupCode = async () => {
+      try {
+        const x = await put('https://13.228.86.60/addGroupCodeToUser/' + newCode + '/' + user.uid);
+        console.log(x);
+      } catch (err) {
+        console.log(err)
+      }
+    }
     getDoc(ref).then((docSnap) => {
       const data = docSnap.data();
       if (data?.codes) {
@@ -51,7 +57,7 @@ const FriendsStuff = () => {
         setDoc(doc(getFirestore(), user.uid, 'groupCodes'), { codes: newArray });
       }
     })
-    //setNewCode and store to redis
+    associateUserIdToGroupCode();
   }
 
   return (
