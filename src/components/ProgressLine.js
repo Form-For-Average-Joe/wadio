@@ -49,6 +49,7 @@ const ProgressLine = ({cal}) => {
           {steps.map((step, index, arr) => {
             return (
               <Step
+                key={index}
                 position={100 * (index / arr.length)}
                 transition="scale"
                 children={({ accomplished }) => (

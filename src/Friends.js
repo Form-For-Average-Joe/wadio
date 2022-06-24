@@ -77,7 +77,7 @@ const FriendsStuff = () => {
           <Grid item>
             <Typography align="center" variant="h6" sx={{ paddingTop: "2rem", color: "#FFFFFF" }}>Create a New Leaderboard</Typography>
             <Stack
-              component="text"
+              component="div"
               alignItems="center"
               sx={{
                 width: "30ch",

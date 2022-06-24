@@ -141,7 +141,7 @@ const getUserTableRow = (currentUserData, index, currentUserUid, displayString) 
   </TableRow>
 }
 
-export default function Leaderboard() {
+export default function GlobalLeaderboard() {
   const { status, data: user } = useUser();
 
   const [exerciseSelectedIndex, setExerciseSelectedIndex] = useState(0);

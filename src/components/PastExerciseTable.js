@@ -36,9 +36,9 @@ const PastExerciseTable = ({ rows }) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                    {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
                         <TableRow
-                            key={row.TimeStamp}
+                            key={index}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell align="center">{row.Date}</TableCell>
