@@ -167,7 +167,7 @@ export default function Leaderboard() {
 
   useEffect(() => {
     const getLeaderboardData = async () => {
-      const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + rowsPerPage + '/' + page);
+      const makeReq = async () => await axios.get('http://13.228.86.60/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + rowsPerPage + '/' + page);
       try {
         const { data } = await makeReq();
         setRowData(data.rankings);
@@ -177,7 +177,7 @@ export default function Leaderboard() {
       }
     };
     const getCurrentUserData = async () => {
-      const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + exercisesWithCalories()[exerciseSelectedIndex] + '/user/' + user.uid);
+      const makeReq = async () => await axios.get('http://13.228.86.60/' + exercisesWithCalories()[exerciseSelectedIndex] + '/user/' + user.uid);
       try {
         const { data } = await makeReq();
         setCurrentUserData(data);

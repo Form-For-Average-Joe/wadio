@@ -76,7 +76,7 @@ const Settings = () => {const isInvalidValue = (value) => value === "0" || value
 
   const makeSave = (e) => {
     if (isFormValid()) {
-      axios.post('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/user/addUserStatistics/' + user.uid, {
+      axios.post('http://13.228.86.60/user/addUserStatistics/' + user.uid, {
         userProfileStatistics: {
           nickname,
           age: +age,

@@ -85,7 +85,7 @@ const ExerciseCards = () => {
         const unlock = signInCheckData.signedIn && checkUnlocked(userProfileData?.totalCal, exerciseInfo.title)
         const name = unlock ? exerciseInfo.title : "locked"
         return (
-          <Grid key={exerciseInfo.title} item xs={6} sm={6} md={6} lg={6} xl={6}>
+          <Grid key={exerciseInfo.title} item xs={12} sm={12} md={6} lg={6} xl={6}>
             <Card>
               <CardMedia
                 image={unlock ? exerciseInfo.image : exerciseInfo.locked}

@@ -130,7 +130,7 @@ export const getCaloriesBurnt = (repCount, workoutTime, nameOfExercise, difficul
 }
 
 export const fetchUserData = async (uid, callback) => {
-  const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/user/getUserStatistics/' + uid);
+  const makeReq = async () => await axios.get('http://13.228.86.60/user/getUserStatistics/' + uid);
   try {
     const { data } = await makeReq();
     if (data) {
@@ -142,7 +142,7 @@ export const fetchUserData = async (uid, callback) => {
 }
 
 export const fetchUserPhotoURL = async (uid, callback) => {
-  const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/user/getUserPhotoURL/' + uid);
+  const makeReq = async () => await axios.get('http://13.228.86.60/user/getUserPhotoURL/' + uid);
   try {
     const { data: userAddedPhotoURL } = await makeReq();
     if (userAddedPhotoURL) {
@@ -154,7 +154,7 @@ export const fetchUserPhotoURL = async (uid, callback) => {
 }
 
 export const fetchUserCumulativeCalories = async (uid, callback) => {
-  const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/calories/user/' + uid);
+  const makeReq = async () => await axios.get('http://13.228.86.60/calories/user/' + uid);
   try {
     const { data } = await makeReq();
     if (data.score) {
