@@ -7,13 +7,14 @@ import { useUser } from 'reactfire';
 import { getFirestore, collection, query, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import ProgressLine from './components/ProgressLine';
-import { createData, fetchUserData, getUserNickname, renameForTable, } from './util';
+import { createData, fetchUserCumulativeCalories, fetchUserData, getUserNickname, renameForTable, } from './util';
 import PastExerciseTable from './components/PastExerciseTable';
 
 const Dashboard = () => {
   const { status, data: firebaseUserData } = useUser();
   const [userProfileData, setUserProfileData] = useState({});
   const [rows, setRows] = useState([{}]);
+  const [cumulativeCalories, setCumulativeCalories] = useState(0);
 
   async function getStats(firestore) {
     const temp = [];
@@ -37,7 +38,10 @@ const Dashboard = () => {
     const firestore = getFirestore();
     fetchUserData(firebaseUserData.uid, (data) => {
       setUserProfileData(data);
-    })
+    });
+    fetchUserCumulativeCalories(firebaseUserData.uid, (data) => {
+      setCumulativeCalories(data.score);
+    });
     getStats(firestore);
   }, [firebaseUserData])
   if (status === 'loading') {
@@ -64,7 +68,7 @@ const Dashboard = () => {
             <BodyStatsPanel stats={{ weight: userProfileData?.weight || 0, height: userProfileData?.height || 0 }} />
           </Grid>
           <Grid item xs={10} sm={6} md={4}>
-            <CaloriesBurnt cal={userProfileData?.totalCal} />
+            <CaloriesBurnt cal={cumulativeCalories} />
           </Grid>
         </Grid>
       </Container>
@@ -73,7 +77,7 @@ const Dashboard = () => {
           <Grid item xs={1} sm={1} md={1} lg={1} xl={1}>
           </Grid>
           <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
-            <ProgressLine cal={userProfileData?.totalCal} />
+            <ProgressLine cal={cumulativeCalories} />
           </Grid>
         </Grid>
         <Typography variant="h6" align="center" sx={{ paddingTop: "2rem" }}>

@@ -21,7 +21,6 @@ const Settings = () => {
   const [height, setHeight] = useState("");
   const [gender, setGender] = useState("0");
   const [anonymous, setAnonymous] = useState(false)
-  const [totalCal, setTotalCal] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [photoURL, setPhotoURL] = useState(user.photoURL);
   const { state } = useLocation();
@@ -66,7 +65,6 @@ const Settings = () => {
         setHeight(data.height);
         setGender(data.gender);
         setAnonymous(data.anonymous);
-        setTotalCal(data.totalCal);
         setPhotoURL(data.photoURL || "");
       });
     }
@@ -82,7 +80,6 @@ const Settings = () => {
           height: +height,
           gender,
           anonymous,
-          totalCal,
           photoURL
         }
       });

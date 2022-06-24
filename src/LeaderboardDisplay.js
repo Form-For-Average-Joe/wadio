@@ -13,7 +13,7 @@ import TableRow from '@mui/material/TableRow';
 import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useUser } from "reactfire";
 import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -124,7 +124,10 @@ const getUserTableRow = (currentUserData, index, currentUserUid, displayString) 
   const isCurrentUserRow = currentUserData.uid === currentUserUid;
   const rowDisplayName = currentUserData.nickname || currentUserData.uid;
   const getCurrentUserDisplayName = isCurrentUserRow ? rowDisplayName + ' (You)' : rowDisplayName;
-  return <TableRow sx={isCurrentUserRow ? { bgcolor: '#83d6fc' } : {}} hover
+  const tableRowSx={ textDecoration: 'none' };
+  return <TableRow sx={isCurrentUserRow ? { bgcolor: '#83d6fc', ...tableRowSx } : tableRowSx} hover
+                   component={Link}
+                   to={'/profile/' + currentUserData.uid}
                    tabIndex={0}
                    key={index}>
     <TableCell align={'center'} key={currentUserData.uid} /*align={column.align}*/>

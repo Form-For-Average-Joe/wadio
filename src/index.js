@@ -95,7 +95,9 @@ root.render((
                   <Route exact path="leaderboard" element={<AuthWrapper><Leaderboard/></AuthWrapper>}/>
                   <Route exact path="friends" element={<AuthWrapper><Friends/></AuthWrapper>}/>
                   <Route exact path="leaderboard/display" element={<LeaderboardDisplay/>}/>
-                  <Route exact path="profile" element={<MinorProfile/>}/>
+                  <Route path="profile">
+                    <Route path=":userUid" element={<MinorProfile />} />
+                  </Route>
                 </Route>
                 <Route path="/exercise">
                   <Route exact path="pushups" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={"pushups"}/></SettingsWrapper>}/>

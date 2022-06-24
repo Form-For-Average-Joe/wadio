@@ -1,7 +1,16 @@
 import { Typography, Card, Grid } from '@mui/material';
-import { findCurrentLevel } from '../util';
+import { findCurrentLevel, fetchUserCumulativeCalories } from '../util';
+import { useEffect, useState } from "react";
 
-const StrangerStats = ({ cal }) => {
+const StrangerStats = ({ userUid }) => {
+    const [cumulativeCalories, setCumulativeCalories] = useState(0);
+
+    useEffect(() => {
+        fetchUserCumulativeCalories(userUid, (data) => {
+            setCumulativeCalories(data.score);
+        })
+    })
+
     return (
         <Card sx={{paddingTop: "1rem", paddingBottom: "1rem", width: "55vw"}}>
             <Grid container direction="row" justifyContent="space-evenly">
@@ -10,7 +19,7 @@ const StrangerStats = ({ cal }) => {
                         Cumulative Calories Burnt:
                     </Typography>
                     <Typography variant="h2" align="center">
-                        {cal}
+                        {cumulativeCalories?.toFixed(1)}
                     </Typography>
                 </Grid>
                 <Grid item style={{ paddingTop: "1rem", paddingBottom: "0.5rem" }}>
@@ -18,7 +27,7 @@ const StrangerStats = ({ cal }) => {
                         Current Level
                     </Typography>
                     <Typography variant="h3" align="center">
-                        {findCurrentLevel(cal)}
+                        {findCurrentLevel(cumulativeCalories)}
                     </Typography>
                 </Grid>
             </Grid>

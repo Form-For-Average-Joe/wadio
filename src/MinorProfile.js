@@ -1,6 +1,6 @@
 import { Typography, Grid, Container, Box } from '@mui/material';
+import { useParams } from "react-router-dom";
 import { theme } from "./index";
-import { useUser } from 'reactfire';
 import { getFirestore, collection, query, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { createData, fetchUserData, getUserNickname, renameForTable, } from './util';
@@ -8,14 +8,14 @@ import PastExerciseTable from './components/PastExerciseTable';
 import StrangerStats from './components/StrangerStats';
 
 const MinorProfile = () => {
-    const { status, data: firebaseUserData } = useUser();
+    let { userUid } = useParams();
     const [userProfileData, setUserProfileData] = useState({});
     const [rows, setRows] = useState([{}]);
 
     useEffect(() => {
         async function getStats(firestore) {
             const temp = [];
-            const q = query(collection(firestore, firebaseUserData.uid));
+            const q = query(collection(firestore, userUid));
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((document) => {
                 if (document.id !== "userData") {
@@ -31,28 +31,27 @@ const MinorProfile = () => {
             setRows(temp);
         }
         const firestore = getFirestore();
-        fetchUserData(firebaseUserData.uid, (data) => {
+        fetchUserData(userUid, (data) => {
             setUserProfileData(data);
         })
         getStats(firestore);
-    }, [firebaseUserData])
-    if (status === 'loading') {
-        return <p>Loading</p>;
-    }
+    }, [userUid])
 
     return (
         <>
             <Grid>
                 <Grid item>
                     <Typography variant="h5" align="center" style={{ paddingTop: "2rem" }}>
-                        {getUserNickname(firebaseUserData, userProfileData)}'s Profile
+                        {/*we can leave it as undefined, because for their stats to show up on the leaderboard, their
+                           data would have to be on Redis, which is fetched and stored in userProfileData*/}
+                        {getUserNickname(undefined, userProfileData)}'s Profile
                     </Typography>
                 </Grid>
             </Grid>
             <Container sx={{ px: theme.spacing(0), py: theme.spacing(3) }}>
                 <Grid container justifyContent="center">
                     <Grid item>
-                        <StrangerStats cal={userProfileData?.totalCal} />
+                        <StrangerStats userUid={userUid}/>
                     </Grid>
                 </Grid>
             </Container>

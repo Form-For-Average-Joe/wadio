@@ -154,11 +154,11 @@ export const fetchUserPhotoURL = async (uid, callback) => {
 }
 
 export const fetchUserCumulativeCalories = async (uid, callback) => {
-  const makeReq = async () => await axios.get('https://13.228.86.60/calories/user/' + uid);
+  const makeReq = async () => await axios.get('https://13.228.86.60/user/getUserCumulative/calories/' + uid);
   try {
     const { data } = await makeReq();
-    if (data.score) {
-      callback(data.score);
+    if (data) {
+      callback(data);
     }
   } catch (err) {
     console.log("Error fetching user data")

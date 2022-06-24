@@ -7,6 +7,11 @@ const FriendsStuff = () => {
   const [code, setCode] = useState("");
   const [newCode, setNewCode] = useState("New Code");
 
+
+  // need to gen code
+  // need to filter res by code
+  // need to check display of such code on leaderboard.js
+
   const makeSave = (e) => {
     //searches redis for existing group code
     //if found but already in group, alert user
