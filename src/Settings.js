@@ -200,7 +200,7 @@ const Settings = () => {
                 label="Submit"
                 onClick={makeSave}
                 component={Link}
-                to={"/profile"}
+                to={"/dashboard"}
                 sx={{ backgroundColor: "#666666" }}>
           Save
         </Button>

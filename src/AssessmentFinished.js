@@ -80,7 +80,7 @@ export default function AssessmentFinished() {
         </Grid>
         <Grid item>
           <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} onClick={saveData}
-                               component={Link} to={user ? "/profile" : "/"}>
+                               component={Link} to={user ? "/dashboard" : "/"}>
             Continue
           </GenericHeaderButton>
         </Grid>

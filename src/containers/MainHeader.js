@@ -3,7 +3,7 @@ import AnalyticsIcon from '@mui/icons-material/Analytics';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
-import {AppBar, Avatar, Box, Toolbar, Typography, useScrollTrigger} from '@mui/material';
+import {AppBar, Avatar, Box, Toolbar, useScrollTrigger} from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -73,7 +73,7 @@ const navigationItems = {
   profile: {
     icon: <AnalyticsIcon/>,
     displayName: 'Profile',
-    to: '/profile'
+    to: '/dashboard'
   },
   settings: {
     icon: <SettingsApplicationsIcon/>,
@@ -150,7 +150,7 @@ function MainHeader() {
               <Avatar sx={{display: {xs: 'none', sm: 'block'}}} variant="rounded" src={logo}/>
             </Link> */}
             <Box component={NavLink} to={'/'} sx={{ flexGrow: 1, textDecoration: 'none', color: 'unset'}}>
-              <img src={logo}/>
+              <img src={logo} alt={''}/>
             </Box>
             {signedIn && <Box sx={{display: {xs: 'none', sm: 'inline'}, px: 1}}>
               <Box sx={{display: 'flex'}}>

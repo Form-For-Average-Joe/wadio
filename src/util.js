@@ -193,6 +193,7 @@ export const findCurrentLevel = (cal) => {
     case 2: return 'Semi-Pro'
     case 3: return 'Pro'
     case 4: return 'Master'
-    default: return 'Legend'
+    case 5: return 'Legend'
+    default: return 'Rookie'
   }
 }

@@ -13,6 +13,7 @@ import Home from './Home'
 import ExerciseAssessment from './ExerciseAssessment';
 import DashBoard from './Dashboard';
 import LeaderboardDisplay from "./LeaderboardDisplay";
+import MinorProfile from "./MinorProfile";
 import Settings from './Settings';
 import Leaderboard from './Leaderboard';
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
@@ -89,11 +90,12 @@ root.render((
                 <Route element={<MainHeader/>}>
                   <Route index path="/" element={<Home/>}/>
                   <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
-                  <Route exact path="profile" element={<AuthWrapper><DashBoard/></AuthWrapper>}/>
+                  <Route exact path="dashboard" element={<AuthWrapper><DashBoard/></AuthWrapper>}/>
                   <Route exact path="settings" element={<AuthWrapper><Settings/></AuthWrapper>}/>
                   <Route exact path="leaderboard" element={<AuthWrapper><Leaderboard/></AuthWrapper>}/>
                   <Route exact path="friends" element={<AuthWrapper><Friends/></AuthWrapper>}/>
-                  <Route exact path="leaderboard/display" element={<AuthWrapper><LeaderboardDisplay/></AuthWrapper>}/>
+                  <Route exact path="leaderboard/display" element={<LeaderboardDisplay/>}/>
+                  <Route exact path="profile" element={<MinorProfile/>}/>
                 </Route>
                 <Route path="/exercise">
                   <Route exact path="pushups" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={"pushups"}/></SettingsWrapper>}/>

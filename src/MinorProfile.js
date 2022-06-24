@@ -12,25 +12,24 @@ const MinorProfile = () => {
     const [userProfileData, setUserProfileData] = useState({});
     const [rows, setRows] = useState([{}]);
 
-    async function getStats(firestore) {
-        const temp = [];
-        const q = query(collection(firestore, firebaseUserData.uid));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((document) => {
-            if (document.id !== "userData") {
-                temp.unshift(createData(
-                    document.data().lastAttemptStats.date,
-                    document.data().lastAttemptStats.time,
-                    renameForTable(document.data().lastAttemptStats.nameOfExercise),
-                    document.data().lastAttemptStats.repCount,
-                    document.data().lastAttemptStats.workoutTime,
-                    document.data().lastAttemptStats.caloriesBurnt))
-            }
-        });
-        setRows(temp);
-    }
-
     useEffect(() => {
+        async function getStats(firestore) {
+            const temp = [];
+            const q = query(collection(firestore, firebaseUserData.uid));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((document) => {
+                if (document.id !== "userData") {
+                    temp.unshift(createData(
+                      document.data().lastAttemptStats.date,
+                      document.data().lastAttemptStats.time,
+                      renameForTable(document.data().lastAttemptStats.nameOfExercise),
+                      document.data().lastAttemptStats.repCount,
+                      document.data().lastAttemptStats.workoutTime,
+                      document.data().lastAttemptStats.caloriesBurnt))
+                }
+            });
+            setRows(temp);
+        }
         const firestore = getFirestore();
         fetchUserData(firebaseUserData.uid, (data) => {
             setUserProfileData(data);

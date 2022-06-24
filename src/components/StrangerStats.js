@@ -1,7 +1,4 @@
 import { Typography, Card, Grid } from '@mui/material';
-import { useUser } from "reactfire";
-import { fetchUserCumulativeCalories } from "../util";
-import { useState, useEffect } from "react";
 import { findCurrentLevel } from '../util';
 
 const StrangerStats = ({ cal }) => {
