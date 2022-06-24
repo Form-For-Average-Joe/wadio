@@ -13,6 +13,7 @@ import TableRow from '@mui/material/TableRow';
 import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useLocation } from "react-router-dom";
 import { useUser } from "reactfire";
 import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -141,14 +142,16 @@ const getUserTableRow = (currentUserData, index, currentUserUid, displayString) 
   </TableRow>
 }
 
-export default function GlobalLeaderboard() {
+export default function LeaderboardDisplay() {
   const { status, data: user } = useUser();
+  const { state } = useLocation();
 
   const [exerciseSelectedIndex, setExerciseSelectedIndex] = useState(0);
   // const [difficultySelectedIndex, setDifficultySelectedIndex] = useState(1);
   // const [typeOfRanking, setTypeOfRanking] = useState(0);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [leaderboardId, setLeaderboardId] = useState('');
 
   const displayString = exercisesWithCalories()[exerciseSelectedIndex];
 
@@ -167,7 +170,7 @@ export default function GlobalLeaderboard() {
 
   useEffect(() => {
     const getLeaderboardData = async () => {
-      const makeReq = async () => await axios.get('https://13.228.86.60/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + rowsPerPage + '/' + page);
+      const makeReq = async () => await axios.get('https://13.228.86.60/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + leaderboardId + '/' + rowsPerPage + '/' + page);
       try {
         const { data } = await makeReq();
         setRowData(data.rankings);
@@ -179,15 +182,21 @@ export default function GlobalLeaderboard() {
     const getCurrentUserData = async () => {
       const makeReq = async () => await axios.get('https://13.228.86.60/' + exercisesWithCalories()[exerciseSelectedIndex] + '/user/' + user.uid);
       try {
-        const { data } = await makeReq();
-        setCurrentUserData(data);
+        const res = await makeReq();
+        if (res?.data) setCurrentUserData(res.data);
       } catch (err) {
-        console.log("Error fetching leaderboard data");
+        console.log("Error fetching user");
       }
     };
     if (user) getCurrentUserData();
-    getLeaderboardData();
-  }, [exerciseSelectedIndex, page, rowsPerPage])
+    if (leaderboardId) getLeaderboardData();
+  }, [exerciseSelectedIndex, page, rowsPerPage, leaderboardId, user]);
+
+  useEffect(() => {
+    if (state?.leaderboardId) {
+      setLeaderboardId(state.leaderboardId);
+    }
+  }, [state]);
 
   if (status === 'loading') {
     return <p>Loading</p>;

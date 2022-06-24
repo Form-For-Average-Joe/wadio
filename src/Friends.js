@@ -1,18 +1,7 @@
-import { Card, CardContent, CardMedia, Container, Paper } from '@mui/material';
-import cover from './assets/cover.jpeg';
-import ExerciseInfo from './components/ExerciseInfo';
-import GenericHeaderButton from './components/GenericHeaderButton';
-import axios from "axios";
-import { Fragment, useState, useEffect } from 'react';
-import { Typography, Grid, Box, TextField, Button, Stack, Switch, Snackbar, Alert } from '@mui/material';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { useUser } from 'reactfire';
-import { Link, useLocation } from 'react-router-dom';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import { fetchUserData, getUserNickname } from "./util";
-import { updateProfile, reload } from 'firebase/auth';
+import { Card } from '@mui/material';
+import { useState } from 'react';
+import { Typography, Grid, Box, TextField, Button, Stack } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const FriendsStuff = () => {
   const [code, setCode] = useState("");
