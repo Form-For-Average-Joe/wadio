@@ -31,11 +31,11 @@ const Leaderboard = () => {
 
   useEffect(() => {
     const firestore = getFirestore();
-    const ref = doc(firestore, user.uid, 'leaderboards');
+    const ref = doc(firestore, user.uid, 'groupCodes');
     getDoc(ref).then((docSnap) => {
-      const leaderboards = docSnap.data();
-      if (leaderboards) {
-        setLeaderboards(docSnap.data().leaderboards);
+      const groupCodes = docSnap.data();
+      if (groupCodes) {
+        setLeaderboards(groupCodes.codes);
       }
       else {
         navigate('/leaderboard/display', { replace: true, state: { leaderboardId: globalLeaderboard.id } });

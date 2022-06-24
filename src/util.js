@@ -1,5 +1,6 @@
 // to mirror the webcam
 import axios from "axios";
+import { collection, getDocs, query } from "firebase/firestore";
 
 export const webcamStyles = {
   video: {
@@ -196,4 +197,22 @@ export const findCurrentLevel = (cal) => {
     case 5: return 'Legend'
     default: return 'Rookie'
   }
+}
+
+export async function getLastAttemptStats(userUid, firestore, callback) {
+  const temp = [];
+  const q = query(collection(firestore, userUid));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((document) => {
+    if (document.id !== "userData") {
+      temp.unshift(createData(
+        document.data().lastAttemptStats.date,
+        document.data().lastAttemptStats.time,
+        renameForTable(document.data().lastAttemptStats.nameOfExercise),
+        document.data().lastAttemptStats.repCount,
+        document.data().lastAttemptStats.workoutTime,
+        document.data().lastAttemptStats.caloriesBurnt))
+    }
+  });
+  callback(temp);
 }

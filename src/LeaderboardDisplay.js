@@ -20,12 +20,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import GenericProfileButton from './components/GenericProfileButton';
 
 //todo need to maintain personal best (write) and last attempt (write) in profile
-// friends
-// https://dribbble.com/tags/mobile_leaderboard
-// https://dribbble.com/shots/14650665-Daily-UI-Leaderboard/attachments/6345922?mode=media
-// add a label/marker for friends, and a button to only show friends vs global
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
-
 const StyledMenu = styled((props) => (
   <Menu
     elevation={0}

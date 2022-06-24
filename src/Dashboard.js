@@ -4,10 +4,10 @@ import CaloriesBurnt from './components/CaloriesBurnt';
 import { theme } from "./index";
 import LogoutButton from './components/LogoutButton';
 import { useUser } from 'reactfire';
-import { getFirestore, collection, query, getDocs } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import ProgressLine from './components/ProgressLine';
-import { createData, fetchUserCumulativeCalories, fetchUserData, getUserNickname, renameForTable, } from './util';
+import { fetchUserCumulativeCalories, fetchUserData, getUserNickname, getLastAttemptStats } from './util';
 import PastExerciseTable from './components/PastExerciseTable';
 
 const Dashboard = () => {
@@ -15,24 +15,6 @@ const Dashboard = () => {
   const [userProfileData, setUserProfileData] = useState({});
   const [rows, setRows] = useState([{}]);
   const [cumulativeCalories, setCumulativeCalories] = useState(0);
-
-  async function getStats(firestore) {
-    const temp = [];
-    const q = query(collection(firestore, firebaseUserData.uid));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((document) => {
-      if (document.id !== "userData") {
-        temp.unshift(createData(
-          document.data().lastAttemptStats.date,
-          document.data().lastAttemptStats.time,
-          renameForTable(document.data().lastAttemptStats.nameOfExercise),
-          document.data().lastAttemptStats.repCount,
-          document.data().lastAttemptStats.workoutTime,
-          document.data().lastAttemptStats.caloriesBurnt))
-      }
-    });
-    setRows(temp);
-  }
 
   useEffect(() => {
     const firestore = getFirestore();
@@ -42,8 +24,10 @@ const Dashboard = () => {
     fetchUserCumulativeCalories(firebaseUserData.uid, (data) => {
       setCumulativeCalories(data.score);
     });
-    getStats(firestore);
-  }, [firebaseUserData])
+    getLastAttemptStats(firebaseUserData.uid, firestore, (data) => {
+      setRows(data);
+    });
+    }, [firebaseUserData])
   if (status === 'loading') {
     return <p>Loading</p>;
   }
