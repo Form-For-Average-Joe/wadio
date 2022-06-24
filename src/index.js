@@ -13,9 +13,11 @@ import Home from './Home'
 import ExerciseAssessment from './ExerciseAssessment';
 import DashBoard from './Dashboard';
 import Settings from './Settings';
+import NavLeaderboard from './NavLeaderboard';
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { FirebaseAppProvider } from 'reactfire';
-import Leaderboard from './Leaderboard';
+// import Leaderboard from './Leaderboard';
+// import MinorProfile from './MinorProfile';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -90,7 +92,7 @@ root.render((
                   <Route exact path="assessmentend" element={<AssessmentFinished/>}/>
                   <Route exact path="profile" element={<AuthWrapper><DashBoard/></AuthWrapper>}/>
                   <Route exact path="settings" element={<AuthWrapper><Settings/></AuthWrapper>}/>
-                  <Route exact path="leaderboard" element={<AuthWrapper><Leaderboard/></AuthWrapper>}/>
+                  <Route exact path="leaderboard" element={<AuthWrapper><NavLeaderboard/></AuthWrapper>}/>
                   <Route exact path="friends" element={<AuthWrapper><Friends/></AuthWrapper>}/>
                 </Route>
                 <Route path="/exercise">

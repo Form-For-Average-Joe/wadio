@@ -5,11 +5,11 @@ import ExerciseInfo from './components/ExerciseInfo';
 import GenericHeaderButton from './components/GenericHeaderButton';
 import { useUser, useSigninCheck } from 'reactfire';
 import { useEffect, useState } from 'react';
-import pushups from './assets/pushups.jpeg';
+import pushups from './assets/pushups.png';
 import pushupsG from './assets/pushupsG.jpeg';
 import situps from './assets/situps.png';
 import situpsG from './assets/situpsG.jpeg';
-import comingsoon from './assets/comingsoon.webp';
+import comingsoon from './assets/comingsoon.png';
 import { fetchUserData } from "./util";
 
 const exerciseInformation = [
@@ -99,7 +99,7 @@ const ExerciseCards = () => {
                 <Grid container spacing={2} sx={{ paddingTop: 1 }}>
                   <Grid item>
                     <GenericHeaderButton variant="contained"
-                      style={{ justifyContent: "center" }}
+                      style={{ justifyContent: "center", backgroundColor: "#FA9C1B", color: "#000000" }}
                       component={Link}
                       to={unlock ? exerciseInfo.to : '/'}>Attempt</GenericHeaderButton>
                   </Grid>

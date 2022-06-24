@@ -184,3 +184,15 @@ export const exercisesWithCaloriesTitleCase = () => {
   });
   return arr;
 }
+
+export const findCurrentLevel = (cal) => {
+  const levelIndex = Math.floor(cal/1000);
+  switch (levelIndex) {
+    case 0: return 'Rookie'
+    case 1: return 'Regular'
+    case 2: return 'Semi-Pro'
+    case 3: return 'Pro'
+    case 4: return 'Master'
+    default: return 'Legend'
+  }
+}

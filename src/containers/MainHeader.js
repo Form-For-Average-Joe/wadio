@@ -20,7 +20,7 @@ import PropTypes from 'prop-types';
 import {useState, useEffect} from 'react';
 import {Link, NavLink, Outlet} from "react-router-dom";
 import {useSigninCheck, useUser} from 'reactfire';
-import logo from '../assets/OrbitalLogo.png';
+import logo from '../assets/logo.png';
 import GenericHeaderButton from "../components/GenericHeaderButton";
 import LoginDialog from '../components/LoginDialog';
 import { fetchUserPhotoURL } from "../util";
@@ -146,13 +146,11 @@ function MainHeader() {
             >
               <MenuIcon/>
             </IconButton>
-            <Link to="/">
+            {/* <Link to="/">
               <Avatar sx={{display: {xs: 'none', sm: 'block'}}} variant="rounded" src={logo}/>
-            </Link>
-            <Box component={NavLink} to={'/'} style={{flexGrow: 1, textDecoration: 'none', color: 'unset'}}>
-              <Typography variant="h4" sx={{px: {xs: 1, sm: 2, md: 3, lg: 4, xl: 5}}}>
-                Form For the Average Joe
-              </Typography>
+            </Link> */}
+            <Box component={NavLink} to={'/'} sx={{ flexGrow: 1, textDecoration: 'none', color: 'unset'}}>
+              <img src={logo}/>
             </Box>
             {signedIn && <Box sx={{display: {xs: 'none', sm: 'inline'}, px: 1}}>
               <Box sx={{display: 'flex'}}>
