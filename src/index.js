@@ -94,7 +94,10 @@ root.render((
                   <Route exact path="settings" element={<AuthWrapper><Settings/></AuthWrapper>}/>
                   <Route exact path="leaderboard" element={<AuthWrapper><Leaderboard/></AuthWrapper>}/>
                   <Route exact path="friends" element={<AuthWrapper><Friends/></AuthWrapper>}/>
-                  <Route exact path="leaderboard/display" element={<LeaderboardDisplay/>}/>
+                  {/*Ideally we wouldn't use SettingsWrapper for the leaderboard, but Firebase client can't query user profile
+                  and we don't have cloud functions, so unless we have an additional check in App to add the user nickname, this
+                  is the temporary alternative*/}
+                  <Route exact path="leaderboard/display" element={<SettingsWrapper><LeaderboardDisplay/></SettingsWrapper>}/>
                   <Route path="profile">
                     <Route path=":userUid" element={<MinorProfile />} />
                   </Route>

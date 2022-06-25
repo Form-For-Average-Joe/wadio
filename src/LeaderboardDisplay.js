@@ -13,7 +13,7 @@ import TableRow from '@mui/material/TableRow';
 import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useUser } from "reactfire";
 import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -143,6 +143,7 @@ const getUserTableRow = (currentUserData, index, currentUserUid, displayString) 
 export default function LeaderboardDisplay() {
   const { status, data: user } = useUser();
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   const [exerciseSelectedIndex, setExerciseSelectedIndex] = useState(0);
   // const [difficultySelectedIndex, setDifficultySelectedIndex] = useState(1);
@@ -195,6 +196,9 @@ export default function LeaderboardDisplay() {
   useEffect(() => {
     if (state?.leaderboardId) {
       setLeaderboardId(state.leaderboardId);
+    }
+    else {
+      navigate('/leaderboard', { replace: true }); // if user skips the selection, state will be empty, so redirect him back
     }
   }, [state]);
 
