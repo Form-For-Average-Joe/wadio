@@ -1,24 +1,55 @@
 import { Card } from '@mui/material';
-import { get, put } from "axios";
+import { get } from "axios";
 import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Typography, Grid, Box, TextField, Button, Stack } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid/non-secure';
 import { useUser } from "reactfire";
+import { associateGroupCodeToUserId, associateUserIdToGroupCode, isInvalidTextInput } from "./util";
 
 const FriendsStuff = () => {
   const { status, data: user } = useUser();
-  const [code, setCode] = useState("");
+  const [existingCode, setExistingCode] = useState("");
   const [newCode, setNewCode] = useState("");
   const [leaderboardName, setLeaderboardName] = useState("");
+  const navigate = useNavigate();
+
+  const isLeaderboardNameFormValid = () => {
+    return !(isInvalidTextInput(leaderboardName));
+  };
 
   // need to filter res by code
-  // need to check display of such code on leaderboard.js
 
-  const makeSave = (e) => {
-    //searches redis for existing group code
-    //if found but already in group, alert user
+  // Make it an expiring group code
+
+  const isGroupCodePresent = async (groupCode) => await get('https://13.228.86.60/isKeyPresent/' + groupCode);
+
+  const createRelationBetweenGroupCodeAndUser = (codeToStore, leaderboardName) => {
+    const ref = doc(getFirestore(), user.uid, 'groupCodes');
+    getDoc(ref).then(async (docSnap) => {
+      await associateGroupCodeToUserId(docSnap.data(), codeToStore, user.uid);
+    })
+      .then(async () => {
+        await associateUserIdToGroupCode(codeToStore, user.uid, leaderboardName);
+        navigate('/leaderboard');
+      })
+  }
+
+  const addNewCodeToUser = async (e) => {
+    let result;
+    try {
+      result = await isGroupCodePresent(existingCode);
+    } catch (err) {
+      e.preventDefault();
+    }
+    const { isKeyPresent } = result.data;
+    if (isKeyPresent) {
+      createRelationBetweenGroupCodeAndUser(existingCode, "");
+    }
+    else {
+      e.preventDefault();
+    }
     //else, download firestore leaderboard array, append and resend to firestore, replacing the previous version
     //then, goes to the leaderboard page, in which the new leaderboard should be included in the list
     //if not found, alert the user that the code is not found
@@ -29,35 +60,17 @@ const FriendsStuff = () => {
     let possibleGroupCode;
     while (!res) {
       possibleGroupCode = nanoid();
-      res = await get('https://13.228.86.60/isKeyPresent/' + possibleGroupCode);
+      res = await isGroupCodePresent(possibleGroupCode);
     }
     setNewCode(possibleGroupCode);
   }
 
-  const submitNewCode = () => {
-    const newArray = [{ id: newCode, name: leaderboardName }];
-    const ref = doc(getFirestore(), user.uid, 'groupCodes');
-    const associateUserIdToGroupCode = async () => {
-      try {
-        const x = await put('https://13.228.86.60/addGroupCodeToUser/' + newCode + '/' + user.uid);
-        console.log(x);
-      } catch (err) {
-        console.log(err)
-      }
+  const submitNewCode = (e) => {
+    if (isLeaderboardNameFormValid()) {
+      createRelationBetweenGroupCodeAndUser(newCode, leaderboardName);
+    } else {
+      e.preventDefault();
     }
-    getDoc(ref).then((docSnap) => {
-      const data = docSnap.data();
-      if (data?.codes) {
-        const existingCodes = data.codes;
-        const existingIds = existingCodes.map(idObj => idObj.id);
-        if (!(existingIds.includes(newCode))) {
-          setDoc(doc(getFirestore(), user.uid, 'groupCodes'), { codes: existingCodes.concat(newArray) });
-        }
-      } else {
-        setDoc(doc(getFirestore(), user.uid, 'groupCodes'), { codes: newArray });
-      }
-    })
-    associateUserIdToGroupCode();
   }
 
   return (
@@ -79,14 +92,16 @@ const FriendsStuff = () => {
               autoComplete="off"
             >
               <TextField
+                required
                 label="Group Code"
-                value={code}
+                value={existingCode}
                 variant="outlined"
                 type={'text'}
                 size="small"
                 sx={{ backgroundColor: "#FFFFFF" }}
                 onChange={(e) => {
-                  setCode(e.target.value);
+                  console.log(e.target.value)
+                  setExistingCode(e.target.value);
                 }}
               />
             </Stack>
@@ -94,9 +109,7 @@ const FriendsStuff = () => {
               <Button variant="contained"
                       type="submit"
                       label="Submit"
-                      onClick={makeSave}
-                      component={Link}
-                      to={"/leaderboard"}
+                      onClick={addNewCodeToUser}
                       sx={{ backgroundColor: "#666666" }}>
                 Join Group
               </Button>
@@ -118,8 +131,10 @@ const FriendsStuff = () => {
                  autoComplete="off">
                  <Typography variant="h5">{newCode}</Typography>
                  <TextField
+                   required
                    label="Leaderboard Name"
                    value={leaderboardName}
+                   error={isInvalidTextInput(leaderboardName)}
                    variant="outlined"
                    type={'text'}
                    size="small"
@@ -132,10 +147,10 @@ const FriendsStuff = () => {
                </Stack>
                <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: "1rem" }}>
                  <Button variant="contained"
+                         type="submit"
+                         label="Submit"
                          sx={{ backgroundColor: "#666666" }}
-                         onClick={submitNewCode}
-                         component={Link}
-                         to={"/leaderboard"}>
+                         onClick={submitNewCode}>
                    Use Group Code
                  </Button>
                </Box>
