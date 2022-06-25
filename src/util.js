@@ -1,5 +1,6 @@
 // to mirror the webcam
-import axios from "axios";
+import { get, put } from "axios";
+import { collection, doc, getDocs, getFirestore, query, setDoc } from "firebase/firestore";
 
 export const webcamStyles = {
   video: {
@@ -130,7 +131,7 @@ export const getCaloriesBurnt = (repCount, workoutTime, nameOfExercise, difficul
 }
 
 export const fetchUserData = async (uid, callback) => {
-  const makeReq = async () => await axios.get('https://13.228.86.60/user/getUserStatistics/' + uid);
+  const makeReq = async () => await get('https://13.228.86.60/user/getUserStatistics/' + uid);
   try {
     const { data } = await makeReq();
     if (data) {
@@ -142,7 +143,7 @@ export const fetchUserData = async (uid, callback) => {
 }
 
 export const fetchUserPhotoURL = async (uid, callback) => {
-  const makeReq = async () => await axios.get('https://13.228.86.60/user/getUserPhotoURL/' + uid);
+  const makeReq = async () => await get('https://13.228.86.60/user/getUserPhotoURL/' + uid);
   try {
     const { data: userAddedPhotoURL } = await makeReq();
     if (userAddedPhotoURL) {
@@ -154,7 +155,7 @@ export const fetchUserPhotoURL = async (uid, callback) => {
 }
 
 export const fetchUserCumulativeCalories = async (uid, callback) => {
-  const makeReq = async () => await axios.get('https://13.228.86.60/user/getUserCumulative/calories/' + uid);
+  const makeReq = async () => await get('https://13.228.86.60/user/getUserCumulative/calories/' + uid);
   try {
     const { data } = await makeReq();
     if (data) {
@@ -195,5 +196,46 @@ export const findCurrentLevel = (cal) => {
     case 4: return 'Master'
     case 5: return 'Legend'
     default: return 'Rookie'
+  }
+}
+
+export async function getLastAttemptStats(userUid, firestore, callback) {
+  const temp = [];
+  const q = query(collection(firestore, userUid));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((document) => {
+    if (document.id !== "userData") {
+      temp.unshift(createData(
+        document.data().lastAttemptStats.date,
+        document.data().lastAttemptStats.time,
+        renameForTable(document.data().lastAttemptStats.nameOfExercise),
+        document.data().lastAttemptStats.repCount,
+        document.data().lastAttemptStats.workoutTime,
+        document.data().lastAttemptStats.caloriesBurnt))
+    }
+  });
+  callback(temp);
+}
+
+export const isInvalidTextInput = (value) => value === "0" || value === "";
+
+export const associateUserIdToGroupCode = async (newCode, userUid, leaderboardName) => {
+  try {
+    await put('https://13.228.86.60/addGroupCodeToUser/' + newCode + '/' + userUid, { leaderboardName });
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const associateGroupCodeToUserId = async (data, codeToStore, userUid) => {
+  const newArray = [codeToStore];
+  if (data?.codes) {
+    const existingCodes = data.codes;
+    const existingIds = existingCodes.map(idObj => idObj.id);
+    if (!(existingIds.includes(codeToStore))) {
+      await setDoc(doc(getFirestore(), userUid, 'groupCodes'), { codes: existingCodes.concat(newArray) });
+    }
+  } else {
+    await setDoc(doc(getFirestore(), userUid, 'groupCodes'), { codes: newArray });
   }
 }

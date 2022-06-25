@@ -10,7 +10,7 @@ import pushupsG from './assets/pushupsG.jpeg';
 import situps from './assets/situps.png';
 import situpsG from './assets/situpsG.jpeg';
 import comingsoon from './assets/comingsoon.png';
-import { fetchUserCumulativeCalories, fetchUserData } from "./util";
+import { fetchUserCumulativeCalories } from "./util";
 
 const exerciseInformation = [
   {
@@ -64,15 +64,11 @@ export function checkUnlocked(cal, ex) {
 
 const ExerciseCards = () => {
   const { status, data: user } = useUser();
-  const [userProfileData, setUserProfileData] = useState({});
   const { status: signInCheckStatus, data: signInCheckData } = useSigninCheck();
   const [cumulativeCalories, setCumulativeCalories] = useState(0);
 
   useEffect(() => {
     if (user) {
-      fetchUserData(user.uid, (data) => {
-        setUserProfileData(data);
-      });
       fetchUserCumulativeCalories(user.uid, (data) => {
         setCumulativeCalories(data.score);
       });

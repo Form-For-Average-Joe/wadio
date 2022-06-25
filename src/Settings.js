@@ -7,10 +7,8 @@ import { useUser } from 'reactfire';
 import { Link, useLocation } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { fetchUserData, getUserNickname } from "./util";
+import { fetchUserData, getUserNickname, isInvalidTextInput } from "./util";
 import { updateProfile, reload } from 'firebase/auth';
-
-const isInvalidValue = (value) => value === "0" || value === "";
 
 const Settings = () => {
   const { data: user } = useUser();
@@ -25,7 +23,7 @@ const Settings = () => {
   const [photoURL, setPhotoURL] = useState(user.photoURL);
   const { state } = useLocation();
   const isFormValid = () => {
-    return !(isInvalidValue(age) || isInvalidValue(weight) || isInvalidValue(height));
+    return !(isInvalidTextInput(age) || isInvalidTextInput(weight) || isInvalidTextInput(height));
   };
 
   const handleCloseSnackbar = (event, reason) => {
@@ -127,7 +125,7 @@ const Settings = () => {
           required
           label="Age"
           value={age}
-          error={isInvalidValue(age)}
+          error={isInvalidTextInput(age)}
           variant="outlined"
           size="small"
           sx={{ backgroundColor: "#FFFFFF" }}
@@ -136,7 +134,7 @@ const Settings = () => {
         />
         <TextField
           required
-          error={isInvalidValue(weight)}
+          error={isInvalidTextInput(weight)}
           label="Weight"
           value={weight}
           variant="outlined"
@@ -149,7 +147,7 @@ const Settings = () => {
           required
           label="Height"
           value={height}
-          error={isInvalidValue(height)}
+          error={isInvalidTextInput(height)}
           variant="outlined"
           size="small"
           sx={{ backgroundColor: "#FFFFFF" }}

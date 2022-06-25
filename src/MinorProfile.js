@@ -1,9 +1,9 @@
 import { Typography, Grid, Container, Box } from '@mui/material';
 import { useParams } from "react-router-dom";
 import { theme } from "./index";
-import { getFirestore, collection, query, getDocs } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { createData, fetchUserData, getUserNickname, renameForTable, } from './util';
+import { fetchUserData, getLastAttemptStats, getUserNickname } from './util';
 import PastExerciseTable from './components/PastExerciseTable';
 import StrangerStats from './components/StrangerStats';
 
@@ -13,28 +13,13 @@ const MinorProfile = () => {
     const [rows, setRows] = useState([{}]);
 
     useEffect(() => {
-        async function getStats(firestore) {
-            const temp = [];
-            const q = query(collection(firestore, userUid));
-            const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((document) => {
-                if (document.id !== "userData") {
-                    temp.unshift(createData(
-                      document.data().lastAttemptStats.date,
-                      document.data().lastAttemptStats.time,
-                      renameForTable(document.data().lastAttemptStats.nameOfExercise),
-                      document.data().lastAttemptStats.repCount,
-                      document.data().lastAttemptStats.workoutTime,
-                      document.data().lastAttemptStats.caloriesBurnt))
-                }
-            });
-            setRows(temp);
-        }
         const firestore = getFirestore();
         fetchUserData(userUid, (data) => {
             setUserProfileData(data);
         })
-        getStats(firestore);
+        getLastAttemptStats(userUid, firestore, (data) => {
+            setRows(data);
+        });
     }, [userUid])
 
     return (

@@ -1,5 +1,6 @@
 import { Typography, Box } from '@mui/material';
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from 'reactfire';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -9,16 +10,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-const globalLeaderboard = {
-  id: "global",
-  name: "Global"
-};
+const globalLeaderboardId = 'global';
+const globalLeaderboardName = 'Global';
 
-function createLeaderboardMenuItem(leaderboardName) {
+function createLeaderboardMenuItem(leaderboardId, leaderboardName) {
   return (
-    <ListItem key={leaderboardName.id} disablePadding>
-      <ListItemButton>
-        <ListItemText primary={leaderboardName.name}/>
+    <ListItem key={leaderboardId} disablePadding>
+      <ListItemButton component={Link} to={'/leaderboard/display'} state={{ leaderboardId: leaderboardId }}>
+        <ListItemText primary={leaderboardName}/>
       </ListItemButton>
     </ListItem>
   )
@@ -31,14 +30,18 @@ const Leaderboard = () => {
 
   useEffect(() => {
     const firestore = getFirestore();
-    const ref = doc(firestore, user.uid, 'leaderboards');
-    getDoc(ref).then((docSnap) => {
-      const leaderboards = docSnap.data();
-      if (leaderboards) {
-        setLeaderboards(docSnap.data().leaderboards);
+    const ref = doc(firestore, user.uid, 'groupCodes');
+    getDoc(ref).then(async (docSnap) => {
+      const groupCodes = docSnap.data();
+      if (groupCodes?.codes) {
+        const allGroupCodes = groupCodes.codes;
+        setLeaderboards(await Promise.all(allGroupCodes.map(async groupCode => {
+          const { data } = await axios.get('https://13.228.86.60/getLeaderboardName/' + groupCode);
+          return { leaderboardName: data.leaderboardName, leaderboardId: groupCode };
+        })));
       }
       else {
-        navigate('/leaderboard/display', { replace: true, state: { leaderboardId: globalLeaderboard.id } });
+        navigate('/leaderboard/display', { state: { leaderboardId: globalLeaderboardId } });
       }
     })
   }, [user, navigate])
@@ -49,9 +52,9 @@ const Leaderboard = () => {
         Leaderboards
       </Typography>
       <List sx={{ backgroundColor: "#555555" }}>
-        {createLeaderboardMenuItem(globalLeaderboard)}
-        {leaderboards.map(leaderboardName => {
-          return createLeaderboardMenuItem(leaderboardName);
+        {createLeaderboardMenuItem(globalLeaderboardId, globalLeaderboardName)}
+        {leaderboards.map(leaderboardObject => {
+          return createLeaderboardMenuItem(leaderboardObject.leaderboardId, leaderboardObject.leaderboardName);
         })}
       </List>
     </Box>

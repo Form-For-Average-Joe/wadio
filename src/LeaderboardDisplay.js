@@ -13,19 +13,14 @@ import TableRow from '@mui/material/TableRow';
 import { styled, alpha } from '@mui/material/styles';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useUser } from "reactfire";
 import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import GenericProfileButton from './components/GenericProfileButton';
 
 //todo need to maintain personal best (write) and last attempt (write) in profile
-// friends
-// https://dribbble.com/tags/mobile_leaderboard
-// https://dribbble.com/shots/14650665-Daily-UI-Leaderboard/attachments/6345922?mode=media
-// add a label/marker for friends, and a button to only show friends vs global
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
-
 const StyledMenu = styled((props) => (
   <Menu
     elevation={0}
@@ -124,7 +119,7 @@ const getUserTableRow = (currentUserData, index, currentUserUid, displayString) 
   const isCurrentUserRow = currentUserData.uid === currentUserUid;
   const rowDisplayName = currentUserData.nickname || currentUserData.uid;
   const getCurrentUserDisplayName = isCurrentUserRow ? rowDisplayName + ' (You)' : rowDisplayName;
-  const tableRowSx={ textDecoration: 'none' };
+  const tableRowSx = { textDecoration: 'none' };
   return <TableRow sx={isCurrentUserRow ? { bgcolor: '#83d6fc', ...tableRowSx } : tableRowSx} hover
                    component={Link}
                    to={'/profile/' + currentUserData.uid}
@@ -148,6 +143,7 @@ const getUserTableRow = (currentUserData, index, currentUserUid, displayString) 
 export default function LeaderboardDisplay() {
   const { status, data: user } = useUser();
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   const [exerciseSelectedIndex, setExerciseSelectedIndex] = useState(0);
   // const [difficultySelectedIndex, setDifficultySelectedIndex] = useState(1);
@@ -173,7 +169,9 @@ export default function LeaderboardDisplay() {
 
   useEffect(() => {
     const getLeaderboardData = async () => {
-      const makeReq = async () => await axios.get('https://13.228.86.60/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + leaderboardId + '/' + rowsPerPage + '/' + page);
+      const makeReq = async () => await axios.get('https://13.228.86.60/' +
+        exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + leaderboardId + '/' + rowsPerPage + '/' +
+        page);
       try {
         const { data } = await makeReq();
         setRowData(data.rankings);
@@ -198,6 +196,9 @@ export default function LeaderboardDisplay() {
   useEffect(() => {
     if (state?.leaderboardId) {
       setLeaderboardId(state.leaderboardId);
+    }
+    else {
+      navigate('/leaderboard', { replace: true }); // if user skips the selection, state will be empty, so redirect him back
     }
   }, [state]);
 
