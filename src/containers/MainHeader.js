@@ -3,7 +3,7 @@ import AnalyticsIcon from '@mui/icons-material/Analytics';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
-import {AppBar, Avatar, Box, Toolbar, Typography, useScrollTrigger} from '@mui/material';
+import {AppBar, Avatar, Box, Toolbar, useScrollTrigger} from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -12,6 +12,7 @@ import ListItem from '@mui/material/ListItem';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ListItemButton from '@mui/material/ListItemButton';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import GroupsIcon from '@mui/icons-material/Groups';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
@@ -19,7 +20,7 @@ import PropTypes from 'prop-types';
 import {useState, useEffect} from 'react';
 import {Link, NavLink, Outlet} from "react-router-dom";
 import {useSigninCheck, useUser} from 'reactfire';
-import logo from '../assets/OrbitalLogo.png';
+import logo from '../assets/logo.png';
 import GenericHeaderButton from "../components/GenericHeaderButton";
 import LoginDialog from '../components/LoginDialog';
 import { fetchUserPhotoURL } from "../util";
@@ -63,12 +64,16 @@ const navigationItems = {
     icon: <LeaderboardIcon/>,
     displayName: 'Leaderboard',
     to: '/leaderboard',
-    guestAccess: false
+  },
+  friends: {
+    icon: <GroupsIcon/>,
+    displayName: 'Friends',
+    to: '/friends',
   },
   profile: {
     icon: <AnalyticsIcon/>,
     displayName: 'Profile',
-    to: '/profile'
+    to: '/dashboard'
   },
   settings: {
     icon: <SettingsApplicationsIcon/>,
@@ -141,18 +146,18 @@ function MainHeader() {
             >
               <MenuIcon/>
             </IconButton>
-            <Link to="/">
+            {/* <Link to="/">
               <Avatar sx={{display: {xs: 'none', sm: 'block'}}} variant="rounded" src={logo}/>
-            </Link>
-            <Box component={NavLink} to={'/'} style={{flexGrow: 1, textDecoration: 'none', color: 'unset'}}>
-              <Typography variant="h4" sx={{px: {xs: 1, sm: 2, md: 3, lg: 4, xl: 5}}}>
-                Form For the Average Joe
-              </Typography>
+            </Link> */}
+            <Box component={NavLink} to={'/'} sx={{ flexGrow: 1, textDecoration: 'none', color: 'unset'}}>
+              <img src={logo} alt={''}/>
             </Box>
             {signedIn && <Box sx={{display: {xs: 'none', sm: 'inline'}, px: 1}}>
               <Box sx={{display: 'flex'}}>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.leaderboard.to}>{navigationItems.leaderboard.displayName}</GenericHeaderButton>
+                <GenericHeaderButton component={Link}
+                                     to={navigationItems.friends.to}>{navigationItems.friends.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.profile.to}>{navigationItems.profile.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}

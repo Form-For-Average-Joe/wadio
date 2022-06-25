@@ -5,12 +5,12 @@ import ExerciseInfo from './components/ExerciseInfo';
 import GenericHeaderButton from './components/GenericHeaderButton';
 import { useUser, useSigninCheck } from 'reactfire';
 import { useEffect, useState } from 'react';
-import pushups from './assets/pushups.jpeg';
+import pushups from './assets/pushups.png';
 import pushupsG from './assets/pushupsG.jpeg';
 import situps from './assets/situps.png';
 import situpsG from './assets/situpsG.jpeg';
-import comingsoon from './assets/comingsoon.webp';
-import { fetchUserData } from "./util";
+import comingsoon from './assets/comingsoon.png';
+import { fetchUserCumulativeCalories } from "./util";
 
 const exerciseInformation = [
   {
@@ -52,7 +52,7 @@ const exerciseInformation = [
 ]
 
 export function checkUnlocked(cal, ex) {
-  switch(ex) {
+  switch (ex) {
     case 'pushups':
       return true;
     case 'situps':
@@ -64,14 +64,14 @@ export function checkUnlocked(cal, ex) {
 
 const ExerciseCards = () => {
   const { status, data: user } = useUser();
-  const [userProfileData, setUserProfileData] = useState({});
   const { status: signInCheckStatus, data: signInCheckData } = useSigninCheck();
+  const [cumulativeCalories, setCumulativeCalories] = useState(0);
 
   useEffect(() => {
     if (user) {
-      fetchUserData(user.uid, (data) => {
-        setUserProfileData(data);
-      })
+      fetchUserCumulativeCalories(user.uid, (data) => {
+        setCumulativeCalories(data.score);
+      });
     }
   }, [user])
 
@@ -82,10 +82,10 @@ const ExerciseCards = () => {
   return (
     <Grid container spacing={2}>
       {exerciseInformation.map(exerciseInfo => {
-        const unlock = signInCheckData.signedIn && checkUnlocked(userProfileData?.totalCal, exerciseInfo.title)
+        const unlock = signInCheckData.signedIn && checkUnlocked(cumulativeCalories, exerciseInfo.title)
         const name = unlock ? exerciseInfo.title : "locked"
         return (
-          <Grid key={exerciseInfo.title} item xs={6} sm={6} md={6} lg={6} xl={6}>
+          <Grid key={exerciseInfo.title} item xs={12} sm={12} md={6} lg={6} xl={6}>
             <Card>
               <CardMedia
                 image={unlock ? exerciseInfo.image : exerciseInfo.locked}
@@ -99,12 +99,16 @@ const ExerciseCards = () => {
                 <Grid container spacing={2} sx={{ paddingTop: 1 }}>
                   <Grid item>
                     <GenericHeaderButton variant="contained"
-                      style={{ justifyContent: "center" }}
-                      component={Link}
-                      to={unlock ? exerciseInfo.to : '/'}>Attempt</GenericHeaderButton>
+                                         style={{
+                                           justifyContent: "center",
+                                           backgroundColor: "#FA9C1B",
+                                           color: "#000000"
+                                         }}
+                                         component={Link}
+                                         to={unlock ? exerciseInfo.to : '/'}>Attempt</GenericHeaderButton>
                   </Grid>
                   <Grid item>
-                    <ExerciseInfo exerciseName={name} />
+                    <ExerciseInfo exerciseName={name}/>
                   </Grid>
                 </Grid>
               </CardContent>
@@ -125,7 +129,7 @@ const Home = () => {
         width="100%"
       />
       <Container sx={{ px: { xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }, py: { xs: 1, sm: 2, md: 9, lg: 9, xl: 9 } }}>
-        <ExerciseCards />
+        <ExerciseCards/>
       </Container>
     </Box>
   )

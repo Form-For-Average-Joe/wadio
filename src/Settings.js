@@ -7,10 +7,8 @@ import { useUser } from 'reactfire';
 import { Link, useLocation } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { fetchUserData, getUserNickname } from "./util";
+import { fetchUserData, getUserNickname, isInvalidTextInput } from "./util";
 import { updateProfile, reload } from 'firebase/auth';
-
-const isInvalidValue = (value) => value === "0" || value === "";
 
 const Settings = () => {
   const { data: user } = useUser();
@@ -21,12 +19,11 @@ const Settings = () => {
   const [height, setHeight] = useState("");
   const [gender, setGender] = useState("0");
   const [anonymous, setAnonymous] = useState(false)
-  const [totalCal, setTotalCal] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [photoURL, setPhotoURL] = useState(user.photoURL);
   const { state } = useLocation();
   const isFormValid = () => {
-    return !(isInvalidValue(age) || isInvalidValue(weight) || isInvalidValue(height));
+    return !(isInvalidTextInput(age) || isInvalidTextInput(weight) || isInvalidTextInput(height));
   };
 
   const handleCloseSnackbar = (event, reason) => {
@@ -66,7 +63,6 @@ const Settings = () => {
         setHeight(data.height);
         setGender(data.gender);
         setAnonymous(data.anonymous);
-        setTotalCal(data.totalCal);
         setPhotoURL(data.photoURL || "");
       });
     }
@@ -74,7 +70,7 @@ const Settings = () => {
 
   const makeSave = (e) => {
     if (isFormValid()) {
-      axios.post('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/user/addUserStatistics/' + user.uid, {
+      axios.post('https://13.228.86.60/user/addUserStatistics/' + user.uid, {
         userProfileStatistics: {
           nickname,
           age: +age,
@@ -82,7 +78,6 @@ const Settings = () => {
           height: +height,
           gender,
           anonymous,
-          totalCal,
           photoURL
         }
       });
@@ -102,7 +97,7 @@ const Settings = () => {
 
   return (
     <>
-      <Typography align="center" variant="h4" sx={{ paddingTop: "1rem" }}>Settings</Typography>
+      <Typography align="center" variant="h4" sx={{ paddingTop: "2rem" }}>Settings</Typography>
       <Stack
         component="form"
         alignItems="center"
@@ -130,7 +125,7 @@ const Settings = () => {
           required
           label="Age"
           value={age}
-          error={isInvalidValue(age)}
+          error={isInvalidTextInput(age)}
           variant="outlined"
           size="small"
           sx={{ backgroundColor: "#FFFFFF" }}
@@ -139,7 +134,7 @@ const Settings = () => {
         />
         <TextField
           required
-          error={isInvalidValue(weight)}
+          error={isInvalidTextInput(weight)}
           label="Weight"
           value={weight}
           variant="outlined"
@@ -152,7 +147,7 @@ const Settings = () => {
           required
           label="Height"
           value={height}
-          error={isInvalidValue(height)}
+          error={isInvalidTextInput(height)}
           variant="outlined"
           size="small"
           sx={{ backgroundColor: "#FFFFFF" }}
@@ -200,7 +195,7 @@ const Settings = () => {
                 label="Submit"
                 onClick={makeSave}
                 component={Link}
-                to={"/profile"}
+                to={"/dashboard"}
                 sx={{ backgroundColor: "#666666" }}>
           Save
         </Button>

@@ -26,6 +26,7 @@
     "firebase": "^9.8.3",
     "firebaseui": "^6.0.1",
     "howler": "^2.2.3",
+    "nanoid": "^4.0.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.0.0",
@@ -51,6 +52,7 @@
     "@babel/plugin-syntax-flow": "^7.14.5",
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "firebase-tools": "^11.1.0",
+    "firestore-jest-mock": "^0.18.0",
     "jest": "^28.1.1",
     "react-scripts": "5.0.1"
   },

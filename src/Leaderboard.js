@@ -1,202 +1,64 @@
-import { Avatar, Box } from "@mui/material";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Typography, Box } from '@mui/material';
 import axios from "axios";
-import { useState, useEffect } from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import Typography from '@mui/material/Typography';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import { styled, alpha } from '@mui/material/styles';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useUser } from "reactfire";
-import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import GenericProfileButton from './components/GenericProfileButton';
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from 'reactfire';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import * as React from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 
-//todo need to maintain personal best (write) and last attempt (write) in profile
-// friends
-// https://dribbble.com/tags/mobile_leaderboard
-// https://dribbble.com/shots/14650665-Daily-UI-Leaderboard/attachments/6345922?mode=media
-// add a label/marker for friends, and a button to only show friends vs global
-// select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
+const globalLeaderboardId = 'global';
+const globalLeaderboardName = 'Global';
 
-const StyledMenu = styled((props) => (
-  <Menu
-    elevation={0}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'right',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'right',
-    }}
-    {...props}
-  />
-))(({ theme }) => ({
-  '& .MuiPaper-root': {
-    borderRadius: 6,
-    marginTop: theme.spacing(1),
-    minWidth: 180,
-    color: "#555555",
-    boxShadow:
-      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-    '& .MuiMenu-list': {
-      padding: '4px 0',
-    },
-    '& .MuiMenuItem-root': {
-      '& .MuiSvgIcon-root': {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-      },
-      '&:active': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity,
-        ),
-      },
-    },
-  },
-}));
-
-const GenericSelectionMenu = ({ nameOfVariable, options, variableSelected, setVariableSelected, handleSelectVariableCallback }) => {
-  const [anchorElVariable, setAnchorElVariable] = useState(null);
-  const openVariable = Boolean(anchorElVariable);
-  const handleClickVariable = (event) => {
-    setAnchorElVariable(event.currentTarget);
-  };
-  const handleCloseVariable = () => {
-    setAnchorElVariable(null);
-  };
-  const handleSelectVariable = (index) => {
-    setVariableSelected(index);
-    handleCloseVariable();
-    handleSelectVariableCallback();
-  };
-
+function createLeaderboardMenuItem(leaderboardId, leaderboardName) {
   return (
-    <>
-      <GenericProfileButton
-        id={nameOfVariable + "-selection-button"}
-        aria-controls={openVariable ? nameOfVariable + '-selection-button' : undefined}
-        aria-haspopup="true"
-        aria-expanded={openVariable ? 'true' : undefined}
-        variant="contained"
-        disableElevation
-        onClick={handleClickVariable}
-        endIcon={<KeyboardArrowDownIcon/>}
-      >
-        {options[variableSelected]}
-      </GenericProfileButton>
-      <StyledMenu
-        id={nameOfVariable + "-selection-menu"}
-        MenuListProps={{
-          'aria-labelledby': nameOfVariable + '-selection-menu',
-        }}
-        anchorEl={anchorElVariable}
-        open={openVariable}
-        onClose={handleCloseVariable}
-      >
-        {options.map((option, index) =>
-          <MenuItem key={option} onClick={() => handleSelectVariable(index)} disableRipple>
-            {option}
-          </MenuItem>
-        )}
-      </StyledMenu>
-    </>
-  );
+    <ListItem key={leaderboardId} disablePadding>
+      <ListItemButton component={Link} to={'/leaderboard/display'} state={{ leaderboardId: leaderboardId }}>
+        <ListItemText primary={leaderboardName}/>
+      </ListItemButton>
+    </ListItem>
+  )
 }
 
-export default function Leaderboard() {
-  const { status, data: user } = useUser();
-
-  const [exerciseSelectedIndex, setExerciseSelectedIndex] = useState(0);
-  // const [difficultySelectedIndex, setDifficultySelectedIndex] = useState(1);
-  // const [typeOfRanking, setTypeOfRanking] = useState(0);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const displayString = exercisesWithCalories()[exerciseSelectedIndex];
-
-  const [rowData, setRowData] = useState([]);
-  const [count, setCount] = useState(rowsPerPage);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+const Leaderboard = () => {
+  const { data: user } = useUser();
+  const [leaderboards, setLeaderboards] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const getLeaderboardData = async () => {
-      const makeReq = async () => await axios.get('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + rowsPerPage + '/' + page);
-      try {
-        const { data } = await makeReq();
-        setRowData(data.rankings);
-        setCount(data.totalNumberOfElements);
-      } catch (err) {
-        console.log("Error fetching leaderboard data");
+    const firestore = getFirestore();
+    const ref = doc(firestore, user.uid, 'groupCodes');
+    getDoc(ref).then(async (docSnap) => {
+      const groupCodes = docSnap.data();
+      if (groupCodes?.codes) {
+        const allGroupCodes = groupCodes.codes;
+        setLeaderboards(await Promise.all(allGroupCodes.map(async groupCode => {
+          const { data } = await axios.get('https://13.228.86.60/getLeaderboardName/' + groupCode);
+          return { leaderboardName: data.leaderboardName, leaderboardId: groupCode };
+        })));
       }
-    };
-    getLeaderboardData();
-  }, [exerciseSelectedIndex, page, rowsPerPage])
-
-  if (status === 'loading') {
-    return <p>Loading</p>;
-  }
+      else {
+        navigate('/leaderboard/display', { state: { leaderboardId: globalLeaderboardId } });
+      }
+    })
+  }, [user, navigate])
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'scroll' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-around', my: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 } }}>
-        <GenericSelectionMenu nameOfVariable={'exercise'} options={exercisesWithCaloriesTitleCase()}
-                              variableSelected={exerciseSelectedIndex} setVariableSelected={setExerciseSelectedIndex}
-                              handleSelectVariableCallback={() => setPage(0)}/>
-        {/*<GenericSelectionMenu nameOfVariable={'difficulty'} options={difficulties} variableSelected={difficultySelected} setVariableSelected={setDifficultySelected} />*/}
-        {/*<GenericSelectionMenu nameOfVariable={'typeOfRanking'} options={typesOfRanking} variableSelected={typeOfRanking} setVariableSelected={setTypeOfRanking} />*/}
-      </Box>
-      <TableContainer>
-        <Table aria-label="leaderboard">
-          <TableBody>
-            {rowData
-              .map((row, index) => {
-                return (
-                  <TableRow sx={row.uid === user.uid ? { bgcolor: '#b5f7c7' } : {}} hover role="checkbox" tabIndex={-1}
-                            key={index}>
-                    <TableCell key={row.uid} /*align={column.align}*/>
-                      <Typography variant={"h6"}>{row.rank}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      {row.photoURL ? <Avatar variant="rounded" src={row.photoURL}/> :
-                       <Avatar><AccountCircleIcon/></Avatar>}
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant={"h6"}>{row.nickname || row.uid}</Typography>
-                      <Typography>{row.results + ' ' + displayString}</Typography>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50]}
-        component="div"
-        count={count}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+    <Box width="25vw" margin="auto" sx={{ paddingTop: "2rem" }}>
+      <Typography variant="h5" align="center" sx={{ paddingBottom: "1rem" }}>
+        Leaderboards
+      </Typography>
+      <List sx={{ backgroundColor: "#555555" }}>
+        {createLeaderboardMenuItem(globalLeaderboardId, globalLeaderboardName)}
+        {leaderboards.map(leaderboardObject => {
+          return createLeaderboardMenuItem(leaderboardObject.leaderboardId, leaderboardObject.leaderboardName);
+        })}
+      </List>
+    </Box>
   );
 }
+
+export default Leaderboard;

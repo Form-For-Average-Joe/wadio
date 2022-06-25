@@ -54,11 +54,11 @@ export default function AssessmentFinished() {
       setDoc(doc(getFirestore(), user.uid, date + " " + time), { //chose to use time stamp
         lastAttemptStats,
       });
-      axios.post('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/calories/addToUserCumulative/', {
+      axios.post('https://13.228.86.60/calories/addToUserCumulative/', {
         uid: user.uid,
         scoreOfLatest: lastAttemptStats.caloriesBurnt,
       });
-      axios.post('http://ec2-54-169-153-36.ap-southeast-1.compute.amazonaws.com/' + lastAttemptStats.nameOfExercise + '/addToUserCumulative/', {
+      axios.post('https://13.228.86.60/' + lastAttemptStats.nameOfExercise + '/addToUserCumulative/', {
         uid: user.uid,
         scoreOfLatest: lastAttemptStats.repCount,
       });
@@ -80,7 +80,7 @@ export default function AssessmentFinished() {
         </Grid>
         <Grid item>
           <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} onClick={saveData}
-                               component={Link} to={user ? "/profile" : "/"}>
+                               component={Link} to={user ? "/dashboard" : "/"}>
             Continue
           </GenericHeaderButton>
         </Grid>

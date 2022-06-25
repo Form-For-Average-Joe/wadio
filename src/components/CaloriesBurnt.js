@@ -4,16 +4,8 @@ import { fetchUserCumulativeCalories } from "../util";
 import { useState, useEffect } from "react";
 
 const CaloriesBurnt = ({ cal }) => {
-    const { status, data: user } = useUser();
     //todo fix levelData formula
     const levelData = cal > 5000 ? 0 : 1000 - (cal % 1000);
-    const [cumulativeCalories, setCumulativeCalories] = useState(0);
-
-    useEffect(() => {
-        fetchUserCumulativeCalories(user.uid, (data) => {
-            setCumulativeCalories(data.toFixed(1));
-        })
-    })
 
     return (
         <Card sx={{paddingTop: "1rem"}}>
@@ -23,7 +15,7 @@ const CaloriesBurnt = ({ cal }) => {
                         Cumulative Calories Burnt:
                     </Typography>
                     <Typography variant="h2" align="center">
-                        {cumulativeCalories}
+                        {cal}
                     </Typography>
                 </Grid>
                 <Grid item style={{ paddingTop: "2rem" }}>

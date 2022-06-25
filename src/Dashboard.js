@@ -4,42 +4,30 @@ import CaloriesBurnt from './components/CaloriesBurnt';
 import { theme } from "./index";
 import LogoutButton from './components/LogoutButton';
 import { useUser } from 'reactfire';
-import { getFirestore, collection, query, getDocs } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import ProgressLine from './components/ProgressLine';
-import { createData, fetchUserData, getUserNickname, renameForTable, } from './util';
+import { fetchUserCumulativeCalories, fetchUserData, getUserNickname, getLastAttemptStats } from './util';
 import PastExerciseTable from './components/PastExerciseTable';
 
 const Dashboard = () => {
   const { status, data: firebaseUserData } = useUser();
   const [userProfileData, setUserProfileData] = useState({});
   const [rows, setRows] = useState([{}]);
-
-  async function getStats(firestore) {
-    const temp = [];
-    const q = query(collection(firestore, firebaseUserData.uid));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((document) => {
-      if (document.id !== "userData") {
-        temp.unshift(createData(
-          document.data().lastAttemptStats.date,
-          document.data().lastAttemptStats.time,
-          renameForTable(document.data().lastAttemptStats.nameOfExercise),
-          document.data().lastAttemptStats.repCount,
-          document.data().lastAttemptStats.workoutTime,
-          document.data().lastAttemptStats.caloriesBurnt))
-      }
-    });
-    setRows(temp);
-  }
+  const [cumulativeCalories, setCumulativeCalories] = useState(0);
 
   useEffect(() => {
     const firestore = getFirestore();
     fetchUserData(firebaseUserData.uid, (data) => {
       setUserProfileData(data);
-    })
-    getStats(firestore);
-  }, [firebaseUserData])
+    });
+    fetchUserCumulativeCalories(firebaseUserData.uid, (data) => {
+      setCumulativeCalories(data.score);
+    });
+    getLastAttemptStats(firebaseUserData.uid, firestore, (data) => {
+      setRows(data);
+    });
+    }, [firebaseUserData])
   if (status === 'loading') {
     return <p>Loading</p>;
   }
@@ -64,7 +52,7 @@ const Dashboard = () => {
             <BodyStatsPanel stats={{ weight: userProfileData?.weight || 0, height: userProfileData?.height || 0 }} />
           </Grid>
           <Grid item xs={10} sm={6} md={4}>
-            <CaloriesBurnt cal={userProfileData?.totalCal} />
+            <CaloriesBurnt cal={cumulativeCalories} />
           </Grid>
         </Grid>
       </Container>
@@ -73,7 +61,7 @@ const Dashboard = () => {
           <Grid item xs={1} sm={1} md={1} lg={1} xl={1}>
           </Grid>
           <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
-            <ProgressLine cal={userProfileData?.totalCal} />
+            <ProgressLine cal={cumulativeCalories} />
           </Grid>
         </Grid>
         <Typography variant="h6" align="center" sx={{ paddingTop: "2rem" }}>

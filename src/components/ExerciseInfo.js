@@ -1,12 +1,11 @@
-import { Card, CardContent, CardMedia, Grid, Typography, Divider } from "@mui/material";
+import { Card, CardContent, CardMedia, Typography, Divider } from "@mui/material";
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import GenericHeaderButton from "./GenericHeaderButton";
 import { Link } from "react-router-dom";
-
-import pushups from '../assets/pushups.gif';
-import situps from '../assets/situps.gif';
-import comingsoon from '../assets/comingsoon.webp';
+import pushups from '../assets/pushups.png';
+import situps from '../assets/situps.png';
+import comingsoon from '../assets/comingsoon.png';
 
 function getInfo(exerciseName) {
   switch (exerciseName) {
@@ -68,6 +67,7 @@ const ExerciseInfo = ({ exerciseName }) => {
       <GenericHeaderButton
         label="Sign in/Sign up"
         variant="contained"
+        sx = {{backgroundColor: "#000000"}}
         onClick={() => setOpen(true)}>
         More Info
       </GenericHeaderButton>
@@ -76,10 +76,10 @@ const ExerciseInfo = ({ exerciseName }) => {
         onClose={() => setOpen(false)}
       >
         <Card sx={{minWidth: "30vw"}}>
-          <CardMedia
+          {/* <CardMedia
             component={'img'}
             image={Exercise.image}
-          />
+          /> */}
           <CardContent>
             <Typography gutterBottom variant="h4">{Exercise.exercise}</Typography>
             <Typography variant="h5">Description</Typography>
@@ -91,7 +91,7 @@ const ExerciseInfo = ({ exerciseName }) => {
               variant="contained"
               component={Link}
               to={Exercise.to}
-              sx={{ marginTop: "1rem" }}>Attempt Now!</GenericHeaderButton>
+              sx={{ marginTop: "1rem", backgroundColor: "#FA9C1B", color: "#000000" }}>Attempt Now!</GenericHeaderButton>
           </CardContent>
         </Card>
       </Dialog>
