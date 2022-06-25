@@ -1,6 +1,6 @@
 import { Typography, Box } from '@mui/material';
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from 'reactfire';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ const globalLeaderboardName = 'Global';
 function createLeaderboardMenuItem(leaderboardId, leaderboardName) {
   return (
     <ListItem key={leaderboardId} disablePadding>
-      <ListItemButton>
+      <ListItemButton component={Link} to={'/leaderboard/display'} state={{ leaderboardId: leaderboardId }}>
         <ListItemText primary={leaderboardName}/>
       </ListItemButton>
     </ListItem>

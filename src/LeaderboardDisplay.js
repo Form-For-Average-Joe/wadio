@@ -119,7 +119,7 @@ const getUserTableRow = (currentUserData, index, currentUserUid, displayString) 
   const isCurrentUserRow = currentUserData.uid === currentUserUid;
   const rowDisplayName = currentUserData.nickname || currentUserData.uid;
   const getCurrentUserDisplayName = isCurrentUserRow ? rowDisplayName + ' (You)' : rowDisplayName;
-  const tableRowSx={ textDecoration: 'none' };
+  const tableRowSx = { textDecoration: 'none' };
   return <TableRow sx={isCurrentUserRow ? { bgcolor: '#83d6fc', ...tableRowSx } : tableRowSx} hover
                    component={Link}
                    to={'/profile/' + currentUserData.uid}
@@ -168,7 +168,9 @@ export default function LeaderboardDisplay() {
 
   useEffect(() => {
     const getLeaderboardData = async () => {
-      const makeReq = async () => await axios.get('https://13.228.86.60/' + exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + leaderboardId + '/' + rowsPerPage + '/' + page);
+      const makeReq = async () => await axios.get('https://13.228.86.60/' +
+        exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + leaderboardId + '/' + rowsPerPage + '/' +
+        page);
       try {
         const { data } = await makeReq();
         setRowData(data.rankings);
