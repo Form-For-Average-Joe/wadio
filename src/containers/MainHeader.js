@@ -17,7 +17,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
 import PropTypes from 'prop-types';
-import {useState, useEffect} from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {Link, NavLink, Outlet} from "react-router-dom";
 import {useSigninCheck, useUser} from 'reactfire';
 import logo from '../assets/logo.png';
@@ -85,6 +85,14 @@ const navigationItems = {
 function MainHeader() {
   const {status, data} = useSigninCheck();
 
+  const [height, setHeight] = useState(0);
+
+  const measuredRef = useCallback(node => {
+    if (node !== null) {
+      setHeight(node.getBoundingClientRect().height);
+    }
+  }, []);
+
   const [mobileOpen, setMobileOpen] = useState(false);
 
   if (status === 'loading') {
@@ -132,7 +140,7 @@ function MainHeader() {
   return (
     <Box sx={{display: 'flex'}}>
       <HideOnScroll>
-        <AppBar sx={{
+        <AppBar ref={measuredRef} sx={{
           py: {xs: 1, sm: 2, md: 2, lg: 2, xl: 2},
           x: {xs: 0, sm: 2, md: 2, lg: 2, xl: 2}
         }}>
@@ -198,7 +206,7 @@ function MainHeader() {
           width: {sm: `calc(100% - ${drawerWidth}px)`}
         }} //todo why do we need to specify width here? original code did, because there was a permanent drawer
       >
-        <Toolbar/> {/*the toolbar is there to take up as much space as the appbar, so the stuff rendered by outlet gets pushed below*/}
+        <Toolbar sx={{height}} /> {/*the toolbar is there to take up as much space as the appbar, so the stuff rendered by outlet gets pushed below*/}
         <Outlet/>
       </Box>
     </Box>
