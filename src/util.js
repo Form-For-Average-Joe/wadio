@@ -204,7 +204,8 @@ export async function getLastAttemptStats(userUid, firestore, callback) {
   const q = query(collection(firestore, userUid));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((document) => {
-    if (document.id !== "userData") {
+    //todo we are checking for firestore doc names here!!!! fix
+    if (document.id !== "userData" && document.id !== "groupCodes") {
       temp.unshift(createData(
         document.data().lastAttemptStats.date,
         document.data().lastAttemptStats.time,

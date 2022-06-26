@@ -44,6 +44,7 @@ const App = () => {
             sx={{
               color: 'white',
               background: 'rgba(0, 0, 0, 1)',
+              minHeight: '100vh'
             }}
           >
             <Outlet/>
