@@ -1,6 +1,10 @@
 import { Typography, Card, Grid } from '@mui/material';
+import { useUser } from "reactfire";
+import { fetchUserCumulativeCalories } from "../util";
+import { useState, useEffect } from "react";
 
 const CaloriesBurnt = ({ cal }) => {
+    //todo fix levelData formula
     const levelData = cal > 5000 ? 0 : 1000 - (cal % 1000);
 
     return (

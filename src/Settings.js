@@ -1,29 +1,29 @@
+import axios from "axios";
 import { Fragment, useState, useEffect } from 'react';
 import { Typography, Grid, Box, TextField, Button, Stack, Switch, Snackbar, Alert } from '@mui/material';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
 import { useUser } from 'reactfire';
 import { Link, useLocation } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-
-const isInvalidValue = (value) => value === "0" || value === "";
+import { fetchUserData, getUserNickname, isInvalidTextInput } from "./util";
+import { updateProfile, reload } from 'firebase/auth';
 
 const Settings = () => {
   const { data: user } = useUser();
 
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState(getUserNickname(user));
   const [age, setAge] = useState("");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [gender, setGender] = useState("0");
   const [anonymous, setAnonymous] = useState(false)
-  const [totalCal, setTotalCal] = useState("0");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [photoURL, setPhotoURL] = useState(user.photoURL);
   const { state } = useLocation();
   const isFormValid = () => {
-    return !(isInvalidValue(age) || isInvalidValue(weight) || isInvalidValue(height));
+    return !(isInvalidTextInput(age) || isInvalidTextInput(weight) || isInvalidTextInput(height));
   };
 
   const handleCloseSnackbar = (event, reason) => {
@@ -49,47 +49,40 @@ const Settings = () => {
 
   useEffect(() => {
     if (state?.openSnackbar) {
-    setOpenSnackbar(true);
+      setOpenSnackbar(true);
     }
   }, [state]);
 
 
   useEffect(() => {
     if (user) {
-      const firestore = getFirestore();
-      const ref = doc(firestore, user.uid, 'userData');
-
-      const inner = async () => {
-        return await getDoc(ref);
-      };
-      inner().then(res => {
-        const data = res.data();
-        if (data) { // not a first-time user
-          setNickname(data.nickname);
-          setAge(data.age);
-          setWeight(data.weight);
-          setHeight(data.height);
-          setGender(data.gender);
-          setAnonymous(data.anonymous);
-          setTotalCal(data.totalCal);
-        }
+      fetchUserData(user.uid, (data) => {
+        setNickname(data.nickname);
+        setAge(data.age);
+        setWeight(data.weight);
+        setHeight(data.height);
+        setGender(data.gender);
+        setAnonymous(data.anonymous);
+        setPhotoURL(data.photoURL || "");
       });
     }
   }, [user])
 
   const makeSave = (e) => {
     if (isFormValid()) {
-      setDoc(doc(getFirestore(), user.uid, 'userData'), {
-        nickname,
-        age: +age,
-        weight: +weight,
-        height: +height,
-        gender,
-        anonymous,
-        totalCal
+      axios.post('https://13.228.86.60/user/addUserStatistics/' + user.uid, {
+        userProfileStatistics: {
+          nickname,
+          age: +age,
+          weight: +weight,
+          height: +height,
+          gender,
+          anonymous,
+          photoURL
+        }
       });
-    }
-    else {
+      reload(user);
+    } else {
       e.preventDefault();
     }
   }
@@ -104,7 +97,7 @@ const Settings = () => {
 
   return (
     <>
-      <Typography align="center" variant="h4" sx={{ paddingTop: "1rem" }}>Settings</Typography>
+      <Typography align="center" variant="h4" sx={{ paddingTop: "2rem" }}>Settings</Typography>
       <Stack
         component="form"
         alignItems="center"
@@ -123,13 +116,16 @@ const Settings = () => {
           type={'text'}
           size="small"
           sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
-          onChange={(e) => setNickname(e.target.value)}
+          onChange={(e) => {
+            setNickname(e.target.value);
+            updateProfile(user, {displayName: e.target.value});
+          }}
         />
         <TextField
           required
           label="Age"
           value={age}
-          error={isInvalidValue(age)}
+          error={isInvalidTextInput(age)}
           variant="outlined"
           size="small"
           sx={{ backgroundColor: "#FFFFFF" }}
@@ -138,7 +134,7 @@ const Settings = () => {
         />
         <TextField
           required
-          error={isInvalidValue(weight)}
+          error={isInvalidTextInput(weight)}
           label="Weight"
           value={weight}
           variant="outlined"
@@ -151,7 +147,7 @@ const Settings = () => {
           required
           label="Height"
           value={height}
-          error={isInvalidValue(height)}
+          error={isInvalidTextInput(height)}
           variant="outlined"
           size="small"
           sx={{ backgroundColor: "#FFFFFF" }}
@@ -168,6 +164,18 @@ const Settings = () => {
           <ToggleButton value="1">Female</ToggleButton>
           <ToggleButton value="2">Others</ToggleButton>
         </ToggleButtonGroup>
+        <TextField
+          label="URL of your photo"
+          value={photoURL}
+          variant="outlined"
+          type={'text'}
+          size="small"
+          sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
+          onChange={(e) => {
+            setPhotoURL(e.target.value);
+            updateProfile(user, {photoURL: e.target.value});
+          }}
+        />
         <Grid container spacing={0} direction="column" alignItems="center">
           <Grid item>
             <Switch checked={anonymous} onChange={handleAnonymous}>
@@ -187,7 +195,7 @@ const Settings = () => {
                 label="Submit"
                 onClick={makeSave}
                 component={Link}
-                to={"/profile"}
+                to={"/dashboard"}
                 sx={{ backgroundColor: "#666666" }}>
           Save
         </Button>

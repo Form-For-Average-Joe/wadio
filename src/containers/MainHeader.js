@@ -3,7 +3,7 @@ import AnalyticsIcon from '@mui/icons-material/Analytics';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
-import {AppBar, Avatar, Box, Toolbar, Typography, useScrollTrigger} from '@mui/material';
+import {AppBar, Avatar, Box, Toolbar, useScrollTrigger} from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -12,16 +12,18 @@ import ListItem from '@mui/material/ListItem';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ListItemButton from '@mui/material/ListItemButton';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import GroupsIcon from '@mui/icons-material/Groups';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
 import PropTypes from 'prop-types';
-import {useState} from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {Link, NavLink, Outlet} from "react-router-dom";
 import {useSigninCheck, useUser} from 'reactfire';
-import logo from '../assets/OrbitalLogo.png';
+import logo from '../assets/logo.png';
 import GenericHeaderButton from "../components/GenericHeaderButton";
 import LoginDialog from '../components/LoginDialog';
+import { fetchUserPhotoURL } from "../util";
 
 function HideOnScroll(props) {
   const {children} = props;
@@ -40,9 +42,15 @@ HideOnScroll.propTypes = {
 };
 
 const Member = () => {
-  const {data} = useUser();
+  const {data: user} = useUser();
+  const [photoURL, setPhotoURL] = useState(user.photoURL);
+  useEffect(() => {
+    fetchUserPhotoURL(user.uid, (userAddedPhotoURL) => {
+        setPhotoURL(userAddedPhotoURL);
+    });
+  })
   // const matches = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  return data.photoURL ? <Avatar src={data.photoURL}/> : <Avatar><AccountCircleIcon/></Avatar>;
+  return photoURL ? <Avatar src={photoURL}/> : <Avatar><AccountCircleIcon/></Avatar>;
 }
 
 const drawerWidth = 240;
@@ -56,12 +64,16 @@ const navigationItems = {
     icon: <LeaderboardIcon/>,
     displayName: 'Leaderboard',
     to: '/leaderboard',
-    guestAccess: false
+  },
+  friends: {
+    icon: <GroupsIcon/>,
+    displayName: 'Friends',
+    to: '/friends',
   },
   profile: {
     icon: <AnalyticsIcon/>,
     displayName: 'Profile',
-    to: '/profile'
+    to: '/dashboard'
   },
   settings: {
     icon: <SettingsApplicationsIcon/>,
@@ -72,6 +84,14 @@ const navigationItems = {
 
 function MainHeader() {
   const {status, data} = useSigninCheck();
+
+  const [height, setHeight] = useState(0);
+
+  const measuredRef = useCallback(node => {
+    if (node !== null) {
+      setHeight(node.getBoundingClientRect().height);
+    }
+  }, []);
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -120,7 +140,7 @@ function MainHeader() {
   return (
     <Box sx={{display: 'flex'}}>
       <HideOnScroll>
-        <AppBar sx={{
+        <AppBar ref={measuredRef} sx={{
           py: {xs: 1, sm: 2, md: 2, lg: 2, xl: 2},
           x: {xs: 0, sm: 2, md: 2, lg: 2, xl: 2}
         }}>
@@ -134,18 +154,18 @@ function MainHeader() {
             >
               <MenuIcon/>
             </IconButton>
-            <Link to="/">
+            {/* <Link to="/">
               <Avatar sx={{display: {xs: 'none', sm: 'block'}}} variant="rounded" src={logo}/>
-            </Link>
-            <Box component={NavLink} to={'/'} style={{flexGrow: 1, textDecoration: 'none', color: 'unset'}}>
-              <Typography variant="h4" sx={{px: {xs: 1, sm: 2, md: 3, lg: 4, xl: 5}}}>
-                Form For the Average Joe
-              </Typography>
+            </Link> */}
+            <Box component={NavLink} to={'/'} sx={{ flexGrow: 1, textDecoration: 'none', color: 'unset'}}>
+              <img src={logo} alt={''}/>
             </Box>
             {signedIn && <Box sx={{display: {xs: 'none', sm: 'inline'}, px: 1}}>
               <Box sx={{display: 'flex'}}>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.leaderboard.to}>{navigationItems.leaderboard.displayName}</GenericHeaderButton>
+                <GenericHeaderButton component={Link}
+                                     to={navigationItems.friends.to}>{navigationItems.friends.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.profile.to}>{navigationItems.profile.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}
@@ -178,7 +198,7 @@ function MainHeader() {
           {drawer}
         </Drawer>
       </Box>
-      <Box
+      <Box //this sx is for the drawer
         component="main"
         sx={{
           flexGrow: 1,
@@ -186,7 +206,7 @@ function MainHeader() {
           width: {sm: `calc(100% - ${drawerWidth}px)`}
         }} //todo why do we need to specify width here? original code did, because there was a permanent drawer
       >
-        <Toolbar/>
+        <Toolbar sx={{height}} /> {/*the toolbar is there to take up as much space as the appbar, so the stuff rendered by outlet gets pushed below*/}
         <Outlet/>
       </Box>
     </Box>
