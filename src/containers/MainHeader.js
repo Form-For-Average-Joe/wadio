@@ -190,7 +190,7 @@ function MainHeader() {
           {drawer}
         </Drawer>
       </Box>
-      <Box
+      <Box //this sx is for the drawer
         component="main"
         sx={{
           flexGrow: 1,
@@ -198,7 +198,7 @@ function MainHeader() {
           width: {sm: `calc(100% - ${drawerWidth}px)`}
         }} //todo why do we need to specify width here? original code did, because there was a permanent drawer
       >
-        <Toolbar/>
+        <Toolbar/> {/*the toolbar is there to take up as much space as the appbar, so the stuff rendered by outlet gets pushed below*/}
         <Outlet/>
       </Box>
     </Box>
