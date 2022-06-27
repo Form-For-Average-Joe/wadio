@@ -48,7 +48,7 @@
     "tag-it": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && echo \"Creating tag for v$PACKAGE_VERSION\" && git tag -a v$PACKAGE_VERSION -m \"Version v$PACKAGE_VERSION\" && git push --tags"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.18.5",
     "@babel/plugin-syntax-flow": "^7.14.5",
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "firebase-tools": "^11.1.0",
