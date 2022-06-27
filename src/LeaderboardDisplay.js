@@ -116,27 +116,27 @@ const GenericSelectionMenu = ({
   );
 }
 
-const getUserTableRow = (currentUserData, index, currentUserUid, displayString) => {
-  const isCurrentUserRow = currentUserData.uid === currentUserUid;
-  const rowDisplayName = currentUserData.nickname || currentUserData.uid;
+const getUserTableRow = (rowUserData, index, currentUserUid, displayString) => {
+  const isCurrentUserRow = rowUserData.uid === currentUserUid;
+  const rowDisplayName = rowUserData.nickname || rowUserData.uid;
   const getCurrentUserDisplayName = isCurrentUserRow ? rowDisplayName + ' (You)' : rowDisplayName;
   const tableRowSx = { textDecoration: 'none' };
+
   return <TableRow sx={isCurrentUserRow ? { bgcolor: '#83d6fc', ...tableRowSx } : tableRowSx} hover
-                   component={Link}
-                   to={'/profile/' + currentUserData.uid}
+    {...(!rowUserData.isAnonymous && { component: Link, to: '/profile/' + rowUserData.uid })}
                    tabIndex={0}
                    key={index}>
-    <TableCell align={'center'} key={currentUserData.uid} /*align={column.align}*/>
-      <Typography variant={"h6"}>{currentUserData.rank}</Typography>
+    <TableCell align={'center'} key={rowUserData.uid} /*align={column.align}*/>
+      <Typography variant={"h6"}>{rowUserData.rank}</Typography>
     </TableCell>
     <TableCell>
-      {currentUserData.photoURL ? <Avatar style={{ alignItems: "center", justifyContent: "center", display: "flex" }}
-                                          variant="rounded" src={currentUserData.photoURL}/> :
+      {rowUserData.photoURL ? <Avatar style={{ alignItems: "center", justifyContent: "center", display: "flex" }}
+                                          variant="rounded" src={rowUserData.photoURL}/> :
        <Avatar><AccountCircleIcon/></Avatar>}
     </TableCell>
     <TableCell>
       <Typography variant={"h6"}>{getCurrentUserDisplayName}</Typography>
-      <Typography>{currentUserData.results + ' ' + displayString}</Typography>
+      <Typography>{rowUserData.results + ' ' + displayString}</Typography>
     </TableCell>
   </TableRow>
 }
