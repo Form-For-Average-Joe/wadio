@@ -99,7 +99,7 @@ root.render((
                   is the temporary alternative*/}
                   <Route exact path="leaderboard/display" element={<SettingsWrapper><LeaderboardDisplay/></SettingsWrapper>}/>
                   <Route path="profile">
-                    <Route path=":userUid" element={<MinorProfile />} />
+                    <Route path=":userUid" element={<AuthWrapper><MinorProfile/></AuthWrapper>} />
                   </Route>
                 </Route>
                 <Route path="/exercise">

@@ -25,7 +25,7 @@ const SettingsWrapper = ({ children }) => {
     else {
       setRedirectToAuthPage(true);
     }
-  })
+  }, [user])
 
   if (status === 'loading') {
     return <p>Loading</p>;
