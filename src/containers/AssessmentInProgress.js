@@ -43,6 +43,7 @@ export default function AssessmentInProgress({webcam}) {
                        style={webcamStyles.video}
                        id="video"
                        component="video"
+                       playsInline
                        src=""/>
           </Grid>
           <Grid item xs={4}>

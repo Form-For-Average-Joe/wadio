@@ -44,7 +44,7 @@
     "eject": "react-scripts eject",
     "all-deps": "yarn && cd firebase/functions && yarn",
     "lint": "eslint .",
-    "deploy-prod": "yarn && rm -r .firebase && yarn build && yarn firebase deploy",
+    "deploy-prod": "GENERATE_SOURCEMAP=false && yarn && rm -r .firebase && yarn build && yarn firebase deploy",
     "deploy-staging": "yarn && rm -r .firebase && yarn build && yarn firebase hosting:channel:deploy test",
     "firebase": "./node_modules/firebase-tools/lib/bin/firebase.js",
     "tag-it": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && echo \"Creating tag for v$PACKAGE_VERSION\" && git tag -a v$PACKAGE_VERSION -m \"Version v$PACKAGE_VERSION\" && git push --tags"
