@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from 'react-router-dom';
 import { useUser } from 'reactfire';
+import LoadingSpinner from "../components/LoadingSpinner";
 import { fetchUserData } from "../util";
 
 const SettingsWrapper = ({ children }) => {
@@ -28,7 +29,7 @@ const SettingsWrapper = ({ children }) => {
   }, [user])
 
   if (status === 'loading') {
-    return <p>Loading</p>;
+    return <LoadingSpinner/>
   }
 
   if (!children) {

@@ -1,5 +1,6 @@
 import { Typography, Grid, Container, Box } from '@mui/material';
-import BodyStatsPanel from './components/BodyStatsPanel';
+import LoadingSpinner from "./components/LoadingSpinner";
+import BodyStatsPanel from './containers/BodyStatsPanel';
 import CaloriesBurnt from './components/CaloriesBurnt';
 import { theme } from "./index";
 import LogoutButton from './components/LogoutButton';
@@ -29,7 +30,7 @@ const Dashboard = () => {
     });
     }, [firebaseUserData])
   if (status === 'loading') {
-    return <p>Loading</p>;
+    return <LoadingSpinner/>
   }
 
   return (

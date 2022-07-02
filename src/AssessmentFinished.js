@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { doc, setDoc, getFirestore } from "firebase/firestore";
 import { Grid, Card, Typography } from '@mui/material';
 import { useDispatch } from "react-redux";
+import LoadingSpinner from "./components/LoadingSpinner";
 import LastAttemptStats from "./containers/LastAttemptStats";
 import { clearExerciseState } from "./features/exercise/exerciseSlice";
 import { resetUserTime } from './features/userProfile/userProfileSlice';
@@ -46,7 +47,7 @@ export default function AssessmentFinished() {
   })
 
   if (status === 'loading' || firestoreDataStatus === 'loading') {
-    return <p>Loading</p>;
+    return <LoadingSpinner/>;
   }
 
   const saveData = () => {

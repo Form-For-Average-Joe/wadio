@@ -10,6 +10,7 @@ import pushupsG from './assets/pushupsG.jpeg';
 import situps from './assets/situps.png';
 import situpsG from './assets/situpsG.jpeg';
 import comingsoon from './assets/comingsoon.png';
+import LoadingSpinner from "./components/LoadingSpinner";
 import { fetchUserCumulativeCalories } from "./util";
 
 const exerciseInformation = [
@@ -76,7 +77,7 @@ const ExerciseCards = () => {
   }, [user])
 
   if (status === 'loading' || signInCheckStatus === 'loading') {
-    return <p>Loading</p>;
+    return <LoadingSpinner/>;
   }
 
   return (

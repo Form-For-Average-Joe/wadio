@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useSigninCheck } from 'reactfire';
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const defaultFallback = (
   <Box>
@@ -15,8 +16,7 @@ const AuthWrapper = ({ children }) => {
     throw new Error('Children must be provided');
   }
   if (status === 'loading') {
-    //todo loadingSpinner
-    return <p>Loading</p>;
+    return <LoadingSpinner/>
   } else if (data.signedIn === true) {
     return children;
   }
