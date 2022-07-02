@@ -16,7 +16,7 @@ const globalLeaderboardName = 'Global';
 function createLeaderboardMenuItem(leaderboardId, leaderboardName) {
   return (
     <ListItem key={leaderboardId} disablePadding>
-      <ListItemButton component={Link} to={'/leaderboard/display'} state={{ leaderboardId: leaderboardId }}>
+      <ListItemButton component={Link} to={'/leaderboard/display'} state={{ leaderboardId, leaderboardName }}>
         <ListItemText primary={leaderboardName}/>
       </ListItemButton>
     </ListItem>
@@ -41,7 +41,7 @@ const Leaderboard = () => {
         })));
       }
       else {
-        navigate('/leaderboard/display', { state: { leaderboardId: globalLeaderboardId } });
+        navigate('/leaderboard/display', { state: { leaderboardId: globalLeaderboardId, leaderboardName: globalLeaderboardName } });
       }
     })
   }, [user, navigate])

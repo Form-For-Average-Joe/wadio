@@ -2,9 +2,9 @@ import { Button, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
-import GenericHeaderButton from "./GenericHeaderButton";
+import GenericHeaderButton from "../components/GenericHeaderButton";
 import firebase from "firebase/compat/app";
-import StyledFirebaseAuth from "./StyledFirebaseAuth";
+import StyledFirebaseAuth from "../components/StyledFirebaseAuth";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 

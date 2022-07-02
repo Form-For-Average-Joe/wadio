@@ -22,7 +22,8 @@ import {Link, NavLink, Outlet} from "react-router-dom";
 import {useSigninCheck, useUser} from 'reactfire';
 import logo from '../assets/logo.png';
 import GenericHeaderButton from "../components/GenericHeaderButton";
-import LoginDialog from '../components/LoginDialog';
+import LoadingSpinner from "../components/LoadingSpinner";
+import LoginDialog from './LoginDialog';
 import { fetchUserPhotoURL } from "../util";
 
 function HideOnScroll(props) {
@@ -96,7 +97,7 @@ function MainHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   if (status === 'loading') {
-    return <p>Loading</p>
+    return <LoadingSpinner/>
   }
 
   const {signedIn} = data;

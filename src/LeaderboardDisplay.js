@@ -10,111 +10,15 @@ import TableContainer from '@mui/material/TableContainer';
 import Typography from '@mui/material/Typography';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { styled, alpha } from '@mui/material/styles';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useUser } from "reactfire";
+import LoadingSpinner from "./components/LoadingSpinner";
 import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import GenericProfileButton from './components/GenericProfileButton';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
 //todo need to maintain personal best (write) and last attempt (write) in profile
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
-const StyledMenu = styled((props) => (
-  <Menu
-    elevation={0}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'right',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'right',
-    }}
-    {...props}
-  />
-))(({ theme }) => ({
-  '& .MuiPaper-root': {
-    borderRadius: 6,
-    marginTop: theme.spacing(1),
-    color: "#555555",
-    boxShadow:
-      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-    '& .MuiMenu-list': {
-      padding: '4px 0',
-    },
-    '& .MuiMenuItem-root': {
-      '& .MuiSvgIcon-root': {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-      },
-      '&:active': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity,
-        ),
-      },
-    },
-  },
-}));
-
-const GenericSelectionMenu = ({
-                                nameOfVariable,
-                                options,
-                                variableSelected,
-                                setVariableSelected,
-                                handleSelectVariableCallback
-                              }) => {
-  const [anchorElVariable, setAnchorElVariable] = useState(null);
-  const openVariable = Boolean(anchorElVariable);
-  const handleClickVariable = (event) => {
-    setAnchorElVariable(event.currentTarget);
-  };
-  const handleCloseVariable = () => {
-    setAnchorElVariable(null);
-  };
-  const handleSelectVariable = (index) => {
-    setVariableSelected(index);
-    handleCloseVariable();
-    handleSelectVariableCallback();
-  };
-
-  return (
-    <>
-      <GenericProfileButton
-        id={nameOfVariable + "-selection-button"}
-        aria-controls={openVariable ? nameOfVariable + '-selection-button' : undefined}
-        aria-haspopup="true"
-        aria-expanded={openVariable ? 'true' : undefined}
-        variant="contained"
-        disableElevation
-        onClick={handleClickVariable}
-        endIcon={<KeyboardArrowDownIcon/>}
-      >
-        {options[variableSelected]}
-      </GenericProfileButton>
-      <StyledMenu
-        id={nameOfVariable + "-selection-menu"}
-        MenuListProps={{
-          'aria-labelledby': nameOfVariable + '-selection-menu',
-        }}
-        anchorEl={anchorElVariable}
-        open={openVariable}
-        onClose={handleCloseVariable}
-      >
-        {options.map((option, index) =>
-          <MenuItem key={option} onClick={() => handleSelectVariable(index)} disableRipple>
-            {option}
-          </MenuItem>
-        )}
-      </StyledMenu>
-    </>
-  );
-}
 
 const getUserTableRow = (rowUserData, index, currentUserUid, displayString) => {
   const isCurrentUserRow = rowUserData.uid === currentUserUid;
@@ -194,7 +98,10 @@ function GetTableContainer(user, exercise, leaderboardId) {
       const makeReq = async () => await axios.get('https://13.228.86.60/' + exercise + '/user/' + user.uid);
       try {
         const res = await makeReq();
+        console.log(res.data)
         if (res?.data) setCurrentUserData(res.data);
+        else setCurrentUserData(null);
+        console.log(res.data)
       } catch (err) {
         console.log("Error fetching user");
       }
@@ -251,6 +158,7 @@ export default function LeaderboardDisplay() {
   // const [typeOfRanking, setTypeOfRanking] = useState(0);
 
   const leaderboardId = state?.leaderboardId;
+  const leaderboadName = state?.leaderboardName;
 
   const handleTabValueChange = (event, newValue) => {
     setTabValue(newValue);
@@ -263,11 +171,11 @@ export default function LeaderboardDisplay() {
   }, [state, leaderboardId, navigate]);
 
   if (status === 'loading') {
-    return <p>Loading</p>;
+    return <LoadingSpinner/>
   }
 
   // console.count("1")
-  // This parent component renders twice for some reason
+  //todo This parent component renders twice for some reason
   return (
     <Box
       display="flex"
@@ -275,6 +183,9 @@ export default function LeaderboardDisplay() {
       alignItems="center"
     >
       <Paper sx={{ width: '100%', maxWidth: { xs: '100vw', sm: '80vw', md: '70vw', lg: '60vw', xl: '60vw' } }}>
+        <Typography variant={"h4"} sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 } }}>
+          {'Leaderboard: ' + leaderboadName}
+        </Typography>
         <Box sx={{
           borderBottom: 1,
           borderColor: 'divider',
@@ -295,13 +206,6 @@ export default function LeaderboardDisplay() {
             )}
           </Tabs>
         </Box>
-        {/*<Box sx={{ display: 'flex', justifyContent: 'space-around', my: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 } }}>*/}
-        {/*<GenericSelectionMenu nameOfVariable={'exercise'} options={exercisesWithCaloriesTitleCase()}*/}
-        {/*                      variableSelected={exerciseSelectedIndex} setVariableSelected={setExerciseSelectedIndex}*/}
-        {/*                      handleSelectVariableCallback={() => setPage(0)}/>*/}
-        {/*<GenericSelectionMenu nameOfVariable={'difficulty'} options={difficulties} variableSelected={difficultySelected} setVariableSelected={setDifficultySelected} />*/}
-        {/*<GenericSelectionMenu nameOfVariable={'typeOfRanking'} options={typesOfRanking} variableSelected={typeOfRanking} setVariableSelected={setTypeOfRanking} />*/}
-        {/*</Box>*/}
         {exercisesWithCalories().map((exercise, index) => {
             return <TabPanel key={index} value={tabValue} index={index}>
               {tabValue === index && GetTableContainer(user, exercise, leaderboardId)}

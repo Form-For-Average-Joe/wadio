@@ -1,4 +1,4 @@
-import {Typography, Card, List, ListItem, Box} from '@mui/material';
+import {Typography, Card, List, ListItem} from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
