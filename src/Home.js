@@ -63,6 +63,19 @@ export function checkUnlocked(cal, ex) {
   }
 }
 
+const attempButton = (link, unlock) => {
+  return unlock ?
+    <Grid item>
+      <GenericHeaderButton variant="contained"
+        style={{
+          justifyContent: "center",
+          backgroundColor: "#FA9C1B",
+          color: "#000000"
+        }}
+        component={Link}
+        to={unlock ? link : '/'}>Attempt</GenericHeaderButton> </Grid> : ""
+}
+
 const ExerciseCards = () => {
   const { status, data: user } = useUser();
   const { status: signInCheckStatus, data: signInCheckData } = useSigninCheck();
@@ -77,7 +90,7 @@ const ExerciseCards = () => {
   }, [user])
 
   if (status === 'loading' || signInCheckStatus === 'loading') {
-    return <LoadingSpinner/>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -98,18 +111,9 @@ const ExerciseCards = () => {
                   {unlock ? exerciseInfo.description : exerciseInfo.toUnlock}
                 </Typography>
                 <Grid container spacing={2} sx={{ paddingTop: 1 }}>
+                  {attempButton(exerciseInfo.to, unlock)}
                   <Grid item>
-                    <GenericHeaderButton variant="contained"
-                                         style={{
-                                           justifyContent: "center",
-                                           backgroundColor: "#FA9C1B",
-                                           color: "#000000"
-                                         }}
-                                         component={Link}
-                                         to={unlock ? exerciseInfo.to : '/'}>Attempt</GenericHeaderButton>
-                  </Grid>
-                  <Grid item>
-                    <ExerciseInfo exerciseName={name}/>
+                    <ExerciseInfo exerciseName={name} />
                   </Grid>
                 </Grid>
               </CardContent>
@@ -130,7 +134,7 @@ const Home = () => {
         width="100%"
       />
       <Container sx={{ px: { xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }, py: { xs: 1, sm: 2, md: 9, lg: 9, xl: 9 } }}>
-        <ExerciseCards/>
+        <ExerciseCards />
       </Container>
     </Box>
   )
