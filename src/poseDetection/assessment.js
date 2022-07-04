@@ -32,13 +32,13 @@ export function assess_pushups(keypoints, exerciseValues) {
         case 2:
             if (!pushups.checkBackStraight(keypoints, exerciseValues)) {
                 stageChangeEmitter.emit("malignedRepBackNotStraight");
-                return; //don't need to check depth if back is not straight
-            }
-            else {
-                stageChangeEmitter.emit("clearFeedback");
+                return; // don't need to check depth if back is not straight
             }
             if (pushups.checkDepth(keypoints, exerciseValues)) {
                 stageChangeEmitter.emit("maxPointReached");
+            }
+            else {
+                stageChangeEmitter.emit("clearFeedback");
             }
             return;
         case 3:

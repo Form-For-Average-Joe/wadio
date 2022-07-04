@@ -1,6 +1,6 @@
 import { Howl, Howler } from "howler";
 import { store } from "../app/store";
-import { setStage, incrementCount, setIsCanStart, setFeedback, selectCount } from "../features/exercise/exerciseSlice";
+import { setStage, incrementCount, setIsCanStart, setFeedback } from "../features/exercise/exerciseSlice";
 import stageChangeEmitter from "./eventsFactory";
 
 const calibratedSound = new Howl({
@@ -19,7 +19,7 @@ const globalListeners = {
     store.dispatch(setFeedback("EXERCISE READY!"));
   },
   'repDone': () => {
-    store.dispatch(setStage(2));
+    store.dispatch(setStage(1));
     store.dispatch(incrementCount());
     repCountSound.play();
   },
