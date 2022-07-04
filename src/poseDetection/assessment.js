@@ -1,76 +1,60 @@
 import * as pushups from './pushups';
 import * as situps from './situps';
 import {store} from "../app/store";
-import {selectStage, setStage, incrementCount, setIsCanStart} from "../features/exercise/exerciseSlice";
+import {selectStage, setStage, incrementCount} from "../features/exercise/exerciseSlice";
 import {setFeedback} from "../features/exercise/exerciseSlice";
-import {Howl, Howler} from 'howler';
-
-const calibratedSound = new Howl({
-  src: [require('../assets/sounds/calibrated.webm'), require('../assets/sounds/calibrated.wav'), require('../assets/sounds/calibrated.mp3')]
-});
-calibratedSound.volume(1.0)
-const repCountSound = new Howl({
-  src: [require('../assets/sounds/count.webm'), require('../assets/sounds/count.wav')]
-});
-Howler.volume(1.0);
+import stageChangeEmitter from "./eventsFactory";
 
 /*
-stage 0: pre-calibration
-stage 1: pre-start
-stage 2: started, up position
-stage 3: started, down position
-stage 4: complete
+stage 0: check if calibrated (move to stage 1)
+stage 1: check if is in starting position for rep (move to stage 2, set isCanStart)
+// setIsCanStart is in Stage 1 and not 0, so even if the calibration is done when the guy is not in position, the timer won't start
+stage 2: started rep, check if rep's max effort point is reached (change stage to 3) or if rep is maligned (lock stage(?), feedback)
+stage 3: past max effort point, returning to starting position, check if position reached (change stage to 1) (need to check if rep maligned?)
+stage 4: exercise locked (for example, if knees touch the ground during pushup) (code to check this is in camera.js)
 */
 
-function moveToStageOne() {
-  store.dispatch(setStage(1));
-  store.dispatch(setFeedback("EXERCISE READY!"));
-}
+//todo currently, code is split across ExerciseAssessment, camera.js, assessment.js and eventsListeners.js <-- need a better way to enumerate exercises, merge checking
 
 export function assess_pushups(keypoints, exerciseValues) {
-    // console.log("STAGE " + selectStage(store.getState()))
     switch (selectStage(store.getState())) {
         case 0:
             if (exerciseValues.pushupval.isCalibrated) {
-                store.dispatch(setFeedback("CALIBRATION DONE!"));
-                calibratedSound.play();
-                moveToStageOne();
+                stageChangeEmitter.emit("isCalibrated");
             } else {
+                stageChangeEmitter.emit("calibrating");
                 pushups.calibrate(keypoints, exerciseValues);
-                store.dispatch(setFeedback("CALIBRATING!"));
             } return;
         case 1:
             if (pushups.checkArmStraight(keypoints, exerciseValues)) {
-                store.dispatch(setIsCanStart(true));
-                store.dispatch(setStage(2));
-                store.dispatch(setFeedback("EXERCISE BEGIN!"));
+                stageChangeEmitter.emit("inStartingPosition");
             } else {
-                store.dispatch(setFeedback("STRAIGHTEN ARM TO START"));
+                stageChangeEmitter.emit("notInStartingPosition");
             } return;
         case 2:
             if (!pushups.checkBackStraight(keypoints, exerciseValues)) {
-                store.dispatch(setFeedback("STRAIGHTEN YOUR BACK"));
-                return;
-            }
-            else {
-                store.dispatch(setFeedback(""));
+                stageChangeEmitter.emit("malignedRepBackNotStraight");
+                return; // don't need to check depth if back is not straight
             }
             if (pushups.checkDepth(keypoints, exerciseValues)) {
-                store.dispatch(setFeedback(""));
-                store.dispatch(setStage(3));
-                } return;
+                stageChangeEmitter.emit("maxPointReached");
+            }
+            else {
+                stageChangeEmitter.emit("maxPointNotReached");
+            }
+            return;
         case 3:
             if (!pushups.checkBackStraight(keypoints, exerciseValues)) {
-                store.dispatch(setStage(2));
-                store.dispatch(setFeedback("STRAIGHTEN YOUR BACK"));
-                return;
+                stageChangeEmitter.emit("malignedRepBackNotStraightStage3");
+                return;// return early, as there is no point checking the arm
             }
             if (pushups.checkArmStraight(keypoints, exerciseValues)) {
-                store.dispatch(setStage(2));
-                store.dispatch(incrementCount());
-                repCountSound.play();
-                // console.log("COUNT: " + selectCount(store.getState()));
-            } return;
+                stageChangeEmitter.emit("repDone");
+            }
+            else {
+                stageChangeEmitter.emit("repNotCompletedYet");
+            }
+            return;
         default:
             console.log("ERROR"); return;
     }
@@ -80,8 +64,7 @@ export function assess_situps(keypoints, exerciseValues) {
     switch (selectStage(store.getState())) {
         case 0:
             if (exerciseValues.situpval.isCalibrated) {
-                store.dispatch(setFeedback("CALIBRATION DONE!"));
-                moveToStageOne();
+                stageChangeEmitter.emit("isCalibrated");
             } else {
                 situps.calibrate(keypoints, exerciseValues);
                 store.dispatch(setFeedback("CALIBRATING!"));
@@ -110,7 +93,6 @@ export function assess_situps(keypoints, exerciseValues) {
             if (situps.checkShoulderDepth(keypoints, exerciseValues)) {
                 store.dispatch(setStage(2));
                 store.dispatch(incrementCount());
-                // store.dispatch(setFeedback("COUNT: " + selectCount(store.getState())));
             } return;
         default:
             console.log("ERROR"); return;
