@@ -39,7 +39,7 @@ const exerciseInformation = [
     description: 'Choose your custom timings and difficulty',
     toUnlock: 'Choose your custom timings and difficulty',
     exercise: 'Bicep Curls',
-    to: '/'
+    to: '/exercise/bicepcurls'
   },
   {
     image: comingsoon,
@@ -48,7 +48,7 @@ const exerciseInformation = [
     description: 'Choose your custom timings and difficulty',
     toUnlock: 'Choose your custom timings and difficulty',
     exercise: 'Shoulder Press',
-    to: '/'
+    to: '/exercise/shoulderpress'
   },
 ]
 
@@ -58,6 +58,10 @@ export function checkUnlocked(cal, ex) {
       return true;
     case 'situps':
       return cal >= 50;
+    case 'bicepcurls':
+      return true;
+    case 'shoulderpress':
+      return true;
     default:
       return false;
   }

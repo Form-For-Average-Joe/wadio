@@ -42,6 +42,14 @@ export class Camera {
           if (isNotAtStageFour) {
             assessment.assess_situps(pose.keypoints, this.exerciseValues);
           }
+        } else if (this.nameOfExercise === 'bicepcurls') {
+          if (isNotAtStageFour) {
+            assessment.assess_bicepcurls(pose.keypoints, this.exerciseValues);
+          }
+        } else if (this.nameOfExercise === 'shoulderpress') {
+          if (isNotAtStageFour) {
+            assessment.assess_shoulderpress(pose.keypoints, this.exerciseValues);
+          }
         } else {
           console.log("No exercise detected, check Redux state for the value of nameOfExercise")
         }
