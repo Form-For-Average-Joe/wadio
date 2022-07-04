@@ -82,8 +82,8 @@ function isStablised(keypoints, exerciseValues) {
 
 //todo normalise
 export function calibrate(keypoints, exerciseValues) {
-  if (isBodyInFrame(keypoints)) {
-    exerciseValues.shoulderpressval.isCalibrated = isStablised(keypoints);
+  if (isBodyInFrame(keypoints, exerciseValues)) {
+    exerciseValues.shoulderpressval.isCalibrated = isStablised(keypoints, exerciseValues);
   }
   else {
     //console.log("Out of Frame");

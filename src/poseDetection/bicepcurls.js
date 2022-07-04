@@ -99,8 +99,8 @@ export function calibrate(keypoints, exerciseValues) {
   else {
     exerciseValues.bicepcurlval.side = 2;
   }
-  if (isBodyInFrame(keypoints)) {
-    exerciseValues.bicepcurlval.isCalibrated = isStablised(keypoints);
+  if (isBodyInFrame(keypoints, exerciseValues)) {
+    exerciseValues.bicepcurlval.isCalibrated = isStablised(keypoints, exerciseValues);
   }
   else {
     //console.log("Out of Frame");

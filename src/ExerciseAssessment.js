@@ -18,11 +18,13 @@ const ExerciseAssessment = ({nameOfExercise}) => {
   useEffect(() => {
     for (const listener in globalListeners) {
       stageChangeEmitter.addListener(listener, globalListeners[listener]);
+      console.log("lol")
     }
     //todo temp way to select the listeners, fix when we add new exercises!!!
     const listeners = nameOfExercise === exercises[0] ? pushupsListeners : situpListeners;
-    for (const listener in pushupsListeners) {
+    for (const listener in listeners) {
       stageChangeEmitter.addListener(listener, listeners[listener]);
+      console.log("sos")
     }
     webcam(streamRef, setWebcamInstance)
     // cleanup function stops webcam

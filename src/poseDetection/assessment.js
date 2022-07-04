@@ -4,7 +4,7 @@ import * as bicepcurls from './bicepcurls';
 import * as shoulderpress from './shoulderpress';
 import {store} from "../app/store";
 import {selectStage, setStage, incrementCount} from "../features/exercise/exerciseSlice";
-import {setFeedback} from "../features/exercise/exerciseSlice";
+import {setFeedback, setIsCanStart} from "../features/exercise/exerciseSlice";
 import stageChangeEmitter from "./eventsFactory";
 
 /*
@@ -74,6 +74,7 @@ export function assess_situps(keypoints, exerciseValues) {
         case 1:
             if (situps.checkShoulderDepth(keypoints, exerciseValues)) {
                 store.dispatch(setStage(2));
+                store.dispatch(setIsCanStart(true));
                 store.dispatch(setFeedback("EXERCISE BEGIN!"));
             } else {
                 store.dispatch(setFeedback("LIE FLAT TO START"));
@@ -113,6 +114,7 @@ export function assess_bicepcurls(keypoints, exerciseValues) {
         case 1:
             if (bicepcurls.checkArmStraight(keypoints, exerciseValues)) {
                 store.dispatch(setStage(2));
+                store.dispatch(setIsCanStart(true));
                 store.dispatch(setFeedback("EXERCISE BEGIN!"));
             } else {
                 store.dispatch(setFeedback("STRAIGHTEN ARM TO START"));
@@ -143,6 +145,7 @@ export function assess_shoulderpress(keypoints, exerciseValues) {
         case 1:
             if (shoulderpress.checkDepth(keypoints, exerciseValues)) {
                 store.dispatch(setStage(2));
+                store.dispatch(setIsCanStart(true));
                 store.dispatch(setFeedback("EXERCISE BEGIN!"));
             } else {
                 store.dispatch(setFeedback("BEND ARMS TO 90 TO START"));
