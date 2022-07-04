@@ -1,6 +1,6 @@
-import {Howl, Howler} from "howler";
-import {store} from "../app/store";
-import {selectStage, setStage, incrementCount, setIsCanStart, setFeedback} from "../features/exercise/exerciseSlice";
+import { Howl, Howler } from "howler";
+import { store } from "../app/store";
+import { selectStage, setStage, incrementCount, setIsCanStart, setFeedback, selectCount } from "../features/exercise/exerciseSlice";
 import stageChangeEmitter from "./eventsFactory";
 
 const calibratedSound = new Howl({
@@ -13,28 +13,25 @@ const repCountSound = new Howl({
 Howler.volume(1.0);
 
 function repDoneGlobal() {
-  return () => {
-    store.dispatch(setStage(2));
-    store.dispatch(incrementCount());
-    repCountSound.play();
-  };
+  console.log(selectCount(store.getState()));
+  store.dispatch(setStage(2));
+  store.dispatch(incrementCount());
+  repCountSound.play();
 }
 
 //todo Note the tangled event firing chain - this in turn emits setStageOne
 function isCalibratedGlobal() {
-  return () => {
-    calibratedSound.play();
-    //todo CALIBRATION DONE is never displayed, so is redundant
-    store.dispatch(setFeedback("CALIBRATION DONE!"));
-    stageChangeEmitter.emit("setStageOne");
-  };
+  calibratedSound.play();
+  //todo CALIBRATION DONE is never displayed, so is redundant
+  store.dispatch(setFeedback("CALIBRATION DONE!"));
+  stageChangeEmitter.emit("setStageOne");
 }
 
 const pushupsListeners = {
   'calibrating': () => {
     store.dispatch(setFeedback("CALIBRATING!"));
   },
-  'isCalibrated': isCalibratedGlobal(),
+  'isCalibrated': isCalibratedGlobal,
   'setStageOne': () => {
     store.dispatch(setStage(1));
     store.dispatch(setFeedback("EXERCISE READY!"));
@@ -51,21 +48,21 @@ const pushupsListeners = {
     store.dispatch(setFeedback("STRAIGHTEN YOUR BACK"));
   },
   'backIsNotStraightAtStage3': () => {
-      store.dispatch(setStage(2));
-      stageChangeEmitter.emit("backIsNotStraight");
+    store.dispatch(setStage(2));
+    stageChangeEmitter.emit("backIsNotStraight");
   },
   'depthReached': () => {
     store.dispatch(setFeedback(""));
     store.dispatch(setStage(3));
   },
-  'repDone': repDoneGlobal()
+  'repDone': repDoneGlobal
 }
 
 const situpListeners = {
   'calibrating': () => {
     store.dispatch(setFeedback("CALIBRATING!"));
   },
-  'isCalibrated': isCalibratedGlobal(),
+  'isCalibrated': isCalibratedGlobal,
   'setStageOne': () => {
     store.dispatch(setStage(1));
     store.dispatch(setFeedback("EXERCISE READY!"));
@@ -88,7 +85,7 @@ const situpListeners = {
     store.dispatch(setFeedback(""));
     store.dispatch(setStage(3));
   },
-  'repDone': repDoneGlobal()
+  'repDone': repDoneGlobal
 }
 
-export {pushupsListeners, situpListeners};
+export { pushupsListeners, situpListeners };

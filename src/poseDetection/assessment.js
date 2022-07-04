@@ -3,17 +3,7 @@ import * as situps from './situps';
 import {store} from "../app/store";
 import {selectStage, setStage, incrementCount} from "../features/exercise/exerciseSlice";
 import {setFeedback} from "../features/exercise/exerciseSlice";
-import {Howl, Howler} from 'howler';
 import stageChangeEmitter from "./eventsFactory";
-
-const calibratedSound = new Howl({
-  src: [require('../assets/sounds/calibrated.webm'), require('../assets/sounds/calibrated.wav'), require('../assets/sounds/calibrated.mp3')]
-});
-calibratedSound.volume(1.0)
-const repCountSound = new Howl({
-  src: [require('../assets/sounds/count.webm'), require('../assets/sounds/count.wav')]
-});
-Howler.volume(1.0);
 
 /*
 stage 0: pre-calibration
@@ -24,7 +14,6 @@ stage 4: complete
 */
 
 export function assess_pushups(keypoints, exerciseValues) {
-    // console.log("STAGE " + selectStage(store.getState()))
     switch (selectStage(store.getState())) {
         case 0:
             if (exerciseValues.pushupval.isCalibrated) {
