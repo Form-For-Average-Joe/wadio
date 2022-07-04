@@ -1,5 +1,4 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AnalyticsIcon from '@mui/icons-material/Analytics';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
@@ -51,7 +50,8 @@ const Member = () => {
     });
   })
   // const matches = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  return photoURL ? <Avatar src={photoURL}/> : <Avatar><AccountCircleIcon/></Avatar>;
+  return photoURL ? <IconButton component={Link} to={'/dashboard'}><Avatar src={photoURL}/></IconButton> : 
+                    <IconButton component={Link} to={'/dashboard'}><AccountCircleIcon fontSize='large' sx={{color: "#FFFFFF"}}/></IconButton>;
 }
 
 const drawerWidth = 240;
@@ -70,11 +70,6 @@ const navigationItems = {
     icon: <GroupsIcon/>,
     displayName: 'Friends',
     to: '/friends',
-  },
-  profile: {
-    icon: <AnalyticsIcon/>,
-    displayName: 'Profile',
-    to: '/dashboard'
   },
   settings: {
     icon: <SettingsApplicationsIcon/>,
@@ -167,8 +162,6 @@ function MainHeader() {
                                      to={navigationItems.leaderboard.to}>{navigationItems.leaderboard.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.friends.to}>{navigationItems.friends.displayName}</GenericHeaderButton>
-                <GenericHeaderButton component={Link}
-                                     to={navigationItems.profile.to}>{navigationItems.profile.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.settings.to}>{navigationItems.settings.displayName}</GenericHeaderButton>
               </Box>
