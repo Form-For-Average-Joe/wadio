@@ -58,6 +58,15 @@ function getInfo(exerciseName) {
   }
 }
 
+const attemptButton = (exerciseName, link) => {
+  return exerciseName === 'locked' ? "" :
+    <GenericHeaderButton
+      variant="contained"
+      component={Link}
+      to={link}
+      sx={{ marginTop: "1rem", backgroundColor: "#FA9C1B", color: "#000000" }}>Attempt Now!</GenericHeaderButton>
+}
+
 const ExerciseInfo = ({ exerciseName }) => {
   const [open, setOpen] = useState(false);
   const Exercise = getInfo(exerciseName);
@@ -67,7 +76,7 @@ const ExerciseInfo = ({ exerciseName }) => {
       <GenericHeaderButton
         label="Sign in/Sign up"
         variant="contained"
-        sx = {{backgroundColor: "#000000"}}
+        sx={{ backgroundColor: "#000000" }}
         onClick={() => setOpen(true)}>
         More Info
       </GenericHeaderButton>
@@ -75,7 +84,7 @@ const ExerciseInfo = ({ exerciseName }) => {
         open={open}
         onClose={() => setOpen(false)}
       >
-        <Card sx={{minWidth: "30vw"}}>
+        <Card sx={{ minWidth: "30vw" }}>
           {/* <CardMedia
             component={'img'}
             image={Exercise.image}
@@ -84,14 +93,10 @@ const ExerciseInfo = ({ exerciseName }) => {
             <Typography gutterBottom variant="h4">{Exercise.exercise}</Typography>
             <Typography variant="h5">Description</Typography>
             <Typography variant="body1">{Exercise.description}</Typography>
-            <Divider sx={{ paddingTop: "1rem" }}/>
+            <Divider sx={{ paddingTop: "1rem" }} />
             <Typography variant="h5">Calibration Instructions</Typography>
             <Typography variant="body1">{Exercise.instruction}</Typography>
-            <GenericHeaderButton
-              variant="contained"
-              component={Link}
-              to={Exercise.to}
-              sx={{ marginTop: "1rem", backgroundColor: "#FA9C1B", color: "#000000" }}>Attempt Now!</GenericHeaderButton>
+            {attemptButton(exerciseName, Exercise.to)}
           </CardContent>
         </Card>
       </Dialog>
