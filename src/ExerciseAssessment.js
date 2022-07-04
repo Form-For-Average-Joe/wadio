@@ -4,7 +4,7 @@ import {setExercise} from "./features/exercise/exerciseSlice";
 import webcam from './poseDetection/webcam.js';
 import {useDispatch} from "react-redux";
 import stageChangeEmitter from "./poseDetection/eventsFactory";
-import {pushupsListeners, situpListeners} from "./poseDetection/eventsListeners";
+import { globalListeners, pushupsListeners, situpListeners } from "./poseDetection/eventsListeners";
 import { exercises } from "./util";
 
 const ExerciseAssessment = ({nameOfExercise}) => {
@@ -16,6 +16,9 @@ const ExerciseAssessment = ({nameOfExercise}) => {
   dispatch(setExercise(nameOfExercise));
 
   useEffect(() => {
+    for (const listener in globalListeners) {
+      stageChangeEmitter.addListener(listener, globalListeners[listener]);
+    }
     //todo temp way to select the listeners, fix when we add new exercises!!!
     const listeners = nameOfExercise === exercises[0] ? pushupsListeners : situpListeners;
     for (const listener in pushupsListeners) {

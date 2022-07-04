@@ -6,11 +6,12 @@ import {setFeedback} from "../features/exercise/exerciseSlice";
 import stageChangeEmitter from "./eventsFactory";
 
 /*
-stage 0: pre-calibration
-stage 1: pre-start
-stage 2: started, up position
-stage 3: started, down position
-stage 4: complete
+stage 0: check if calibrated (move to stage 1)
+stage 1: check if is in starting position for rep (move to stage 2, set isCanStart)
+// setIsCanStart is in Stage 1 and not 0, so even if the calibration is done when the guy is not in position, the timer won't start
+stage 2: started rep, check if rep's max effort point is reached (change stage to 3) or if rep is maligned (lock stage(?), feedback)
+stage 3: past max effort point, returning to starting position, check if position reached (change stage to 1) (need to check if rep maligned?)
+stage 4: exercise locked (for example, if knees touch the ground during pushup)
 */
 
 export function assess_pushups(keypoints, exerciseValues) {
@@ -20,31 +21,29 @@ export function assess_pushups(keypoints, exerciseValues) {
                 stageChangeEmitter.emit("isCalibrated");
             } else {
                 stageChangeEmitter.emit("calibrating");
-                //todo this shouldn't be outside the eventListener code
                 pushups.calibrate(keypoints, exerciseValues);
             } return;
         case 1:
             if (pushups.checkArmStraight(keypoints, exerciseValues)) {
-                stageChangeEmitter.emit("armIsStraight");
+                stageChangeEmitter.emit("inStartingPosition");
             } else {
-                stageChangeEmitter.emit("armIsNotStraight");
+                stageChangeEmitter.emit("notInStartingPosition");
             } return;
         case 2:
             if (!pushups.checkBackStraight(keypoints, exerciseValues)) {
-                stageChangeEmitter.emit("backIsNotStraight");
+                stageChangeEmitter.emit("malignedRepBackNotStraight");
                 return; //don't need to check depth if back is not straight
             }
             else {
-                //todo add to global
-                store.dispatch(setFeedback(""));
+                stageChangeEmitter.emit("clearFeedback");
             }
             if (pushups.checkDepth(keypoints, exerciseValues)) {
-                stageChangeEmitter.emit("depthReached");
+                stageChangeEmitter.emit("maxPointReached");
             }
             return;
         case 3:
             if (!pushups.checkBackStraight(keypoints, exerciseValues)) {
-                stageChangeEmitter.emit("backIsNotStraightAtStage3");
+                stageChangeEmitter.emit("malignedRepBackNotStraightStage3");
                 return;
             }
             if (pushups.checkArmStraight(keypoints, exerciseValues)) {

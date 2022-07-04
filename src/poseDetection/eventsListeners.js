@@ -1,6 +1,6 @@
 import { Howl, Howler } from "howler";
 import { store } from "../app/store";
-import { selectStage, setStage, incrementCount, setIsCanStart, setFeedback, selectCount } from "../features/exercise/exerciseSlice";
+import { setStage, incrementCount, setIsCanStart, setFeedback, selectCount } from "../features/exercise/exerciseSlice";
 import stageChangeEmitter from "./eventsFactory";
 
 const calibratedSound = new Howl({
@@ -12,80 +12,47 @@ const repCountSound = new Howl({
 });
 Howler.volume(1.0);
 
-function repDoneGlobal() {
-  console.log(selectCount(store.getState()));
-  store.dispatch(setStage(2));
-  store.dispatch(incrementCount());
-  repCountSound.play();
-}
-
-//todo Note the tangled event firing chain - this in turn emits setStageOne
-function isCalibratedGlobal() {
-  calibratedSound.play();
-  //todo CALIBRATION DONE is never displayed, so is redundant
-  store.dispatch(setFeedback("CALIBRATION DONE!"));
-  stageChangeEmitter.emit("setStageOne");
+const globalListeners = {
+  'isCalibrated': () => {
+    calibratedSound.play();
+    store.dispatch(setStage(1));
+    store.dispatch(setFeedback("EXERCISE READY!"));
+  },
+  'repDone': () => {
+    store.dispatch(setStage(2));
+    store.dispatch(incrementCount());
+    repCountSound.play();
+  },
+  'clearFeedback': () => {
+    store.dispatch(setFeedback(""));
+  }
 }
 
 const pushupsListeners = {
   'calibrating': () => {
-    store.dispatch(setFeedback("CALIBRATING!"));
+    store.dispatch(setFeedback("Calibrating, get into position!"));
   },
-  'isCalibrated': isCalibratedGlobal,
-  'setStageOne': () => {
-    store.dispatch(setStage(1));
-    store.dispatch(setFeedback("EXERCISE READY!"));
-  },
-  'armIsStraight': () => {
+  'inStartingPosition': () => {
     store.dispatch(setIsCanStart(true));
     store.dispatch(setStage(2));
-    store.dispatch(setFeedback("EXERCISE BEGIN!"));
+    store.dispatch(setFeedback("EXERCISE BEGIN!")); //todo change this
   },
-  'armIsNotStraight': () => {
+  'notInStartingPosition': () => {
     store.dispatch(setFeedback("STRAIGHTEN ARM TO START"));
   },
-  'backIsNotStraight': () => {
+  'malignedRepBackNotStraight': () => {
     store.dispatch(setFeedback("STRAIGHTEN YOUR BACK"));
   },
-  'backIsNotStraightAtStage3': () => {
+  'malignedRepBackNotStraightStage3': () => {
     store.dispatch(setStage(2));
-    stageChangeEmitter.emit("backIsNotStraight");
+    stageChangeEmitter.emit("malignedRepBackNotStraight");
   },
-  'depthReached': () => {
+  'maxPointReached': () => {
     store.dispatch(setFeedback(""));
     store.dispatch(setStage(3));
-  },
-  'repDone': repDoneGlobal
+  }
 }
 
-const situpListeners = {
-  'calibrating': () => {
-    store.dispatch(setFeedback("CALIBRATING!"));
-  },
-  'isCalibrated': isCalibratedGlobal,
-  'setStageOne': () => {
-    store.dispatch(setStage(1));
-    store.dispatch(setFeedback("EXERCISE READY!"));
-  },
-  'armIsStraight': () => {
-    store.dispatch(setIsCanStart(true));
-    store.dispatch(setStage(2));
-    store.dispatch(setFeedback("EXERCISE BEGIN!"));
-  },
-  'armIsNotStraight': () => {
-    store.dispatch(setFeedback("STRAIGHTEN ARM TO START"));
-  },
-  'backIsNotStraight': () => {
-    if (selectStage(store.getState()) !== 2) {
-      store.dispatch(setStage(2));
-    }
-    store.dispatch(setFeedback("STRAIGHTEN YOUR BACK"));
-  },
-  'depthReached': () => {
-    store.dispatch(setFeedback(""));
-    store.dispatch(setStage(3));
-  },
-  'repDone': repDoneGlobal
-}
+const situpListeners = {}
 
-export { pushupsListeners, situpListeners };
+export { globalListeners, pushupsListeners, situpListeners };
