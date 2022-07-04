@@ -11,8 +11,10 @@ stage 1: check if is in starting position for rep (move to stage 2, set isCanSta
 // setIsCanStart is in Stage 1 and not 0, so even if the calibration is done when the guy is not in position, the timer won't start
 stage 2: started rep, check if rep's max effort point is reached (change stage to 3) or if rep is maligned (lock stage(?), feedback)
 stage 3: past max effort point, returning to starting position, check if position reached (change stage to 1) (need to check if rep maligned?)
-stage 4: exercise locked (for example, if knees touch the ground during pushup)
+stage 4: exercise locked (for example, if knees touch the ground during pushup) (code to check this is in camera.js)
 */
+
+//todo currently, code is split across ExerciseAssessment, camera.js, assessment.js and eventsListeners.js <-- need a better way to enumerate exercises, merge checking
 
 export function assess_pushups(keypoints, exerciseValues) {
     switch (selectStage(store.getState())) {
@@ -38,17 +40,21 @@ export function assess_pushups(keypoints, exerciseValues) {
                 stageChangeEmitter.emit("maxPointReached");
             }
             else {
-                stageChangeEmitter.emit("clearFeedback");
+                stageChangeEmitter.emit("maxPointNotReached");
             }
             return;
         case 3:
             if (!pushups.checkBackStraight(keypoints, exerciseValues)) {
                 stageChangeEmitter.emit("malignedRepBackNotStraightStage3");
-                return;
+                return;// return early, as there is no point checking the arm
             }
             if (pushups.checkArmStraight(keypoints, exerciseValues)) {
                 stageChangeEmitter.emit("repDone");
-            } return;
+            }
+            else {
+                stageChangeEmitter.emit("repNotCompletedYet");
+            }
+            return;
         default:
             console.log("ERROR"); return;
     }

@@ -13,6 +13,9 @@ const repCountSound = new Howl({
 Howler.volume(1.0);
 
 const globalListeners = {
+  'calibrating': () => {
+    store.dispatch(setFeedback("Calibrating, get into position!"));
+  },
   'isCalibrated': () => {
     calibratedSound.play();
     store.dispatch(setStage(1));
@@ -29,9 +32,6 @@ const globalListeners = {
 }
 
 const pushupsListeners = {
-  'calibrating': () => {
-    store.dispatch(setFeedback("Calibrating, get into position!"));
-  },
   'inStartingPosition': () => {
     store.dispatch(setIsCanStart(true));
     store.dispatch(setStage(2));
@@ -44,12 +44,18 @@ const pushupsListeners = {
     store.dispatch(setFeedback("STRAIGHTEN YOUR BACK"));
   },
   'malignedRepBackNotStraightStage3': () => {
-    store.dispatch(setStage(2));
+    // store.dispatch(setStage(2));
     stageChangeEmitter.emit("malignedRepBackNotStraight");
   },
   'maxPointReached': () => {
-    store.dispatch(setFeedback(""));
+    stageChangeEmitter.emit("clearFeedback");
     store.dispatch(setStage(3));
+  },
+  'maxPointNotReached': () => {
+    store.dispatch(setFeedback("GO LOWER!"));
+  },
+  'repNotCompletedYet': () => {
+    store.dispatch(setFeedback("GO BACK UP FULLY!"));
   }
 }
 
