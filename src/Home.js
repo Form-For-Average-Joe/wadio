@@ -9,6 +9,10 @@ import pushups from './assets/pushups.png';
 import pushupsG from './assets/pushupsG.jpeg';
 import situps from './assets/situps.png';
 import situpsG from './assets/situpsG.jpeg';
+import bicepcurls from './assets/bicepcurls.png';
+import bicepcurlsG from './assets/bicepcurlsG.jpeg';
+import shoulderpress from './assets/shoulderpress.png';
+import shoulderpressG from './assets/shoulderpressG.jpeg';
 import comingsoon from './assets/comingsoon.png';
 import LoadingSpinner from "./components/LoadingSpinner";
 import { fetchUserCumulativeCalories } from "./util";
@@ -33,8 +37,8 @@ const exerciseInformation = [
     to: '/exercise/situps'
   },
   {
-    image: comingsoon,
-    locked: comingsoon,
+    image: bicepcurls,
+    locked: bicepcurlsG,
     title: 'bicepcurls',
     description: 'Choose your custom timings and difficulty',
     toUnlock: 'Choose your custom timings and difficulty',
@@ -42,8 +46,8 @@ const exerciseInformation = [
     to: '/exercise/bicepcurls'
   },
   {
-    image: comingsoon,
-    locked: comingsoon,
+    image: shoulderpress,
+    locked: shoulderpressG,
     title: 'shoulderpress',
     description: 'Choose your custom timings and difficulty',
     toUnlock: 'Choose your custom timings and difficulty',
