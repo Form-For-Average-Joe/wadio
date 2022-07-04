@@ -1,5 +1,5 @@
 import { Avatar, Box } from "@mui/material";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountBoxIcon from '@mui/icons-material/AccountCircle';
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
@@ -12,6 +12,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useUser } from "reactfire";
+import names from "./assets/names";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
 import Tabs from '@mui/material/Tabs';
@@ -35,8 +36,8 @@ const getUserTableRow = (rowUserData, index, currentUserUid, displayString) => {
     </TableCell>
     <TableCell>
       {rowUserData.photoURL ? <Avatar style={{ alignItems: "center", justifyContent: "center", display: "flex" }}
-                                          variant="rounded" src={rowUserData.photoURL}/> :
-       <Avatar><AccountCircleIcon/></Avatar>}
+                                      src={rowUserData.photoURL}/> :
+       <Avatar src={require(`./assets/profilePics/${names[Math.floor(Math.random() * 58)]}`)}/>}
     </TableCell>
     <TableCell>
       <Typography variant={"h6"}>{getCurrentUserDisplayName}</Typography>
@@ -182,7 +183,7 @@ export default function LeaderboardDisplay() {
       justifyContent="center"
       alignItems="center"
     >
-      <Paper sx={{ width: '100%', maxWidth: { xs: '100vw', sm: '80vw', md: '70vw', lg: '60vw', xl: '60vw' } }}>
+      <Paper sx={{ width: '100%', bgcolor: "#999999", maxWidth: { xs: '100vw', sm: '80vw', md: '70vw', lg: '60vw', xl: '60vw' } }}>
         <Typography variant={"h4"} sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 } }}>
           {'Leaderboard: ' + leaderboadName}
         </Typography>
