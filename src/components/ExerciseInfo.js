@@ -59,7 +59,7 @@ function getInfo(exerciseName) {
 }
 
 const attemptButton = (exerciseName, link) => {
-  return exerciseName === 'locked' ? "" :
+  return exerciseName === 'locked' ? null :
     <GenericHeaderButton
       variant="contained"
       component={Link}

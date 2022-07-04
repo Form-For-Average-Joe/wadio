@@ -73,7 +73,7 @@ const attempButton = (link, unlock) => {
           color: "#000000"
         }}
         component={Link}
-        to={unlock ? link : '/'}>Attempt</GenericHeaderButton> </Grid> : ""
+        to={unlock ? link : '/'}>Attempt</GenericHeaderButton> </Grid> : null
 }
 
 const ExerciseCards = () => {
