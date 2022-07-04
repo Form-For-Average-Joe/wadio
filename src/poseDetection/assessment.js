@@ -83,7 +83,7 @@ export function assess_situps(keypoints, exerciseValues) {
                 store.dispatch(setFeedback("CALIBRATION DONE!"));
                 moveToStageOne();
             } else {
-                situps.calibrate(keypoints);
+                situps.calibrate(keypoints, exerciseValues);
                 store.dispatch(setFeedback("CALIBRATING!"));
             } return;
         case 1:
