@@ -35,16 +35,16 @@ function getInfo(exerciseName) {
     case 'bicepcurls':
       return {
         image: comingsoon,
-        description: 'Coming Soon in the Next Update!',
-        instruction: '',
+        description: 'The biceps curl is a highly recognizable weight-training exercise that works the muscles of the upper arm, and to a lesser extent, those of the lower arm. It is a great exercise for seeing results in strength and definition.',
+        instruction: 'After pressing the start button, quickly get into postion with the side of your body directly perpendicular to the camera and your entire upper body in view. Keep you body still to ensure proper calibration. Once calibration is done, a bell sound can be heard to indicate the start of the exercise.',
         exercise: 'Bicep Curls',
         to: '/'
       }
     case 'shoulderpress':
       return {
         image: comingsoon,
-        description: 'Coming Soon in the Next Update!',
-        instruction: '',
+        description: 'The overhead shoulder press works the deltoid muscle of the shoulder. In addition to increasing shoulder strength, the standing dumbbell overhead press engages the core for stability throughout the movement.',
+        instruction: 'After pressing the start button, quickly get into postion facing the camera with your entire upper body and arms in view. Raise the weights to the starting position and keep your elbows at a 90 degrees angle. Keep you body still to ensure proper calibration. Once calibration is done, a bell sound can be heard to indicate the start of the exercise.',
         exercise: 'Shoulder Press',
         to: '/'
       }
