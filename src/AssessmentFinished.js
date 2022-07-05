@@ -7,10 +7,10 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import LastAttemptStats from "./containers/LastAttemptStats";
 import { clearExerciseState } from "./features/exercise/exerciseSlice";
 import { resetUserTime } from './features/userProfile/userProfileSlice';
-import { useFirestoreDocData, useUser } from 'reactfire';
+import { useUser } from 'reactfire';
 import { Link, Navigate } from "react-router-dom";
 import GenericHeaderButton from "./components/GenericHeaderButton";
-import { getCaloriesBurnt } from "./util";
+import { fetchUserData, getCaloriesBurnt } from "./util";
 import { store } from './app/store';
 
 export default function AssessmentFinished() {
@@ -20,24 +20,22 @@ export default function AssessmentFinished() {
   const { minutes, seconds } = userProfile;
   const workoutTime = (minutes * 60 + seconds) === 0 ? duration : duration - (minutes * 60 + seconds);
   const { status, data: user } = useUser();
-  const firestore = getFirestore();
-  const ref = doc(firestore, user.uid, 'userData');
-  const { status: firestoreDataStatus, data: userProfileData } = useFirestoreDocData(ref);
   const today = new Date();
   const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
   const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  const caloriesBurnt = getCaloriesBurnt(count, workoutTime, nameOfExercise, difficultyLevel, userProfileData?.gender, userProfileData?.age, userProfileData?.weight);
 
   //todo this is a hacky approach to save the last attempt stats before clearExerciseState is dispatched, as the component might render a few times and clear stats before sending to Firestore
   const [lastAttemptStats, setLastAttemptStats] = useState({
     repCount: count,
     workoutTime,
     nameOfExercise,
-    caloriesBurnt,
     difficultyLevel,
     date,
     time,
-  })
+  });
+
+  //todo this is absolutely stupid, but no time to fix properly, so we have two separate states for lastAttemptStats and caloriesBurnt
+  const [caloriesBurnt, setCaloriesBurnt] = useState(0);
 
   useEffect(() => {
     return () => {
@@ -46,18 +44,27 @@ export default function AssessmentFinished() {
     }
   })
 
-  if (status === 'loading' || firestoreDataStatus === 'loading') {
+  useEffect(() => {
+    if (user) {
+      fetchUserData(user.uid, (data) => {
+        setCaloriesBurnt(getCaloriesBurnt(count, workoutTime, nameOfExercise, difficultyLevel, data.gender, data.age, data.weight));
+      });
+    }
+  }, [user])
+
+  if (status === 'loading') {
     return <LoadingSpinner/>;
   }
 
   const saveData = () => {
+    const lastAttemptStatsWithCalories = { ...lastAttemptStats, caloriesBurnt }
     if (user) {
       setDoc(doc(getFirestore(), user.uid, date + " " + time), { //chose to use time stamp
-        lastAttemptStats,
+        'lastAttemptStats': lastAttemptStatsWithCalories,
       });
       axios.post('https://13.228.86.60/calories/addToUserCumulative/', {
         uid: user.uid,
-        scoreOfLatest: lastAttemptStats.caloriesBurnt,
+        scoreOfLatest: caloriesBurnt,
       });
       axios.post('https://13.228.86.60/' + lastAttemptStats.nameOfExercise + '/addToUserCumulative/', {
         uid: user.uid,
@@ -72,7 +79,7 @@ export default function AssessmentFinished() {
     <Card sx={{ backgroundColor: "#000000" }}>
       <Grid container spacing={3} direction="column" alignItems="center">
         <Grid item sx={{ marginTop: "3rem" }}>
-          <LastAttemptStats lastAttemptStats={lastAttemptStats} />
+          <LastAttemptStats lastAttemptStats={ {...lastAttemptStats, caloriesBurnt} } />
         </Grid>
         <Grid item>
           <Typography sx={{ color: "#FFFFFF" }}>
