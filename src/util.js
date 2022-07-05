@@ -23,6 +23,8 @@ export const renameForTable = (e) => {
       return "Bicep Curls"
     case "shoulderpress":
       return "Shoulder Press"
+    case "calories":
+      return "Calories"
     default:
       return "Undefined"
   }
@@ -245,5 +247,18 @@ export const associateGroupCodeToUserId = async (data, codeToStore, userUid) => 
     }
   } else {
     await setDoc(doc(getFirestore(), userUid, 'groupCodes'), { codes: newArray });
+  }
+}
+
+export const rankIt = (rank) => {
+  switch (rank) {
+    case 1:
+      return ' 🥇';
+    case 2:
+      return ' 🥈';
+    case 3:
+      return ' 🥉';
+    default:
+      return '';
   }
 }
