@@ -1,7 +1,4 @@
 import { Typography, Card, Grid } from '@mui/material';
-import { useUser } from "reactfire";
-import { fetchUserCumulativeCalories } from "../util";
-import { useState, useEffect } from "react";
 
 const CaloriesBurnt = ({ cal }) => {
     //todo fix levelData formula
