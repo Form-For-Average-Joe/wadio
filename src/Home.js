@@ -41,7 +41,7 @@ const exerciseInformation = [
     locked: bicepcurlsG,
     title: 'bicepcurls',
     description: 'Choose your custom timings and difficulty',
-    toUnlock: 'Choose your custom timings and difficulty',
+    toUnlock: 'Reach 300 Calories to Unlock',
     exercise: 'Bicep Curls',
     to: '/exercise/bicepcurls'
   },
@@ -50,9 +50,27 @@ const exerciseInformation = [
     locked: shoulderpressG,
     title: 'shoulderpress',
     description: 'Choose your custom timings and difficulty',
-    toUnlock: 'Choose your custom timings and difficulty',
+    toUnlock: 'Reach 1000 Calories to Unlock',
     exercise: 'Shoulder Press',
     to: '/exercise/shoulderpress'
+  },
+  {
+    image: comingsoon,
+    locked: comingsoon,
+    title: 'benchpress',
+    description: 'Choose your custom timings and difficulty',
+    toUnlock: 'Choose your custom timings and difficulty',
+    exercise: 'Bench Press',
+    to: '/'
+  },
+  {
+    image: comingsoon,
+    locked: comingsoon,
+    title: 'legraisers',
+    description: 'Choose your custom timings and difficulty',
+    toUnlock: 'Choose your custom timings and difficulty',
+    exercise: 'Leg Raisers',
+    to: '/'
   },
 ]
 
