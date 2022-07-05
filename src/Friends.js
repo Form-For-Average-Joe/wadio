@@ -100,7 +100,6 @@ const FriendsStuff = () => {
                 size="small"
                 sx={{ backgroundColor: "#FFFFFF" }}
                 onChange={(e) => {
-                  console.log(e.target.value)
                   setExistingCode(e.target.value);
                 }}
               />

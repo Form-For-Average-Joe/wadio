@@ -236,8 +236,7 @@ export const associateGroupCodeToUserId = async (data, codeToStore, userUid) => 
   const newArray = [codeToStore];
   if (data?.codes) {
     const existingCodes = data.codes;
-    const existingIds = existingCodes.map(idObj => idObj.id);
-    if (!(existingIds.includes(codeToStore))) {
+    if (!(existingCodes.includes(codeToStore))) {
       await setDoc(doc(getFirestore(), userUid, 'groupCodes'), { codes: existingCodes.concat(newArray) });
     }
   } else {
