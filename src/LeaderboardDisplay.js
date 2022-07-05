@@ -184,8 +184,11 @@ export default function LeaderboardDisplay() {
       alignItems="center"
     >
       <Paper sx={{ width: '100%', bgcolor: "#999999", maxWidth: { xs: '100vw', sm: '80vw', md: '70vw', lg: '60vw', xl: '60vw' } }}>
-        <Typography variant={"h4"} sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 } }}>
-          {'Leaderboard: ' + leaderboadName}
+        <Typography variant={"h4"} sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 }, paddingTop: "1rem" }}>
+          {leaderboadName + ' Leaderboard'}
+        </Typography>
+        <Typography variant="inherit" sx={{textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 }}}>
+          {'Code: ' + leaderboardId}
         </Typography>
         <Box sx={{
           borderBottom: 1,

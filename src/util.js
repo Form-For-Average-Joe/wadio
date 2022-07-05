@@ -126,12 +126,12 @@ function getFinalCal(baseCal, difficulty, gender) {
 }
 
 export const getCaloriesBurnt = (repCount, workoutTime, nameOfExercise, difficulty, gender, age, weight) => {
-    const rate = repCount / (workoutTime / 60); //rate of exercise, reps per minute
-    const baseCal = getBaseCal(rate, repCount, nameOfExercise);
-    const weightCorrectedCal = getWeightCorrectedCal(baseCal, weight);
-    const ageCorrectedCal = getAgeCorrectedCal(weightCorrectedCal, age);
-    const finalCal = getFinalCal(ageCorrectedCal, difficulty, gender);
-    return finalCal.toFixed(1);
+  const rate = repCount / (workoutTime / 60); //rate of exercise, reps per minute
+  const baseCal = getBaseCal(rate, repCount, nameOfExercise);
+  const weightCorrectedCal = getWeightCorrectedCal(baseCal, weight);
+  const ageCorrectedCal = getAgeCorrectedCal(weightCorrectedCal, age);
+  const finalCal = getFinalCal(ageCorrectedCal, difficulty, gender);
+  return finalCal.toFixed(1);
 }
 
 export const fetchUserData = async (uid, callback) => {
@@ -191,7 +191,7 @@ export const exercisesWithCaloriesTitleCase = () => {
 }
 
 export const findCurrentLevel = (cal) => {
-  const levelIndex = Math.floor(cal/1000);
+  const levelIndex = Math.floor(cal / 1000);
   switch (levelIndex) {
     case 0: return 'Rookie'
     case 1: return 'Regular'
@@ -236,9 +236,12 @@ export const associateGroupCodeToUserId = async (data, codeToStore, userUid) => 
   const newArray = [codeToStore];
   if (data?.codes) {
     const existingCodes = data.codes;
-    const existingIds = existingCodes.map(idObj => idObj.id);
-    if (!(existingIds.includes(codeToStore))) {
+    //const existingIds = existingCodes.map(idObj => idObj.id); console.log(existingCodes);
+    if (!(existingCodes.includes(codeToStore))) {
       await setDoc(doc(getFirestore(), userUid, 'groupCodes'), { codes: existingCodes.concat(newArray) });
+    }
+    else {
+      alert("You are already part of this Leaderboard");
     }
   } else {
     await setDoc(doc(getFirestore(), userUid, 'groupCodes'), { codes: newArray });
