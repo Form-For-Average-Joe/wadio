@@ -17,7 +17,17 @@ const valuesFactory = () => {
       hipLimit: 0,
       side: 0,
       isCalibrated: false,
-    }
+    },
+    bicepcurlval: {
+      compressLimit: 0,
+      stretchLimit: 0,
+      side: 0,
+      isCalibrated: false,
+    },
+    shoulderpressval: {
+      depthLimit: 0,
+      isCalibrated: false,
+    },
   });
   return {
     ...globals(),

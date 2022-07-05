@@ -106,6 +106,8 @@ root.render((
                 <Route path="/exercise">
                   <Route exact path="pushups" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exercises[0]}/></SettingsWrapper>}/>
                   <Route exact path="situps" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exercises[1]}/></SettingsWrapper>}/>
+                  <Route exact path="bicepcurls" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exercises[2]}/></SettingsWrapper>}/>
+                  <Route exact path="shoulderpress" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exercises[3]}/></SettingsWrapper>}/>
                 </Route>
               </Route>
             </Routes>

@@ -9,6 +9,10 @@ import pushups from './assets/pushups.png';
 import pushupsG from './assets/pushupsG.jpeg';
 import situps from './assets/situps.png';
 import situpsG from './assets/situpsG.jpeg';
+import bicepcurls from './assets/bicepcurls.png';
+import bicepcurlsG from './assets/bicepcurlsG.jpeg';
+import shoulderpress from './assets/shoulderpress.png';
+import shoulderpressG from './assets/shoulderpressG.jpeg';
 import comingsoon from './assets/comingsoon.png';
 import LoadingSpinner from "./components/LoadingSpinner";
 import { fetchUserCumulativeCalories } from "./util";
@@ -33,21 +37,39 @@ const exerciseInformation = [
     to: '/exercise/situps'
   },
   {
-    image: comingsoon,
-    locked: comingsoon,
+    image: bicepcurls,
+    locked: bicepcurlsG,
     title: 'bicepcurls',
     description: 'Choose your custom timings and difficulty',
-    toUnlock: 'Choose your custom timings and difficulty',
+    toUnlock: 'Reach 300 Calories to Unlock',
     exercise: 'Bicep Curls',
+    to: '/exercise/bicepcurls'
+  },
+  {
+    image: shoulderpress,
+    locked: shoulderpressG,
+    title: 'shoulderpress',
+    description: 'Choose your custom timings and difficulty',
+    toUnlock: 'Reach 1000 Calories to Unlock',
+    exercise: 'Shoulder Press',
+    to: '/exercise/shoulderpress'
+  },
+  {
+    image: comingsoon,
+    locked: comingsoon,
+    title: 'benchpress',
+    description: 'Choose your custom timings and difficulty',
+    toUnlock: 'Choose your custom timings and difficulty',
+    exercise: 'Bench Press',
     to: '/'
   },
   {
     image: comingsoon,
     locked: comingsoon,
-    title: 'shoulderpress',
+    title: 'legraisers',
     description: 'Choose your custom timings and difficulty',
     toUnlock: 'Choose your custom timings and difficulty',
-    exercise: 'Shoulder Press',
+    exercise: 'Leg Raisers',
     to: '/'
   },
 ]
@@ -58,6 +80,10 @@ export function checkUnlocked(cal, ex) {
       return true;
     case 'situps':
       return cal >= 50;
+    case 'bicepcurls':
+      return cal >= 300;
+    case 'shoulderpress':
+      return cal >= 1000;
     default:
       return false;
   }

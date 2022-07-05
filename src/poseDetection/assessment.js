@@ -1,8 +1,10 @@
 import * as pushups from './pushups';
 import * as situps from './situps';
+import * as bicepcurls from './bicepcurls';
+import * as shoulderpress from './shoulderpress';
 import {store} from "../app/store";
 import {selectStage, setStage, incrementCount} from "../features/exercise/exerciseSlice";
-import {setFeedback} from "../features/exercise/exerciseSlice";
+import {setFeedback, setIsCanStart} from "../features/exercise/exerciseSlice";
 import stageChangeEmitter from "./eventsFactory";
 
 /*
@@ -72,6 +74,7 @@ export function assess_situps(keypoints, exerciseValues) {
         case 1:
             if (situps.checkShoulderDepth(keypoints, exerciseValues)) {
                 store.dispatch(setStage(2));
+                store.dispatch(setIsCanStart(true));
                 store.dispatch(setFeedback("EXERCISE BEGIN!"));
             } else {
                 store.dispatch(setFeedback("LIE FLAT TO START"));
@@ -91,6 +94,68 @@ export function assess_situps(keypoints, exerciseValues) {
                 return;
             }
             if (situps.checkShoulderDepth(keypoints, exerciseValues)) {
+                store.dispatch(setStage(2));
+                store.dispatch(incrementCount());
+            } return;
+        default:
+            console.log("ERROR"); return;
+    }
+}
+
+export function assess_bicepcurls(keypoints, exerciseValues) {
+    switch (selectStage(store.getState())) {
+        case 0:
+            if (exerciseValues.bicepcurlval.isCalibrated) {
+                stageChangeEmitter.emit("isCalibrated");
+            } else {
+                bicepcurls.calibrate(keypoints, exerciseValues);
+                store.dispatch(setFeedback("CALIBRATING!"));
+            } return;
+        case 1:
+            if (bicepcurls.checkArmStraight(keypoints, exerciseValues)) {
+                store.dispatch(setStage(2));
+                store.dispatch(setIsCanStart(true));
+                store.dispatch(setFeedback("EXERCISE BEGIN!"));
+            } else {
+                store.dispatch(setFeedback("STRAIGHTEN ARM TO START"));
+            } return;
+        case 2:
+            if (bicepcurls.checkCurl(keypoints, exerciseValues)) {
+                store.dispatch(setStage(3));
+            } return;
+        case 3:
+            if (bicepcurls.checkArmStraight(keypoints, exerciseValues)) {
+                store.dispatch(setStage(2));
+                store.dispatch(incrementCount());
+            } return;
+        default:
+            console.log("ERROR"); return;
+    }
+}
+
+export function assess_shoulderpress(keypoints, exerciseValues) {
+    switch (selectStage(store.getState())) {
+        case 0:
+            if (exerciseValues.shoulderpressval.isCalibrated) {
+                stageChangeEmitter.emit("isCalibrated");
+            } else {
+                shoulderpress.calibrate(keypoints, exerciseValues);
+                store.dispatch(setFeedback("CALIBRATING!"));
+            } return;
+        case 1:
+            if (shoulderpress.checkDepth(keypoints, exerciseValues)) {
+                store.dispatch(setStage(2));
+                store.dispatch(setIsCanStart(true));
+                store.dispatch(setFeedback("EXERCISE BEGIN!"));
+            } else {
+                store.dispatch(setFeedback("BEND ARMS TO 90 TO START"));
+            } return;
+        case 2:
+            if (shoulderpress.checkArmStraight(keypoints, exerciseValues)) {
+                store.dispatch(setStage(3));
+            } return;
+        case 3:
+            if (shoulderpress.checkDepth(keypoints, exerciseValues)) {
                 store.dispatch(setStage(2));
                 store.dispatch(incrementCount());
             } return;

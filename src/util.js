@@ -19,6 +19,10 @@ export const renameForTable = (e) => {
       return "Push-Ups"
     case "situps":
       return "Sit-Ups"
+    case "bicepcurls":
+      return "Bicep Curls"
+    case "shoulderpress":
+      return "Shoulder Press"
     default:
       return "Undefined"
   }
@@ -38,7 +42,7 @@ export const getFlooredMinutes = (total) => {
   return Math.floor((total / 1000 / 60) % 60);
 }
 
-export const exercises = ['pushups', 'situps'];
+export const exercises = ['pushups', 'situps', 'bicepcurls', 'shoulderpress'];
 
 export const difficulties = [
   'Hellish',
