@@ -63,9 +63,9 @@ export function checkUnlocked(cal, ex) {
     case 'situps':
       return cal >= 50;
     case 'bicepcurls':
-      return true;
+      return cal >= 300;
     case 'shoulderpress':
-      return true;
+      return cal >= 1000;
     default:
       return false;
   }
