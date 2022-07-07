@@ -1,7 +1,7 @@
 import { Card, CardContent, CardMedia, Typography, Divider } from "@mui/material";
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
-import { exerciseIds, renameForTable } from "../util";
+import { exerciseIds, exerciseInformation } from "../util";
 import GenericHeaderButton from "./GenericHeaderButton";
 import { Link } from "react-router-dom";
 import pushups from '../assets/pushups.png';
@@ -9,15 +9,16 @@ import situps from '../assets/situps.png';
 import comingsoon from '../assets/comingsoon.png';
 
 function getInfo(exerciseName) {
-  const exercise = renameForTable(exerciseName)
+  if (exerciseName === 'locked') {
+    return {
+      description: 'Login and reach the calories requirement to unlock!',
+      instruction: '',
+      exercise: 'This Exercise is Locked',
+      to: '/'
+    };
+  }
+  const exercise = exerciseInformation[exerciseName].exerciseDisplayName
   switch (exerciseName) {
-    case 'locked':
-      return {
-        description: 'Login or reach calories requirement to unlock!',
-        instruction: '',
-        exercise: 'This Exercise is Locked',
-        to: '/'
-      }
     case exerciseIds[0]:
       return {
         image: pushups,
@@ -52,9 +53,9 @@ function getInfo(exerciseName) {
       }
     default:
       return {
-        description: 'error',
-        instruction: 'error',
-        exercise: 'error',
+        description: 'Nothing here!',
+        instruction: 'Nothing here!',
+        exercise: 'Nothing here!',
         to: '/'
       }
   }

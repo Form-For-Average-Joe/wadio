@@ -1,4 +1,4 @@
-import { Avatar, Box, useRadioGroup } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
@@ -13,15 +13,15 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useUser } from "reactfire";
 import names from "./assets/names";
 import LoadingSpinner from "./components/LoadingSpinner";
-import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
+import { leaderboardTabNames, exerciseDisplayNamesWithCalories } from './util';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { rankIt, renameForTable } from "./util";
+import { rankIt, exerciseInformation } from "./util";
 
 //todo need to maintain personal best (write) and last attempt (write) in profile
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
 
-const getUserTableRow = (rowUserData, index, currentUserUid, displayString) => {
+const getUserTableRow = (rowUserData, index, currentUserUid, exerciseId) => {
   const isCurrentUserRow = rowUserData.uid === currentUserUid;
   const rowDisplayName = rowUserData.nickname || rowUserData.uid;
   const getCurrentUserDisplayName = isCurrentUserRow ? rowDisplayName + ' (You)' : rowDisplayName;
@@ -41,8 +41,8 @@ const getUserTableRow = (rowUserData, index, currentUserUid, displayString) => {
     </TableCell>
     <TableCell>
       <Typography variant={"h6"}>{getCurrentUserDisplayName + rankIt(rowUserData.rank)}</Typography>
-      <Typography>{displayString === 'calories' ? rowUserData.results + ' ' + renameForTable(displayString)
-                  : Math.floor(rowUserData.results) + ' ' + renameForTable(displayString)}</Typography>
+      <Typography>{exerciseId === 'calories' ? rowUserData.results + ' ' + 'calories'
+                  : Math.floor(rowUserData.results) + ' ' + exerciseInformation[exerciseId].leaderboardDisplayString}</Typography>
     </TableCell>
   </TableRow>
 }
@@ -100,10 +100,8 @@ function GetTableContainer(user, exercise, leaderboardId) {
       const makeReq = async () => await axios.get('https://13.228.86.60/' + exercise + '/user/' + user.uid);
       try {
         const res = await makeReq();
-        console.log(res.data)
         if (res?.data) setCurrentUserData(res.data);
         else setCurrentUserData(null);
-        console.log(res.data)
       } catch (err) {
         console.log("Error fetching user");
       }
@@ -212,14 +210,14 @@ export default function LeaderboardDisplay() {
             textColor="#000000"
             TabIndicatorProps={{ style: { backgroundColor: "#FFA500" } }}
           >
-            {exercisesWithCaloriesTitleCase().map((exercise, index) =>
+            {exerciseDisplayNamesWithCalories().map((exercise, index) =>
               <Tab key={index} label={exercise} />
             )}
           </Tabs>
         </Box>
-        {exercisesWithCalories().map((exercise, index) => {
+        {leaderboardTabNames().map((exerciseId, index) => {
           return <TabPanel key={index} value={tabValue} index={index}>
-            {tabValue === index && GetTableContainer(user, exercise, leaderboardId)}
+            {tabValue === index && GetTableContainer(user, exerciseId, leaderboardId)}
           </TabPanel>
         }
         )}
