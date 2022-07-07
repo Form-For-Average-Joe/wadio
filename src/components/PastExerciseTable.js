@@ -22,7 +22,7 @@ const PastExerciseTable = ({ rows }) => {
         setPage(0);
     };
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{borderRadius: 3}}>
             <Table>
                 <TableHead>
                     <TableRow>

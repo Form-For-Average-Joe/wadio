@@ -1,4 +1,4 @@
-import { Card } from '@mui/material';
+import { Paper } from '@mui/material';
 import { get } from "axios";
 import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { useState } from 'react';
@@ -75,18 +75,22 @@ const FriendsStuff = () => {
 
   return (
     <>
-      <Card sx={{ backgroundColor: "#000000", width: "55vw" }}>
-        <Grid container direction="row" justifyContent="space-evenly">
+      <Paper variant="outlined"
+        sx={{
+          width: '100%', bgcolor: "#CCCCCC", maxWidth: { xs: '100vw', sm: '80vw', md: '70vw', lg: '60vw', xl: '60vw' },
+          borderRadius: 3, borderColor: "#FFA500", borderWidth: 3, marginTop: "1rem"
+        }}>
+        <Typography align="center" variant="h4" sx={{ paddingTop: "2rem", color: "#000000" }}>Friends</Typography>
+        <Grid container direction="row" justifyContent="space-evenly" spacing={12} sx={{ paddingLeft: "3rem", paddingRight: "3rem", paddingBottom: "2rem" }}>
           <Grid item>
-            <Typography align="center" variant="h6" sx={{ paddingTop: "2rem", color: "#FFFFFF" }}>Join a Private
+            <Typography align="center" variant="h6" sx={{ paddingTop: "2rem", color: "#000000" }}>Join a Private
               Leaderboard</Typography>
             <Stack
               component="form"
               alignItems="center"
               sx={{
                 width: "30ch",
-                paddingTop: "1rem", paddingLeft: "1rem", paddingRight: "1rem", paddingBottom: "1rem",
-                backgroundColor: "#FFFFFF", margin: "auto", marginTop: "1rem"
+                backgroundColor: "#CCCCCC", margin: "auto", marginTop: "1rem"
               }}
               spacing={2}
               autoComplete="off"
@@ -106,63 +110,62 @@ const FriendsStuff = () => {
             </Stack>
             <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: "1rem" }}>
               <Button variant="contained"
-                      type="submit"
-                      label="Submit"
-                      onClick={addNewCodeToUser}
-                      sx={{ backgroundColor: "#666666" }}>
+                type="submit"
+                label="Submit"
+                onClick={addNewCodeToUser}
+                sx={{ backgroundColor: "#666666", '&:hover': {backgroundColor: "#FFA500"} }}>
                 Join Group
               </Button>
             </Box>
           </Grid>
           <Grid item>
-            <Typography align="center" variant="h6" sx={{ paddingTop: "2rem", color: "#FFFFFF" }}>Create a New
+            <Typography align="center" variant="h6" sx={{ paddingTop: "2rem", color: "#000000" }}>Create a New
               Leaderboard</Typography>
             {newCode ?
-             <>
-               <Stack
-                 component="form"
-                 alignItems="center"
-                 sx={{
-                   paddingTop: "1rem", paddingLeft: "1rem", paddingRight: "1rem", paddingBottom: "1rem",
-                   backgroundColor: "#FFFFFF", margin: "auto", marginTop: "1rem"
-                 }}
-                 spacing={2}
-                 autoComplete="off">
-                 <Typography variant="h5">{newCode}</Typography>
-                 <TextField
-                   required
-                   label="Leaderboard Name"
-                   value={leaderboardName}
-                   error={isInvalidTextInput(leaderboardName)}
-                   variant="outlined"
-                   type={'text'}
-                   size="small"
-                   sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
-                   onChange={(e) => {
-                     setLeaderboardName(e.target.value);
-                     // updateProfile(user, {displayName: e.target.value});
-                   }}
-                 />
-               </Stack>
-               <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: "1rem" }}>
-                 <Button variant="contained"
-                         type="submit"
-                         label="Submit"
-                         sx={{ backgroundColor: "#666666" }}
-                         onClick={submitNewCode}>
-                   Use Group Code
-                 </Button>
-               </Box>
-             </> : <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: "1rem" }}>
-               <Button variant="contained"
-                       sx={{ backgroundColor: "#666666" }}
-                       onClick={generateNewCode}>
-                 Generate Group Code
-               </Button>
-             </Box>}
+              <>
+                <Stack
+                  component="form"
+                  alignItems="center"
+                  sx={{ paddingLeft: "1rem", paddingRight: "1rem", paddingBottom: "1rem",
+                    backgroundColor: "#CCCCCC", margin: "auto", marginTop: "1rem"
+                  }}
+                  spacing={2}
+                  autoComplete="off">
+                  <Typography variant="h5">{newCode}</Typography>
+                  <TextField
+                    required
+                    label="Leaderboard Name"
+                    value={leaderboardName}
+                    error={isInvalidTextInput(leaderboardName)}
+                    variant="outlined"
+                    type={'text'}
+                    size="small"
+                    sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
+                    onChange={(e) => {
+                      setLeaderboardName(e.target.value);
+                      // updateProfile(user, {displayName: e.target.value});
+                    }}
+                  />
+                </Stack>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button variant="contained"
+                    type="submit"
+                    label="Submit"
+                    sx={{ backgroundColor: "#666666", '&:hover': {backgroundColor: "#FFA500"} }}
+                    onClick={submitNewCode}>
+                    Use Group Code
+                  </Button>
+                </Box>
+              </> : <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: "1rem" }}>
+                <Button variant="contained"
+                  sx={{ backgroundColor: "#666666", '&:hover': {backgroundColor: "#FFA500"} }}
+                  onClick={generateNewCode}>
+                  Generate Group Code
+                </Button>
+              </Box>}
           </Grid>
         </Grid>
-      </Card>
+      </Paper>
     </>
   );
 }
@@ -170,10 +173,9 @@ const FriendsStuff = () => {
 const Home = () => {
   return (
     <>
-      <Typography align="center" variant="h4" sx={{ paddingTop: "3rem", color: "#FFFFFF" }}>Friends</Typography>
       <Grid container justifyContent="center" sx={{ marginBottom: "2rem" }}>
         <Grid item>
-          <FriendsStuff/>
+          <FriendsStuff />
         </Grid>
         {/*<Container sx={{ px: { xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }, py: { xs: 1, sm: 2, md: 9, lg: 9, xl: 9 } }}>*/}
         {/*</Container>*/}

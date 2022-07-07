@@ -80,11 +80,11 @@ export function checkUnlocked(cal, ex) {
     case exerciseIds[0]:
       return true;
     case exerciseIds[1]:
-      return cal >= 50;
+      return cal <= 50;
     case exerciseIds[2]:
-      return cal >= 300;
+      return cal <= 300;
     case exerciseIds[3]:
-      return cal >= 1000;
+      return cal <= 1000;
     default:
       return false;
   }
@@ -96,7 +96,7 @@ const attempButton = (link, unlock) => {
       <GenericHeaderButton variant="contained"
         style={{
           justifyContent: "center",
-          backgroundColor: "#FA9C1B",
+          backgroundColor: "#FFA500",
           color: "#000000"
         }}
         component={Link}

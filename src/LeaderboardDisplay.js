@@ -1,5 +1,4 @@
-import { Avatar, Box } from "@mui/material";
-import AccountBoxIcon from '@mui/icons-material/AccountCircle';
+import { Avatar, Box, useRadioGroup } from "@mui/material";
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
@@ -17,6 +16,7 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import { rankIt, renameForTable } from "./util";
 
 //todo need to maintain personal best (write) and last attempt (write) in profile
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
@@ -27,21 +27,22 @@ const getUserTableRow = (rowUserData, index, currentUserUid, displayString) => {
   const getCurrentUserDisplayName = isCurrentUserRow ? rowDisplayName + ' (You)' : rowDisplayName;
   const tableRowSx = { textDecoration: 'none' };
 
-  return <TableRow sx={isCurrentUserRow ? { bgcolor: '#83d6fc', ...tableRowSx } : tableRowSx} hover
+  return <TableRow sx={isCurrentUserRow ? { bgcolor: '#AAAAAA', ...tableRowSx } : tableRowSx} hover
     {...(!rowUserData.isAnonymous && { component: Link, to: '/profile/' + rowUserData.uid })}
-                   tabIndex={0}
-                   key={index}>
+    tabIndex={0}
+    key={index}>
     <TableCell align={'center'} key={rowUserData.uid} /*align={column.align}*/>
       <Typography variant={"h6"}>{rowUserData.rank}</Typography>
     </TableCell>
     <TableCell>
       {rowUserData.photoURL ? <Avatar style={{ alignItems: "center", justifyContent: "center", display: "flex" }}
-                                      src={rowUserData.photoURL}/> :
-       <Avatar src={require(`./assets/profilePics/${names[Math.floor(Math.random() * 58)]}`)}/>}
+        src={rowUserData.photoURL} /> :
+        <Avatar src={require(`./assets/profilePics/${names[Math.floor(Math.random() * 58)]}`)} />}
     </TableCell>
     <TableCell>
-      <Typography variant={"h6"}>{getCurrentUserDisplayName}</Typography>
-      <Typography>{rowUserData.results + ' ' + displayString}</Typography>
+      <Typography variant={"h6"}>{getCurrentUserDisplayName + rankIt(rowUserData.rank)}</Typography>
+      <Typography>{displayString === 'calories' ? rowUserData.results + ' ' + renameForTable(displayString)
+                  : Math.floor(rowUserData.results) + ' ' + renameForTable(displayString)}</Typography>
     </TableCell>
   </TableRow>
 }
@@ -172,7 +173,7 @@ export default function LeaderboardDisplay() {
   }, [state, leaderboardId, navigate]);
 
   if (status === 'loading') {
-    return <LoadingSpinner/>
+    return <LoadingSpinner />
   }
 
   // console.count("1")
@@ -183,9 +184,16 @@ export default function LeaderboardDisplay() {
       justifyContent="center"
       alignItems="center"
     >
-      <Paper sx={{ width: '100%', bgcolor: "#999999", maxWidth: { xs: '100vw', sm: '80vw', md: '70vw', lg: '60vw', xl: '60vw' } }}>
-        <Typography variant={"h4"} sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 } }}>
-          {'Leaderboard: ' + leaderboadName}
+      <Paper variant="outlined"
+        sx={{
+          width: '100%', bgcolor: "#CCCCCC", maxWidth: { xs: '100vw', sm: '80vw', md: '70vw', lg: '60vw', xl: '60vw' },
+          borderRadius: 3, borderColor: "#FFA500", borderWidth: 3
+        }}>
+        <Typography variant={"h4"} sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 }, paddingTop: "1rem" }}>
+          {leaderboadName + ' Leaderboard'}
+        </Typography>
+        <Typography variant="inherit" sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 } }}>
+          {'Code: ' + leaderboardId}
         </Typography>
         <Box sx={{
           borderBottom: 1,
@@ -201,17 +209,19 @@ export default function LeaderboardDisplay() {
             variant="scrollable"
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
+            textColor="#000000"
+            TabIndicatorProps={{ style: { backgroundColor: "#FFA500" } }}
           >
             {exercisesWithCaloriesTitleCase().map((exercise, index) =>
-              <Tab key={index} label={exercise}/>
+              <Tab key={index} label={exercise} />
             )}
           </Tabs>
         </Box>
         {exercisesWithCalories().map((exercise, index) => {
-            return <TabPanel key={index} value={tabValue} index={index}>
-              {tabValue === index && GetTableContainer(user, exercise, leaderboardId)}
-            </TabPanel>
-          }
+          return <TabPanel key={index} value={tabValue} index={index}>
+            {tabValue === index && GetTableContainer(user, exercise, leaderboardId)}
+          </TabPanel>
+        }
         )}
       </Paper>
     </Box>

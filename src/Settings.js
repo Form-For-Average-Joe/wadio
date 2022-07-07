@@ -104,7 +104,7 @@ const Settings = () => {
         sx={{
           width: "30ch",
           paddingTop: "1rem", paddingLeft: "1rem", paddingRight: "1rem", paddingBottom: "1rem",
-          backgroundColor: "#FFFFFF", margin: "auto", marginTop: "1rem"
+          backgroundColor: "#FFFFFF", margin: "auto", marginTop: "1rem", borderRadius: 3,
         }}
         spacing={2}
         autoComplete="off"
@@ -178,7 +178,7 @@ const Settings = () => {
         />
         <Grid container spacing={0} direction="column" alignItems="center">
           <Grid item>
-            <Switch checked={anonymous} onChange={handleAnonymous}>
+            <Switch checked={anonymous} onChange={handleAnonymous} color="warning">
               Anonymous
             </Switch>
           </Grid>

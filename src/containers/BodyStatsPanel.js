@@ -12,7 +12,7 @@ const BodyStatsPanel = ({stats}) => {
     const bmiToPrint = parseFloat(weightToPrint) / ((parseFloat(heightToPrint) / 100) * (parseFloat(heightToPrint) / 100)) || 0;
 
     return (
-        <Card sx={{paddingLeft: "1rem", paddingRight:"1rem"}}>
+        <Card sx={{paddingLeft: "1rem", paddingRight:"1rem", borderRadius: 3}}>
             <Typography variant="h6" align="center" style={{ paddingTop: "1rem" }}>
                 Your Body Measurements
             </Typography>

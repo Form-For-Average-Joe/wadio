@@ -29,6 +29,8 @@ export const renameForTable = (e) => {
       return "Shoulder Press"
     case exerciseIds[5]:
       return "Shoulder Press"
+    case "calories":
+      return "Calories"
     default:
       return "Undefined"
   }
@@ -145,12 +147,12 @@ function getFinalCal(baseCal, difficulty, gender) {
 }
 
 export const getCaloriesBurnt = (repCount, workoutTime, nameOfExercise, difficulty, gender, age, weight) => {
-    const rate = repCount / (workoutTime / 60); //rate of exercise, reps per minute
-    const baseCal = getBaseCal(rate, repCount, nameOfExercise);
-    const weightCorrectedCal = getWeightCorrectedCal(baseCal, weight);
-    const ageCorrectedCal = getAgeCorrectedCal(weightCorrectedCal, age);
-    const finalCal = getFinalCal(ageCorrectedCal, difficulty, gender);
-    return finalCal.toFixed(1);
+  const rate = repCount / (workoutTime / 60); //rate of exercise, reps per minute
+  const baseCal = getBaseCal(rate, repCount, nameOfExercise);
+  const weightCorrectedCal = getWeightCorrectedCal(baseCal, weight);
+  const ageCorrectedCal = getAgeCorrectedCal(weightCorrectedCal, age);
+  const finalCal = getFinalCal(ageCorrectedCal, difficulty, gender);
+  return finalCal.toFixed(1);
 }
 
 export const fetchUserData = async (uid, callback) => {
@@ -210,7 +212,7 @@ export const exercisesWithCaloriesTitleCase = () => {
 }
 
 export const findCurrentLevel = (cal) => {
-  const levelIndex = Math.floor(cal/1000);
+  const levelIndex = Math.floor(cal / 1000);
   switch (levelIndex) {
     case 0: return 'Rookie'
     case 1: return 'Regular'
@@ -258,7 +260,23 @@ export const associateGroupCodeToUserId = async (data, codeToStore, userUid) => 
     if (!(existingCodes.includes(codeToStore))) {
       await setDoc(doc(getFirestore(), userUid, 'groupCodes'), { codes: existingCodes.concat(newArray) });
     }
+    else {
+      alert("You are already part of this Leaderboard");
+    }
   } else {
     await setDoc(doc(getFirestore(), userUid, 'groupCodes'), { codes: newArray });
+  }
+}
+
+export const rankIt = (rank) => {
+  switch (rank) {
+    case 1:
+      return ' 🥇';
+    case 2:
+      return ' 🥈';
+    case 3:
+      return ' 🥉';
+    default:
+      return '';
   }
 }
