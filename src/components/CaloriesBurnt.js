@@ -5,7 +5,7 @@ const CaloriesBurnt = ({ cal }) => {
     const levelData = cal > 5000 ? 0 : 1000 - (cal % 1000);
 
     return (
-        <Card sx={{paddingTop: "1rem"}}>
+        <Card sx={{ paddingTop: "1rem", borderRadius: 3 }}>
             <Grid container justifyContent="center" alignItems="center" direction="column">
                 <Grid item style={{ paddingTop: "1rem" }}>
                     <Typography variant="subtitle1" align="center">

@@ -1,5 +1,4 @@
 import { Avatar, Box } from "@mui/material";
-import AccountBoxIcon from '@mui/icons-material/AccountCircle';
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
@@ -14,34 +13,36 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useUser } from "reactfire";
 import names from "./assets/names";
 import LoadingSpinner from "./components/LoadingSpinner";
-import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
+import { leaderboardTabNames, exerciseDisplayNamesWithCalories } from './util';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import { rankIt, exerciseInformation } from "./util";
 
 //todo need to maintain personal best (write) and last attempt (write) in profile
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
 
-const getUserTableRow = (rowUserData, index, currentUserUid, displayString) => {
+const getUserTableRow = (rowUserData, index, currentUserUid, exerciseId) => {
   const isCurrentUserRow = rowUserData.uid === currentUserUid;
   const rowDisplayName = rowUserData.nickname || rowUserData.uid;
   const getCurrentUserDisplayName = isCurrentUserRow ? rowDisplayName + ' (You)' : rowDisplayName;
   const tableRowSx = { textDecoration: 'none' };
 
-  return <TableRow sx={isCurrentUserRow ? { bgcolor: '#83d6fc', ...tableRowSx } : tableRowSx} hover
+  return <TableRow sx={isCurrentUserRow ? { bgcolor: '#AAAAAA', ...tableRowSx } : tableRowSx} hover
     {...(!rowUserData.isAnonymous && { component: Link, to: '/profile/' + rowUserData.uid })}
-                   tabIndex={0}
-                   key={index}>
+    tabIndex={0}
+    key={index}>
     <TableCell align={'center'} key={rowUserData.uid} /*align={column.align}*/>
       <Typography variant={"h6"}>{rowUserData.rank}</Typography>
     </TableCell>
     <TableCell>
       {rowUserData.photoURL ? <Avatar style={{ alignItems: "center", justifyContent: "center", display: "flex" }}
-                                      src={rowUserData.photoURL}/> :
-       <Avatar src={require(`./assets/profilePics/${names[Math.floor(Math.random() * 58)]}`)}/>}
+        src={rowUserData.photoURL} /> :
+        <Avatar src={require(`./assets/profilePics/${names[Math.floor(Math.random() * names.length)]}`)} />}
     </TableCell>
     <TableCell>
-      <Typography variant={"h6"}>{getCurrentUserDisplayName}</Typography>
-      <Typography>{rowUserData.results + ' ' + displayString}</Typography>
+      <Typography variant={"h6"}>{getCurrentUserDisplayName + rankIt(rowUserData.rank)}</Typography>
+      <Typography>{exerciseId === 'calories' ? rowUserData.results + ' ' + 'calories'
+                  : Math.floor(rowUserData.results) + ' ' + exerciseInformation[exerciseId].leaderboardDisplayString}</Typography>
     </TableCell>
   </TableRow>
 }
@@ -99,10 +100,8 @@ function GetTableContainer(user, exercise, leaderboardId) {
       const makeReq = async () => await axios.get('https://13.228.86.60/' + exercise + '/user/' + user.uid);
       try {
         const res = await makeReq();
-        console.log(res.data)
         if (res?.data) setCurrentUserData(res.data);
         else setCurrentUserData(null);
-        console.log(res.data)
       } catch (err) {
         console.log("Error fetching user");
       }
@@ -172,7 +171,7 @@ export default function LeaderboardDisplay() {
   }, [state, leaderboardId, navigate]);
 
   if (status === 'loading') {
-    return <LoadingSpinner/>
+    return <LoadingSpinner />
   }
 
   // console.count("1")
@@ -183,9 +182,16 @@ export default function LeaderboardDisplay() {
       justifyContent="center"
       alignItems="center"
     >
-      <Paper sx={{ width: '100%', bgcolor: "#999999", maxWidth: { xs: '100vw', sm: '80vw', md: '70vw', lg: '60vw', xl: '60vw' } }}>
-        <Typography variant={"h4"} sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 } }}>
-          {'Leaderboard: ' + leaderboadName}
+      <Paper variant="outlined"
+        sx={{
+          width: '100%', bgcolor: "#CCCCCC", maxWidth: { xs: '100vw', sm: '80vw', md: '70vw', lg: '60vw', xl: '60vw' },
+          borderRadius: 3, borderColor: "#FFA500", borderWidth: 3
+        }}>
+        <Typography variant={"h4"} sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 }, paddingTop: "1rem" }}>
+          {leaderboadName + ' Leaderboard'}
+        </Typography>
+        <Typography variant="inherit" sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 } }}>
+          {leaderboardId !== 'global' && 'Code: ' + leaderboardId}
         </Typography>
         <Box sx={{
           borderBottom: 1,
@@ -201,17 +207,19 @@ export default function LeaderboardDisplay() {
             variant="scrollable"
             scrollButtons="auto"
             aria-label="scrollable auto tabs example"
+            textColor="#000000"
+            TabIndicatorProps={{ style: { backgroundColor: "#FFA500" } }}
           >
-            {exercisesWithCaloriesTitleCase().map((exercise, index) =>
-              <Tab key={index} label={exercise}/>
+            {exerciseDisplayNamesWithCalories().map((exercise, index) =>
+              <Tab key={index} label={exercise} />
             )}
           </Tabs>
         </Box>
-        {exercisesWithCalories().map((exercise, index) => {
-            return <TabPanel key={index} value={tabValue} index={index}>
-              {tabValue === index && GetTableContainer(user, exercise, leaderboardId)}
-            </TabPanel>
-          }
+        {leaderboardTabNames().map((exerciseId, index) => {
+          return <TabPanel key={index} value={tabValue} index={index}>
+            {tabValue === index && GetTableContainer(user, exerciseId, leaderboardId)}
+          </TabPanel>
+        }
         )}
       </Paper>
     </Box>

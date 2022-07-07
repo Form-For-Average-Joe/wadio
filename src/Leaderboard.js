@@ -1,4 +1,4 @@
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Paper } from '@mui/material';
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from 'reactfire';
@@ -51,12 +51,18 @@ const Leaderboard = () => {
       <Typography variant="h5" align="center" sx={{ paddingBottom: "1rem" }}>
         Leaderboards
       </Typography>
-      <List sx={{ backgroundColor: "#555555" }}>
+      <Paper variant="outlined"
+        sx={{
+          width: '100%', bgcolor: "#CCCCCC", maxWidth: { xs: '100vw', sm: '80vw', md: '70vw', lg: '60vw', xl: '60vw' },
+          borderRadius: 3, borderColor: "#FFA500", borderWidth: 3, marginTop: "1rem"
+        }}>
+      <List sx={{ backgroundColor: "#CCCCCC", borderRadius: 3, color: "#000000" }}>
         {createLeaderboardMenuItem(globalLeaderboardId, globalLeaderboardName)}
         {leaderboards.map(leaderboardObject => {
           return createLeaderboardMenuItem(leaderboardObject.leaderboardId, leaderboardObject.leaderboardName);
         })}
       </List>
+      </Paper>
     </Box>
   );
 }
