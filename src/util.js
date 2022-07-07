@@ -13,18 +13,39 @@ export const createData = (Date, Time, Exercise, Reps, Duration, Calories) => {
   return { Date, Time, Exercise, Reps, Duration, Calories };
 }
 
+export const exerciseIds = ['pushups', 'situps', 'bicepcurls', 'shoulderpress', 'benchpress', 'legraisers'];
+
 export const renameForTable = (e) => {
   switch (e) {
-    case "pushups":
+    case exerciseIds[0]:
       return "Push-Ups"
-    case "situps":
+    case exerciseIds[1]:
       return "Sit-Ups"
-    case "bicepcurls":
+    case exerciseIds[2]:
       return "Bicep Curls"
-    case "shoulderpress":
+    case exerciseIds[3]:
+      return "Shoulder Press"
+    case exerciseIds[4]:
+      return "Shoulder Press"
+    case exerciseIds[5]:
       return "Shoulder Press"
     default:
       return "Undefined"
+  }
+}
+
+export const renameForLeaderboard = (e) => {
+  switch (e) {
+    case exerciseIds[0]:
+      return "push-ups"
+    case exerciseIds[1]:
+      return "sit-ups"
+    case exerciseIds[2]:
+      return "bicep curls"
+    case exerciseIds[3]:
+      return "shoulder press"
+    default:
+      return e
   }
 }
 
@@ -41,8 +62,6 @@ export const getFlooredSeconds = (total) => {
 export const getFlooredMinutes = (total) => {
   return Math.floor((total / 1000 / 60) % 60);
 }
-
-export const exercises = ['pushups', 'situps', 'bicepcurls', 'shoulderpress'];
 
 export const difficulties = [
   'Hellish',
@@ -177,7 +196,7 @@ export const getUserNickname = (firebaseUserData, userProfileData) => {
 export const makeTitleCase = str => `${str[0].toUpperCase()}${str.slice(1).toLowerCase()}`;
 
 export const exercisesWithCalories = () => {
-  const arr = [...exercises];
+  const arr = [...exerciseIds];
   arr.push('calories');
   return arr;
 }

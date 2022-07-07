@@ -1,6 +1,7 @@
 import { Card, CardContent, CardMedia, Typography, Divider } from "@mui/material";
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
+import { exerciseIds, renameForTable } from "../util";
 import GenericHeaderButton from "./GenericHeaderButton";
 import { Link } from "react-router-dom";
 import pushups from '../assets/pushups.png';
@@ -8,6 +9,7 @@ import situps from '../assets/situps.png';
 import comingsoon from '../assets/comingsoon.png';
 
 function getInfo(exerciseName) {
+  const exercise = renameForTable(exerciseName)
   switch (exerciseName) {
     case 'locked':
       return {
@@ -16,36 +18,36 @@ function getInfo(exerciseName) {
         exercise: 'This Exercise is Locked',
         to: '/'
       }
-    case 'pushups':
+    case exerciseIds[0]:
       return {
         image: pushups,
         description: 'A classic exercise performed in a prone position by raising and lowering the body with the straightening and bending of the arms while keeping the back straight and supporting the body on the hands and toes.',
         instruction: 'After pressing the start button, quickly get into the push-up position with your back and arms straightened. Keep you body still to ensure proper calibration. Once calibration is done, a bell sound can be heard to indicate the start of the exercise.',
-        exercise: 'Push-Ups',
-        to: '/exercise/pushups'
+        exercise,
+        to: '/exercise/' + exerciseIds[0]
       }
-    case 'situps':
+    case exerciseIds[1]:
       return {
         image: situps,
         description: 'An exercise designed to strengthen the abdominal muscles, in which a person sits up from a supine position without using the arms for leverage.',
         instruction: 'After pressing the start button, quickly get into the sit-up position with your back laid against the ground and hands cupped over your ears. Keep you body still to ensure proper calibration. Once calibration is done, a bell sound can be heard to indicate the start of the exercise.',
-        exercise: 'Sit-Ups',
-        to: '/exercise/situps'
+        exercise,
+        to: '/exercise/' + exerciseIds[1]
       }
-    case 'bicepcurls':
+    case exerciseIds[2]:
       return {
         image: comingsoon,
         description: 'Coming Soon in the Next Update!',
         instruction: '',
-        exercise: 'Bicep Curls',
+        exercise,
         to: '/'
       }
-    case 'shoulderpress':
+    case exerciseIds[3]:
       return {
         image: comingsoon,
         description: 'Coming Soon in the Next Update!',
         instruction: '',
-        exercise: 'Shoulder Press',
+        exercise,
         to: '/'
       }
     default:

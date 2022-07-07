@@ -15,49 +15,50 @@ import shoulderpress from './assets/shoulderpress.png';
 import shoulderpressG from './assets/shoulderpressG.jpeg';
 import comingsoon from './assets/comingsoon.png';
 import LoadingSpinner from "./components/LoadingSpinner";
-import { fetchUserCumulativeCalories } from "./util";
+import { fetchUserCumulativeCalories, renameForTable, exerciseIds } from "./util";
+//can use the require('./assets/profilePics/') syntax to import here, then map the exerciseInformation based on the exerciseId
 
 const exerciseInformation = [
   {
     image: pushups,
     locked: pushupsG,
-    title: 'pushups',
+    title: exerciseIds[0],
     description: 'Choose your custom timings and difficulty',
     toUnlock: 'Login to Unlock!',
-    exercise: 'Push-Ups',
-    to: '/exercise/pushups'
+    exercise: renameForTable(exerciseIds[0]),
+    to: '/exercise/' + exerciseIds[0]
   },
   {
     image: situps,
     locked: situpsG,
-    title: 'situps',
+    title: exerciseIds[1],
     description: 'Choose your custom timings and difficulty',
     toUnlock: 'Reach 50 Calories to Unlock!',
-    exercise: 'Sit-Ups',
-    to: '/exercise/situps'
+    exercise: renameForTable(exerciseIds[1]),
+    to: '/exercise/' + exerciseIds[1]
   },
   {
     image: bicepcurls,
     locked: bicepcurlsG,
-    title: 'bicepcurls',
+    title: exerciseIds[2],
     description: 'Choose your custom timings and difficulty',
     toUnlock: 'Reach 300 Calories to Unlock',
-    exercise: 'Bicep Curls',
-    to: '/exercise/bicepcurls'
+    exercise: renameForTable(exerciseIds[2]),
+    to: '/exercise/' + exerciseIds[2]
   },
   {
     image: shoulderpress,
     locked: shoulderpressG,
-    title: 'shoulderpress',
+    title: exerciseIds[3],
     description: 'Choose your custom timings and difficulty',
     toUnlock: 'Reach 1000 Calories to Unlock',
-    exercise: 'Shoulder Press',
-    to: '/exercise/shoulderpress'
+    exercise: renameForTable(exerciseIds[3]),
+    to: '/exercise/' + exerciseIds[3]
   },
   {
     image: comingsoon,
     locked: comingsoon,
-    title: 'benchpress',
+    title: exerciseIds[4],
     description: 'Choose your custom timings and difficulty',
     toUnlock: 'Choose your custom timings and difficulty',
     exercise: 'Bench Press',
@@ -66,7 +67,7 @@ const exerciseInformation = [
   {
     image: comingsoon,
     locked: comingsoon,
-    title: 'legraisers',
+    title: exerciseIds[5],
     description: 'Choose your custom timings and difficulty',
     toUnlock: 'Choose your custom timings and difficulty',
     exercise: 'Leg Raisers',
@@ -76,13 +77,13 @@ const exerciseInformation = [
 
 export function checkUnlocked(cal, ex) {
   switch (ex) {
-    case 'pushups':
+    case exerciseIds[0]:
       return true;
-    case 'situps':
+    case exerciseIds[1]:
       return cal >= 50;
-    case 'bicepcurls':
+    case exerciseIds[2]:
       return cal >= 300;
-    case 'shoulderpress':
+    case exerciseIds[3]:
       return cal >= 1000;
     default:
       return false;
