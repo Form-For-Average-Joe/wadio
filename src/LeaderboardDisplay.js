@@ -37,7 +37,7 @@ const getUserTableRow = (rowUserData, index, currentUserUid, exerciseId) => {
     <TableCell>
       {rowUserData.photoURL ? <Avatar style={{ alignItems: "center", justifyContent: "center", display: "flex" }}
         src={rowUserData.photoURL} /> :
-        <Avatar src={require(`./assets/profilePics/${names[Math.floor(Math.random() * 58)]}`)} />}
+        <Avatar src={require(`./assets/profilePics/${names[Math.floor(Math.random() * names.length)]}`)} />}
     </TableCell>
     <TableCell>
       <Typography variant={"h6"}>{getCurrentUserDisplayName + rankIt(rowUserData.rank)}</Typography>
@@ -191,7 +191,7 @@ export default function LeaderboardDisplay() {
           {leaderboadName + ' Leaderboard'}
         </Typography>
         <Typography variant="inherit" sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 } }}>
-          {'Code: ' + leaderboardId}
+          {leaderboardId !== 'global' && 'Code: ' + leaderboardId}
         </Typography>
         <Box sx={{
           borderBottom: 1,

@@ -258,7 +258,6 @@ export function checkUnlocked(cal, ex) {
     case exerciseIds[1]:
       return cal >= 50;
     case exerciseIds[2]:
-      console.log(cal >= 300)
       return cal >= 300;
     case exerciseIds[3]:
       return cal >= 1000;
