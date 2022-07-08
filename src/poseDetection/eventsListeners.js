@@ -59,6 +59,74 @@ const pushupsListeners = {
   }
 }
 
-const situpListeners = {}
+const situpsListeners = {
+  'inStartingPosition': () => {
+    store.dispatch(setIsCanStart(true));
+    store.dispatch(setStage(2));
+    store.dispatch(setFeedback("EXERCISE BEGIN!")); //todo change this
+  },
+  'notInStartingPosition': () => {
+    store.dispatch(setFeedback("LIE FLAT TO START"));
+  },
+  'malignedRepFlipFlop': () => {
+    store.dispatch(setFeedback("DO NOT FLIP FLOP"));
+  },
+  'malignedRepFlipFlopStage3': () => {
+    // store.dispatch(setStage(2));
+    stageChangeEmitter.emit("malignedRepBackNotStraight");
+  },
+  'maxPointReached': () => {
+    stageChangeEmitter.emit("clearFeedback");
+    store.dispatch(setStage(3));
+  },
+  'maxPointNotReached': () => {
+    store.dispatch(setFeedback("GO HIGHER!"));
+  },
+  'repNotCompletedYet': () => {
+    store.dispatch(setFeedback("LIE FLAT DOWN!"));
+  }
+}
+
+const bicepcurlsListeners = {
+  'inStartingPosition': () => {
+    store.dispatch(setIsCanStart(true));
+    store.dispatch(setStage(2));
+    store.dispatch(setFeedback("EXERCISE BEGIN!")); //todo change this
+  },
+  'notInStartingPosition': () => {
+    store.dispatch(setFeedback("STRAIGHTEN ARM TO START"));
+  },
+  'maxPointReached': () => {
+    stageChangeEmitter.emit("clearFeedback");
+    store.dispatch(setStage(3));
+  },
+  'maxPointNotReached': () => {
+    store.dispatch(setFeedback("GO HIGHER!"));
+  },
+  'repNotCompletedYet': () => {
+    store.dispatch(setFeedback("STRAIGHTEN ARM!"));
+  }
+}
+
+const shoulderpressListeners = {
+  'inStartingPosition': () => {
+    store.dispatch(setIsCanStart(true));
+    store.dispatch(setStage(2));
+    store.dispatch(setFeedback("EXERCISE BEGIN!")); //todo change this
+  },
+  'notInStartingPosition': () => {
+    store.dispatch(setFeedback("BEND ARMS TO 90 TO START"));
+  },
+  'maxPointReached': () => {
+    stageChangeEmitter.emit("clearFeedback");
+    store.dispatch(setStage(3));
+  },
+  'maxPointNotReached': () => {
+    store.dispatch(setFeedback("GO HIGHER!"));
+  },
+  'repNotCompletedYet': () => {
+    store.dispatch(setFeedback("BACK DOWN TO 90!"));
+  }
+}
 
 export { globalListeners, pushupsListeners, situpListeners };
