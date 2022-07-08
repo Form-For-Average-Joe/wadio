@@ -1,5 +1,5 @@
+import { exerciseIds } from "../util";
 import * as params from './params';
-import * as pushups from './pushups';
 import * as assessment from './assessment';
 import {selectIsStarted, selectNameOfExercise} from '../features/exercise/exerciseSlice';
 import {selectStage} from "../features/exercise/exerciseSlice";
@@ -34,19 +34,19 @@ export class Camera {
       if (pose.keypoints != null) {
         // todo need a better way to enumerate exercises
         const isNotAtStageFour = selectStage(store.getState()) !== 4;
-        if (this.nameOfExercise === 'pushups') {
+        if (this.nameOfExercise === exerciseIds[0]) {
           if (isNotAtStageFour) {
             assessment.assess_pushups(pose.keypoints, this.exerciseValues);
           }
-        } else if (this.nameOfExercise === 'situps') {
+        } else if (this.nameOfExercise === exerciseIds[1]) {
           if (isNotAtStageFour) {
             assessment.assess_situps(pose.keypoints, this.exerciseValues);
           }
-        } else if (this.nameOfExercise === 'bicepcurls') {
+        } else if (this.nameOfExercise === exerciseIds[2]) {
           if (isNotAtStageFour) {
             assessment.assess_bicepcurls(pose.keypoints, this.exerciseValues);
           }
-        } else if (this.nameOfExercise === 'shoulderpress') {
+        } else if (this.nameOfExercise === exerciseIds[3]) {
           if (isNotAtStageFour) {
             assessment.assess_shoulderpress(pose.keypoints, this.exerciseValues);
           }

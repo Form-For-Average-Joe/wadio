@@ -18,7 +18,7 @@ import Settings from './Settings';
 import Leaderboard from './Leaderboard';
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { FirebaseAppProvider } from 'reactfire';
-import { exercises } from "./util";
+import { exerciseIds } from "./util";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -104,10 +104,10 @@ root.render((
                   </Route>
                 </Route>
                 <Route path="/exercise">
-                  <Route exact path="pushups" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exercises[0]}/></SettingsWrapper>}/>
-                  <Route exact path="situps" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exercises[1]}/></SettingsWrapper>}/>
-                  <Route exact path="bicepcurls" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exercises[2]}/></SettingsWrapper>}/>
-                  <Route exact path="shoulderpress" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exercises[3]}/></SettingsWrapper>}/>
+                  <Route exact path={exerciseIds[0]} element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exerciseIds[0]}/></SettingsWrapper>}/>
+                  <Route exact path={exerciseIds[1]} element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exerciseIds[1]}/></SettingsWrapper>}/>
+                  <Route exact path={exerciseIds[2]} element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exerciseIds[2]}/></SettingsWrapper>}/>
+                  <Route exact path={exerciseIds[3]} element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exerciseIds[3]}/></SettingsWrapper>}/>
                 </Route>
               </Route>
             </Routes>

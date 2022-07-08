@@ -1,7 +1,6 @@
 import { Box, CssBaseline } from "@mui/material";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { Outlet } from "react-router-dom";
-import { checkUnlocked } from '../Home.js';
 import {
     assertFails,
     assertSucceeds,
@@ -27,6 +26,7 @@ import fs from 'fs';
 // const { readFileSync, createWriteStream } = require('fs');
 // import http from "http";
 import { doc, getDoc, setDoc, serverTimestamp, setLogLevel } from 'firebase/firestore';
+import { checkUnlocked } from "../util";
 
 /** @type RulesTestEnvironment */
 // let testEnv;

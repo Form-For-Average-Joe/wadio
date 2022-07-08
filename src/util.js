@@ -1,6 +1,16 @@
 // to mirror the webcam
 import { get, put } from "axios";
 import { collection, doc, getDocs, getFirestore, query, setDoc } from "firebase/firestore";
+import bicepcurls from "./assets/bicepcurls.png";
+import bicepcurlsG from "./assets/bicepcurlsG.jpeg";
+import comingsoon from "./assets/comingsoon.png";
+import pushups from "./assets/pushups.png";
+import pushupsG from "./assets/pushupsG.jpeg";
+import shoulderpress from "./assets/shoulderpress.png";
+import shoulderpressG from "./assets/shoulderpressG.jpeg";
+import situps from "./assets/situps.png";
+import situpsG from "./assets/situpsG.jpeg";
+//can use the require('./assets/.png/') syntax to import inline in exerciseInformation
 
 export const webcamStyles = {
   video: {
@@ -11,23 +21,6 @@ export const webcamStyles = {
 
 export const createData = (Date, Time, Exercise, Reps, Duration, Calories) => {
   return { Date, Time, Exercise, Reps, Duration, Calories };
-}
-
-export const renameForTable = (e) => {
-  switch (e) {
-    case "pushups":
-      return "Push-Ups"
-    case "situps":
-      return "Sit-Ups"
-    case "bicepcurls":
-      return "Bicep Curls"
-    case "shoulderpress":
-      return "Shoulder Press"
-    case "calories":
-      return "Calories"
-    default:
-      return "Undefined"
-  }
 }
 
 export const getDeadlineTime = (duration) => {
@@ -43,8 +36,6 @@ export const getFlooredSeconds = (total) => {
 export const getFlooredMinutes = (total) => {
   return Math.floor((total / 1000 / 60) % 60);
 }
-
-export const exercises = ['pushups', 'situps', 'bicepcurls', 'shoulderpress'];
 
 export const difficulties = [
   'Hellish',
@@ -178,19 +169,17 @@ export const getUserNickname = (firebaseUserData, userProfileData) => {
 
 export const makeTitleCase = str => `${str[0].toUpperCase()}${str.slice(1).toLowerCase()}`;
 
-export const exercisesWithCalories = () => {
-  const arr = [...exercises];
+export const leaderboardTabNames = () => {
+  const arr = [...exerciseIds];
+  // remove the coming soon exercises!
+  arr.pop();
+  arr.pop();
   arr.push('calories');
   return arr;
 }
 
-export const exercisesWithCaloriesTitleCase = () => {
-  const arr = [];
-  exercisesWithCalories().forEach((exercise) => {
-    arr.push(makeTitleCase(exercise));
-  });
-  return arr;
-}
+export const exerciseDisplayNamesWithCalories = () =>
+  leaderboardTabNames().map(exerciseId => exerciseId !== 'calories' ? exerciseInformation[exerciseId]['exerciseDisplayName'] : "Calories");
 
 export const findCurrentLevel = (cal) => {
   const levelIndex = Math.floor(cal / 1000);
@@ -215,7 +204,7 @@ export async function getLastAttemptStats(userUid, firestore, callback) {
       temp.unshift(createData(
         document.data().lastAttemptStats.date,
         document.data().lastAttemptStats.time,
-        renameForTable(document.data().lastAttemptStats.nameOfExercise),
+        (exerciseInformation[document.data().lastAttemptStats.nameOfExercise]).exerciseDisplayName,
         document.data().lastAttemptStats.repCount,
         document.data().lastAttemptStats.workoutTime,
         document.data().lastAttemptStats.caloriesBurnt))
@@ -238,7 +227,6 @@ export const associateGroupCodeToUserId = async (data, codeToStore, userUid) => 
   const newArray = [codeToStore];
   if (data?.codes) {
     const existingCodes = data.codes;
-    //const existingIds = existingCodes.map(idObj => idObj.id); console.log(existingCodes);
     if (!(existingCodes.includes(codeToStore))) {
       await setDoc(doc(getFirestore(), userUid, 'groupCodes'), { codes: existingCodes.concat(newArray) });
     }
@@ -261,4 +249,84 @@ export const rankIt = (rank) => {
     default:
       return '';
   }
+}
+
+export function checkUnlocked(cal, ex) {
+  switch (ex) {
+    case exerciseIds[0]:
+      return true;
+    case exerciseIds[1]:
+      return cal >= 50;
+    case exerciseIds[2]:
+      return cal >= 300;
+    case exerciseIds[3]:
+      return cal >= 1000;
+    default:
+      return false;
+  }
+}
+
+export const exerciseIds = ['pushups', 'situps', 'bicepcurls', 'shoulderpress', 'benchpress', 'legraisers'];
+
+export const exerciseInformation = {
+  [exerciseIds[0]] : {
+    image: pushups,
+    locked: pushupsG,
+    exerciseDisplayName: 'Push-Ups',
+    leaderboardDisplayString: 'push-ups',
+    exerciseId: exerciseIds[0],
+    description: 'Choose your custom timings and difficulty',
+    toUnlock: 'Login to Unlock!',
+    to: '/exercise/' + exerciseIds[0]
+  },
+  [exerciseIds[1]]: {
+    image: situps,
+    locked: situpsG,
+    exerciseDisplayName: 'Sit-Ups',
+    leaderboardDisplayString: 'sit-ups',
+    exerciseId: exerciseIds[1],
+    description: 'Choose your custom timings and difficulty',
+    toUnlock: 'Reach 50 Calories to Unlock!',
+    to: '/exercise/' + exerciseIds[1]
+  },
+  [exerciseIds[2]]: {
+    image: bicepcurls,
+    locked: bicepcurlsG,
+    exerciseDisplayName: 'Bicep Curls',
+    leaderboardDisplayString: 'bicep curls',
+    exerciseId: exerciseIds[2],
+    description: 'Choose your custom timings and difficulty',
+    toUnlock: 'Reach 300 Calories to Unlock',
+    to: '/exercise/' + exerciseIds[2]
+  },
+  [exerciseIds[3]]: {
+    image: shoulderpress,
+    locked: shoulderpressG,
+    exerciseDisplayName: 'Shoulder Press',
+    leaderboardDisplayString: 'shoulder presses',
+    exerciseId: exerciseIds[3],
+    description: 'Choose your custom timings and difficulty',
+    toUnlock: 'Reach 1000 Calories to Unlock',
+    to: '/exercise/' + exerciseIds[3]
+  },
+  [exerciseIds[4]]: {
+    image: comingsoon,
+    locked: comingsoon,
+    exerciseDisplayName: 'Bench Press',
+    leaderboardDisplayString: 'bench presses',
+    exerciseId: exerciseIds[4],
+    description: 'Coming soon',
+    toUnlock: 'Choose your custom timings and difficulty',
+    to: '/'
+  },
+  [exerciseIds[5]]: {
+    image: comingsoon,
+    locked: comingsoon,
+    exerciseDisplayName: 'Leg Raisers',
+    leaderboardDisplayString: 'leg raisers',
+    exerciseId: exerciseIds[5],
+    description: 'Coming soon',
+    toUnlock: 'Choose your custom timings and difficulty',
+    to: '/'
+  },
 }
