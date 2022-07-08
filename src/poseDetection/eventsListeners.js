@@ -73,7 +73,7 @@ const situpsListeners = {
   },
   'malignedRepFlipFlopStage3': () => {
     // store.dispatch(setStage(2));
-    stageChangeEmitter.emit("malignedRepBackNotStraight");
+    stageChangeEmitter.emit("malignedRepFlipFlop");
   },
   'maxPointReached': () => {
     stageChangeEmitter.emit("clearFeedback");
@@ -129,4 +129,4 @@ const shoulderpressListeners = {
   }
 }
 
-export { globalListeners, pushupsListeners, situpListeners };
+export { globalListeners, pushupsListeners, situpsListeners, bicepcurlsListeners, shoulderpressListeners };

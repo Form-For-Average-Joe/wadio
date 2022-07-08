@@ -35,7 +35,7 @@ export const exerciseSlice = createSlice({
       state.stage = action.payload;
     },
     incrementCount: (state) => {
-      state.count++;
+      state.count+=1;
     },
     resetStageAndCount: (state) => {
       state.count = 0;

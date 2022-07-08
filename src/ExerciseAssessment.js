@@ -13,6 +13,7 @@ const chooseListener = (nameOfExercise) => {
     case exerciseIds[1]: return situpsListeners;
     case exerciseIds[2]: return bicepcurlsListeners;
     case exerciseIds[3]: return shoulderpressListeners;
+    default: console.log("listener error, see exerciseAssessment.js");
   }
 }
 
