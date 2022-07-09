@@ -31,11 +31,11 @@ const TimeInput = () => {
                     <Typography variant="h3"> {time} </Typography>
                 </Grid>
                 <Grid item>
-                    <Grid container direction="row" spacing={2} sx={{ marginBottom: "1rem" }}>
-                        <Grid item>
+                    <Grid container direction="row" spacing={2}>
+                        <Grid item sx={{ my: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 } }}>
                             <Button variant="contained" onClick={() => handleIncrease()} sx={{backgroundColor: "#555555"}}>Increase</Button>
                         </Grid>
-                        <Grid item>
+                        <Grid item sx={{ my: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 } }}>
                             <Button variant="contained" onClick={() => handleDecrease()} sx={{backgroundColor: "#555555"}}>Decrease</Button>
                         </Grid>
                     </Grid>

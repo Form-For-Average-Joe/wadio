@@ -1,4 +1,4 @@
-import {Typography, Card, List, ListItem, Box} from '@mui/material';
+import {Typography, Card, List, ListItem} from '@mui/material';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
@@ -12,7 +12,7 @@ const BodyStatsPanel = ({stats}) => {
     const bmiToPrint = parseFloat(weightToPrint) / ((parseFloat(heightToPrint) / 100) * (parseFloat(heightToPrint) / 100)) || 0;
 
     return (
-        <Card sx={{paddingLeft: "1rem", paddingRight:"1rem"}}>
+        <Card sx={{paddingLeft: "1rem", paddingRight:"1rem", borderRadius: 3}}>
             <Typography variant="h6" align="center" style={{ paddingTop: "1rem" }}>
                 Your Body Measurements
             </Typography>

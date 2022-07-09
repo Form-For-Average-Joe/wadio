@@ -89,7 +89,7 @@ function isStablised(keypoints, exerciseValues) {
 //todo check for confidence, check if number here
 //todo normalise
 // todo constraints for head and feet
-function calculateDepthLimit(keypoints, exerciseValues) {
+export function calibrate(keypoints, exerciseValues) {
     let bdpoints;
     if (keypoints[0].x < keypoints[12].x) {
         exerciseValues.situpval.side = 1;
@@ -106,8 +106,4 @@ function calculateDepthLimit(keypoints, exerciseValues) {
     else {
         //console.log("Out of Frame");
     }
-}
-
-export function calibrate(keypoints) {
-    calculateDepthLimit(keypoints);
 }

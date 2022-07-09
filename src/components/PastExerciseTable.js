@@ -9,7 +9,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useState } from 'react';
 
-
 const PastExerciseTable = ({ rows }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -23,7 +22,7 @@ const PastExerciseTable = ({ rows }) => {
         setPage(0);
     };
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{borderRadius: 3}}>
             <Table>
                 <TableHead>
                     <TableRow>

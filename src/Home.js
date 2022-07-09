@@ -1,65 +1,24 @@
-import { Card, CardContent, CardMedia, Container, Grid, Typography, Box, Paper } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Container, Grid, Paper, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import { useSigninCheck, useUser } from 'reactfire';
 import cover from './assets/cover.jpeg';
 import ExerciseInfo from './components/ExerciseInfo';
 import GenericHeaderButton from './components/GenericHeaderButton';
-import { useUser, useSigninCheck } from 'reactfire';
-import { useEffect, useState } from 'react';
-import pushups from './assets/pushups.png';
-import pushupsG from './assets/pushupsG.jpeg';
-import situps from './assets/situps.png';
-import situpsG from './assets/situpsG.jpeg';
-import comingsoon from './assets/comingsoon.png';
-import { fetchUserCumulativeCalories } from "./util";
+import LoadingSpinner from "./components/LoadingSpinner";
+import { checkUnlocked, exerciseInformation, fetchUserCumulativeCalories } from "./util";
 
-const exerciseInformation = [
-  {
-    image: pushups,
-    locked: pushupsG,
-    title: 'pushups',
-    description: 'Choose your custom timings and difficulty',
-    toUnlock: 'Login to Unlock!',
-    exercise: 'Push-Ups',
-    to: '/exercise/pushups'
-  },
-  {
-    image: situps,
-    locked: situpsG,
-    title: 'situps',
-    description: 'Choose your custom timings and difficulty',
-    toUnlock: 'Reach 50 Calories to Unlock!',
-    exercise: 'Sit-Ups',
-    to: '/exercise/situps'
-  },
-  {
-    image: comingsoon,
-    locked: comingsoon,
-    title: 'bicepcurls',
-    description: 'Choose your custom timings and difficulty',
-    toUnlock: 'Choose your custom timings and difficulty',
-    exercise: 'Bicep Curls',
-    to: '/'
-  },
-  {
-    image: comingsoon,
-    locked: comingsoon,
-    title: 'shoulderpress',
-    description: 'Choose your custom timings and difficulty',
-    toUnlock: 'Choose your custom timings and difficulty',
-    exercise: 'Shoulder Press',
-    to: '/'
-  },
-]
-
-export function checkUnlocked(cal, ex) {
-  switch (ex) {
-    case 'pushups':
-      return true;
-    case 'situps':
-      return cal >= 50;
-    default:
-      return false;
-  }
+const attemptButton = (link, unlock) => {
+  return unlock ?
+    <Grid item>
+      <GenericHeaderButton variant="contained"
+        style={{
+          justifyContent: "center",
+          backgroundColor: "#FFA500",
+          color: "#000000"
+        }}
+        component={Link}
+        to={unlock ? link : '/'}>Attempt</GenericHeaderButton> </Grid> : null
 }
 
 const ExerciseCards = () => {
@@ -76,39 +35,30 @@ const ExerciseCards = () => {
   }, [user])
 
   if (status === 'loading' || signInCheckStatus === 'loading') {
-    return <p>Loading</p>;
+    return <LoadingSpinner />;
   }
 
   return (
     <Grid container spacing={2}>
-      {exerciseInformation.map(exerciseInfo => {
-        const unlock = signInCheckData.signedIn && checkUnlocked(cumulativeCalories, exerciseInfo.title)
-        const name = unlock ? exerciseInfo.title : "locked"
+      {Object.keys(exerciseInformation).map(exerciseId => {
+        const unlock = signInCheckData.signedIn && checkUnlocked(cumulativeCalories, exerciseId)
+        const name = unlock ? exerciseId : "locked"
         return (
-          <Grid key={exerciseInfo.title} item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid key={exerciseId} item xs={12} sm={12} md={6} lg={6} xl={6}>
             <Card>
               <CardMedia
-                image={unlock ? exerciseInfo.image : exerciseInfo.locked}
-                title={exerciseInfo.title}
+                image={unlock ? exerciseInformation[exerciseId].image : exerciseInformation[exerciseId].locked}
+                title={exerciseId}
               />
               <CardContent>
-                <Typography gutterBottom variant="h5">{exerciseInfo.exercise}</Typography>
+                <Typography gutterBottom variant="h5">{exerciseInformation[exerciseId].exerciseDisplayName}</Typography>
                 <Typography>
-                  {unlock ? exerciseInfo.description : exerciseInfo.toUnlock}
+                  {unlock ? exerciseInformation[exerciseId].description : exerciseInformation[exerciseId].toUnlock}
                 </Typography>
                 <Grid container spacing={2} sx={{ paddingTop: 1 }}>
+                  {attemptButton(exerciseInformation[exerciseId].to, unlock)}
                   <Grid item>
-                    <GenericHeaderButton variant="contained"
-                                         style={{
-                                           justifyContent: "center",
-                                           backgroundColor: "#FA9C1B",
-                                           color: "#000000"
-                                         }}
-                                         component={Link}
-                                         to={unlock ? exerciseInfo.to : '/'}>Attempt</GenericHeaderButton>
-                  </Grid>
-                  <Grid item>
-                    <ExerciseInfo exerciseName={name}/>
+                    <ExerciseInfo exerciseName={name} />
                   </Grid>
                 </Grid>
               </CardContent>
@@ -129,7 +79,7 @@ const Home = () => {
         width="100%"
       />
       <Container sx={{ px: { xs: 4, sm: 4, md: 4, lg: 4, xl: 4 }, py: { xs: 1, sm: 2, md: 9, lg: 9, xl: 9 } }}>
-        <ExerciseCards/>
+        <ExerciseCards />
       </Container>
     </Box>
   )

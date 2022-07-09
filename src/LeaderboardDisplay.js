@@ -1,5 +1,4 @@
 import { Avatar, Box } from "@mui/material";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
@@ -10,153 +9,70 @@ import TableContainer from '@mui/material/TableContainer';
 import Typography from '@mui/material/Typography';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { styled, alpha } from '@mui/material/styles';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useUser } from "reactfire";
-import { exercisesWithCalories, exercisesWithCaloriesTitleCase } from './util';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import GenericProfileButton from './components/GenericProfileButton';
+import names from "./assets/names";
+import LoadingSpinner from "./components/LoadingSpinner";
+import { leaderboardTabNames, exerciseDisplayNamesWithCalories } from './util';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { rankIt, exerciseInformation } from "./util";
 
 //todo need to maintain personal best (write) and last attempt (write) in profile
 // select sort by personal best (divide reps by time to get reps/sec, or display for a specific time like 1 min) or cumulative reps done
-const StyledMenu = styled((props) => (
-  <Menu
-    elevation={0}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'right',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'right',
-    }}
-    {...props}
-  />
-))(({ theme }) => ({
-  '& .MuiPaper-root': {
-    borderRadius: 6,
-    marginTop: theme.spacing(1),
-    minWidth: 180,
-    color: "#555555",
-    boxShadow:
-      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-    '& .MuiMenu-list': {
-      padding: '4px 0',
-    },
-    '& .MuiMenuItem-root': {
-      '& .MuiSvgIcon-root': {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-      },
-      '&:active': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity,
-        ),
-      },
-    },
-  },
-}));
 
-const GenericSelectionMenu = ({
-                                nameOfVariable,
-                                options,
-                                variableSelected,
-                                setVariableSelected,
-                                handleSelectVariableCallback
-                              }) => {
-  const [anchorElVariable, setAnchorElVariable] = useState(null);
-  const openVariable = Boolean(anchorElVariable);
-  const handleClickVariable = (event) => {
-    setAnchorElVariable(event.currentTarget);
-  };
-  const handleCloseVariable = () => {
-    setAnchorElVariable(null);
-  };
-  const handleSelectVariable = (index) => {
-    setVariableSelected(index);
-    handleCloseVariable();
-    handleSelectVariableCallback();
-  };
-
-  return (
-    <>
-      <GenericProfileButton
-        id={nameOfVariable + "-selection-button"}
-        aria-controls={openVariable ? nameOfVariable + '-selection-button' : undefined}
-        aria-haspopup="true"
-        aria-expanded={openVariable ? 'true' : undefined}
-        variant="contained"
-        disableElevation
-        onClick={handleClickVariable}
-        endIcon={<KeyboardArrowDownIcon/>}
-      >
-        {options[variableSelected]}
-      </GenericProfileButton>
-      <StyledMenu
-        id={nameOfVariable + "-selection-menu"}
-        MenuListProps={{
-          'aria-labelledby': nameOfVariable + '-selection-menu',
-        }}
-        anchorEl={anchorElVariable}
-        open={openVariable}
-        onClose={handleCloseVariable}
-      >
-        {options.map((option, index) =>
-          <MenuItem key={option} onClick={() => handleSelectVariable(index)} disableRipple>
-            {option}
-          </MenuItem>
-        )}
-      </StyledMenu>
-    </>
-  );
-}
-
-const getUserTableRow = (currentUserData, index, currentUserUid, displayString) => {
-  const isCurrentUserRow = currentUserData.uid === currentUserUid;
-  const rowDisplayName = currentUserData.nickname || currentUserData.uid;
+const getUserTableRow = (rowUserData, index, currentUserUid, exerciseId) => {
+  const isCurrentUserRow = rowUserData.uid === currentUserUid;
+  const rowDisplayName = rowUserData.nickname || rowUserData.uid;
   const getCurrentUserDisplayName = isCurrentUserRow ? rowDisplayName + ' (You)' : rowDisplayName;
   const tableRowSx = { textDecoration: 'none' };
-  return <TableRow sx={isCurrentUserRow ? { bgcolor: '#83d6fc', ...tableRowSx } : tableRowSx} hover
-                   component={Link}
-                   to={'/profile/' + currentUserData.uid}
-                   tabIndex={0}
-                   key={index}>
-    <TableCell align={'center'} key={currentUserData.uid} /*align={column.align}*/>
-      <Typography variant={"h6"}>{currentUserData.rank}</Typography>
+
+  return <TableRow sx={isCurrentUserRow ? { bgcolor: '#AAAAAA', ...tableRowSx } : tableRowSx} hover
+    {...(!rowUserData.isAnonymous && { component: Link, to: '/profile/' + rowUserData.uid })}
+    tabIndex={0}
+    key={index}>
+    <TableCell align={'center'} key={rowUserData.uid} /*align={column.align}*/>
+      <Typography variant={"h6"}>{rowUserData.rank}</Typography>
     </TableCell>
     <TableCell>
-      {currentUserData.photoURL ? <Avatar style={{ alignItems: "center", justifyContent: "center", display: "flex" }}
-                                          variant="rounded" src={currentUserData.photoURL}/> :
-       <Avatar><AccountCircleIcon/></Avatar>}
+      {rowUserData.photoURL ? <Avatar style={{ alignItems: "center", justifyContent: "center", display: "flex" }}
+        src={rowUserData.photoURL} /> :
+        <Avatar src={require(`./assets/profilePics/${names[Math.floor(Math.random() * names.length)]}`)} />}
     </TableCell>
     <TableCell>
-      <Typography variant={"h6"}>{getCurrentUserDisplayName}</Typography>
-      <Typography>{currentUserData.results + ' ' + displayString}</Typography>
+      <Typography variant={"h6"}>{getCurrentUserDisplayName + rankIt(rowUserData.rank)}</Typography>
+      <Typography>{exerciseId === 'calories' ? rowUserData.results + ' ' + 'calories'
+                  : Math.floor(rowUserData.results) + ' ' + exerciseInformation[exerciseId].leaderboardDisplayString}</Typography>
     </TableCell>
   </TableRow>
 }
 
-export default function LeaderboardDisplay() {
-  const { status, data: user } = useUser();
-  const { state } = useLocation();
-  const navigate = useNavigate();
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
-  const [exerciseSelectedIndex, setExerciseSelectedIndex] = useState(0);
-  // const [difficultySelectedIndex, setDifficultySelectedIndex] = useState(1);
-  // const [typeOfRanking, setTypeOfRanking] = useState(0);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [leaderboardId, setLeaderboardId] = useState('');
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
 
-  const displayString = exercisesWithCalories()[exerciseSelectedIndex];
-
+function GetTableContainer(user, exercise, leaderboardId) {
   const [rowData, setRowData] = useState([]);
-  const [count, setCount] = useState(rowsPerPage);
   const [currentUserData, setCurrentUserData] = useState(null);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [count, setCount] = useState(rowsPerPage);
+  const [page, setPage] = useState(0);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -170,57 +86,32 @@ export default function LeaderboardDisplay() {
   useEffect(() => {
     const getLeaderboardData = async () => {
       const makeReq = async () => await axios.get('https://13.228.86.60/' +
-        exercisesWithCalories()[exerciseSelectedIndex] + '/leaderboard/' + leaderboardId + '/' + rowsPerPage + '/' +
-        page);
+        exercise + '/leaderboard/' + leaderboardId + '/' + rowsPerPage + '/' +
+        page + '/' + user.uid);
       try {
         const { data } = await makeReq();
-        setRowData(data.rankings);
-        setCount(data.totalNumberOfElements);
+        if (data) {
+          setRowData(data.rankings);
+          setCount(data.totalNumberOfElements);
+          if (data.currentUserdata) setCurrentUserData(data.currentUserdata);
+          else setCurrentUserData(null);
+        }
       } catch (err) {
         console.log("Error fetching leaderboard data");
       }
     };
-    const getCurrentUserData = async () => {
-      const makeReq = async () => await axios.get('https://13.228.86.60/' + exercisesWithCalories()[exerciseSelectedIndex] + '/user/' + user.uid);
-      try {
-        const res = await makeReq();
-        if (res?.data) setCurrentUserData(res.data);
-      } catch (err) {
-        console.log("Error fetching user");
-      }
-    };
-    if (user) getCurrentUserData();
-    if (leaderboardId) getLeaderboardData();
-  }, [exerciseSelectedIndex, page, rowsPerPage, leaderboardId, user]);
+    if (user && leaderboardId) getLeaderboardData();
+  }, [page, rowsPerPage, leaderboardId, user, exercise])
 
-  useEffect(() => {
-    if (state?.leaderboardId) {
-      setLeaderboardId(state.leaderboardId);
-    }
-    else {
-      navigate('/leaderboard', { replace: true }); // if user skips the selection, state will be empty, so redirect him back
-    }
-  }, [state]);
-
-  if (status === 'loading') {
-    return <p>Loading</p>;
-  }
-
+  // console.count("2")
   return (
-    <Paper sx={{ width: '100%' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-around', my: { xs: 1, sm: 2, md: 3, lg: 4, xl: 5 } }}>
-        <GenericSelectionMenu nameOfVariable={'exercise'} options={exercisesWithCaloriesTitleCase()}
-                              variableSelected={exerciseSelectedIndex} setVariableSelected={setExerciseSelectedIndex}
-                              handleSelectVariableCallback={() => setPage(0)}/>
-        {/*<GenericSelectionMenu nameOfVariable={'difficulty'} options={difficulties} variableSelected={difficultySelected} setVariableSelected={setDifficultySelected} />*/}
-        {/*<GenericSelectionMenu nameOfVariable={'typeOfRanking'} options={typesOfRanking} variableSelected={typeOfRanking} setVariableSelected={setTypeOfRanking} />*/}
-      </Box>
+    <>
       <TableContainer>
         <Table aria-label="leaderboard">
           <TableBody>
             {rowData
               .map((row, index) =>
-                getUserTableRow(row, index, user.uid, displayString))}
+                getUserTableRow(row, index, user.uid, exercise))}
             {currentUserData ? !(currentUserData.rank >= ((page * rowsPerPage) + 1) && currentUserData.rank <= (page + 1) * rowsPerPage) &&
               <>
                 <TableRow>
@@ -232,11 +123,12 @@ export default function LeaderboardDisplay() {
                   </TableCell>
                   <TableCell>{'⋮'}</TableCell>
                   <TableCell>{'⋮'}</TableCell>
-                </TableRow>{getUserTableRow(currentUserData, -1, user.uid, displayString)}
+                </TableRow>{getUserTableRow(currentUserData, -1, user.uid, exercise)}
               </> : null}
           </TableBody>
         </Table>
       </TableContainer>
+      {/*Can shift the TablePagination out as it is common to all 3 tabs, but it breaks for some reason*/}
       <TablePagination
         rowsPerPageOptions={[10, 25, 50]}
         component="div"
@@ -246,6 +138,83 @@ export default function LeaderboardDisplay() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </Paper>
+    </>);
+}
+
+export default function LeaderboardDisplay() {
+  const { status, data: user } = useUser();
+  const { state } = useLocation();
+  const navigate = useNavigate();
+
+  const [tabValue, setTabValue] = useState(0);
+  // const [difficultySelectedIndex, setDifficultySelectedIndex] = useState(1);
+  // const [typeOfRanking, setTypeOfRanking] = useState(0);
+
+  const leaderboardId = state?.leaderboardId;
+  const leaderboadName = state?.leaderboardName;
+
+  const handleTabValueChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
+  useEffect(() => {
+    if (!leaderboardId) {
+      navigate('/leaderboard', { replace: true }); // if user skips the selection, state will be empty, so redirect him back
+    }
+  }, [state, leaderboardId, navigate]);
+
+  if (status === 'loading') {
+    return <LoadingSpinner />
+  }
+
+  // console.count("1")
+  //todo This parent component renders twice for some reason
+  return (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Paper variant="outlined"
+        sx={{
+          width: '100%', bgcolor: "#CCCCCC", maxWidth: { xs: '100vw', sm: '80vw', md: '70vw', lg: '60vw', xl: '60vw' },
+          borderRadius: 3, borderColor: "#FFA500", borderWidth: 3
+        }}>
+        <Typography variant={"h4"} sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 }, paddingTop: "1rem" }}>
+          {leaderboadName + ' Leaderboard'}
+        </Typography>
+        <Typography variant="inherit" sx={{ textAlign: "center", my: { xs: 1, sm: 2, md: 2, lg: 3, xl: 3 } }}>
+          {leaderboardId !== 'global' && 'Code: ' + leaderboardId}
+        </Typography>
+        <Box sx={{
+          borderBottom: 1,
+          borderColor: 'divider',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: "center",
+          alignItems: "center"
+        }}> {/*//todo can change borderBottom and borderColour or remove them*/}
+          <Tabs
+            value={tabValue}
+            onChange={handleTabValueChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            aria-label="scrollable auto tabs example"
+            textColor="#000000"
+            TabIndicatorProps={{ style: { backgroundColor: "#FFA500" } }}
+          >
+            {exerciseDisplayNamesWithCalories().map((exercise, index) =>
+              <Tab key={index} label={exercise} />
+            )}
+          </Tabs>
+        </Box>
+        {leaderboardTabNames().map((exerciseId, index) => {
+          return <TabPanel key={index} value={tabValue} index={index}>
+            {tabValue === index && GetTableContainer(user, exerciseId, leaderboardId)}
+          </TabPanel>
+        }
+        )}
+      </Paper>
+    </Box>
   );
 }

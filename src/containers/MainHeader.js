@@ -1,5 +1,4 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AnalyticsIcon from '@mui/icons-material/Analytics';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
@@ -17,12 +16,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
 import PropTypes from 'prop-types';
-import {useState, useEffect} from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {Link, NavLink, Outlet} from "react-router-dom";
 import {useSigninCheck, useUser} from 'reactfire';
 import logo from '../assets/logo.png';
 import GenericHeaderButton from "../components/GenericHeaderButton";
-import LoginDialog from '../components/LoginDialog';
+import LoadingSpinner from "../components/LoadingSpinner";
+import LoginDialog from './LoginDialog';
 import { fetchUserPhotoURL } from "../util";
 
 function HideOnScroll(props) {
@@ -50,7 +50,8 @@ const Member = () => {
     });
   })
   // const matches = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  return photoURL ? <Avatar src={photoURL}/> : <Avatar><AccountCircleIcon/></Avatar>;
+  return photoURL ? <IconButton component={Link} to={'/dashboard'}><Avatar src={photoURL}/></IconButton> : 
+                    <IconButton component={Link} to={'/dashboard'}><AccountCircleIcon fontSize='large' sx={{color: "#FFFFFF"}}/></IconButton>;
 }
 
 const drawerWidth = 240;
@@ -70,11 +71,6 @@ const navigationItems = {
     displayName: 'Friends',
     to: '/friends',
   },
-  profile: {
-    icon: <AnalyticsIcon/>,
-    displayName: 'Profile',
-    to: '/dashboard'
-  },
   settings: {
     icon: <SettingsApplicationsIcon/>,
     displayName: 'Settings',
@@ -85,10 +81,18 @@ const navigationItems = {
 function MainHeader() {
   const {status, data} = useSigninCheck();
 
+  const [height, setHeight] = useState(0);
+
+  const measuredRef = useCallback(node => {
+    if (node !== null) {
+      setHeight(node.getBoundingClientRect().height);
+    }
+  }, []);
+
   const [mobileOpen, setMobileOpen] = useState(false);
 
   if (status === 'loading') {
-    return <p>Loading</p>
+    return <LoadingSpinner/>
   }
 
   const {signedIn} = data;
@@ -132,7 +136,7 @@ function MainHeader() {
   return (
     <Box sx={{display: 'flex'}}>
       <HideOnScroll>
-        <AppBar sx={{
+        <AppBar ref={measuredRef} sx={{
           py: {xs: 1, sm: 2, md: 2, lg: 2, xl: 2},
           x: {xs: 0, sm: 2, md: 2, lg: 2, xl: 2}
         }}>
@@ -158,8 +162,6 @@ function MainHeader() {
                                      to={navigationItems.leaderboard.to}>{navigationItems.leaderboard.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.friends.to}>{navigationItems.friends.displayName}</GenericHeaderButton>
-                <GenericHeaderButton component={Link}
-                                     to={navigationItems.profile.to}>{navigationItems.profile.displayName}</GenericHeaderButton>
                 <GenericHeaderButton component={Link}
                                      to={navigationItems.settings.to}>{navigationItems.settings.displayName}</GenericHeaderButton>
               </Box>
@@ -190,7 +192,7 @@ function MainHeader() {
           {drawer}
         </Drawer>
       </Box>
-      <Box
+      <Box //this sx is for the drawer
         component="main"
         sx={{
           flexGrow: 1,
@@ -198,7 +200,7 @@ function MainHeader() {
           width: {sm: `calc(100% - ${drawerWidth}px)`}
         }} //todo why do we need to specify width here? original code did, because there was a permanent drawer
       >
-        <Toolbar/>
+        <Toolbar sx={{height}} /> {/*the toolbar is there to take up as much space as the appbar, so the stuff rendered by outlet gets pushed below*/}
         <Outlet/>
       </Box>
     </Box>

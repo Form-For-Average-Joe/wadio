@@ -1,12 +1,10 @@
 import {useState} from 'react';
 import { Button, Dialog, Grid, Typography } from '@mui/material';
 import Countdown from './Countdown';
-import { setExercise, setIsStarted } from "../features/exercise/exerciseSlice";
-import { resetStageAndCount } from "../features/exercise/exerciseSlice";
-import { resetUserTime } from "../features/userProfile/userProfileSlice";
+import { setIsStarted } from "../features/exercise/exerciseSlice";
 import { useDispatch } from 'react-redux';
 
-export default function CountdownButton(actiontype) {
+export default function CountdownButton() {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
