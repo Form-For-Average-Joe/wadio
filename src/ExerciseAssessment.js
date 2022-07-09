@@ -4,8 +4,18 @@ import {setExercise} from "./features/exercise/exerciseSlice";
 import webcam from './poseDetection/webcam.js';
 import {useDispatch} from "react-redux";
 import stageChangeEmitter from "./poseDetection/eventsFactory";
-import { globalListeners, pushupsListeners, situpListeners } from "./poseDetection/eventsListeners";
+import { globalListeners, pushupsListeners, situpsListeners, bicepcurlsListeners, shoulderpressListeners } from "./poseDetection/eventsListeners";
 import { exerciseIds } from "./util";
+
+const chooseListener = (nameOfExercise) => {
+  switch (nameOfExercise) {
+    case exerciseIds[0]: return pushupsListeners;
+    case exerciseIds[1]: return situpsListeners;
+    case exerciseIds[2]: return bicepcurlsListeners;
+    case exerciseIds[3]: return shoulderpressListeners;
+    default: console.log("listener error, see exerciseAssessment.js");
+  }
+}
 
 const ExerciseAssessment = ({nameOfExercise}) => {
   const dispatch = useDispatch();
@@ -18,13 +28,11 @@ const ExerciseAssessment = ({nameOfExercise}) => {
   useEffect(() => {
     for (const listener in globalListeners) {
       stageChangeEmitter.addListener(listener, globalListeners[listener]);
-      //console.log("lol")
     }
     //todo temp way to select the listeners, fix when we add new exercises!!!
-    const listeners = nameOfExercise === exerciseIds[0] ? pushupsListeners : situpListeners;
+    const listeners = chooseListener(nameOfExercise); //nameOfExercise === exerciseIds[0] ? pushupsListeners : situpListeners;
     for (const listener in listeners) {
       stageChangeEmitter.addListener(listener, listeners[listener]);
-      //console.log("sos")
     }
     webcam(streamRef, setWebcamInstance)
     // cleanup function stops webcam

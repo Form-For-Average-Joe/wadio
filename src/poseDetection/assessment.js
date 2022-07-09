@@ -2,9 +2,8 @@ import * as pushups from './pushups';
 import * as situps from './situps';
 import * as bicepcurls from './bicepcurls';
 import * as shoulderpress from './shoulderpress';
-import {store} from "../app/store";
-import {selectStage, setStage, incrementCount} from "../features/exercise/exerciseSlice";
-import {setFeedback, setIsCanStart} from "../features/exercise/exerciseSlice";
+import { store } from "../app/store";
+import { selectStage } from "../features/exercise/exerciseSlice";
 import stageChangeEmitter from "./eventsFactory";
 
 /*
@@ -68,35 +67,39 @@ export function assess_situps(keypoints, exerciseValues) {
             if (exerciseValues.situpval.isCalibrated) {
                 stageChangeEmitter.emit("isCalibrated");
             } else {
+                stageChangeEmitter.emit("calibrating");
                 situps.calibrate(keypoints, exerciseValues);
-                store.dispatch(setFeedback("CALIBRATING!"));
             } return;
         case 1:
             if (situps.checkShoulderDepth(keypoints, exerciseValues)) {
-                store.dispatch(setStage(2));
-                store.dispatch(setIsCanStart(true));
-                store.dispatch(setFeedback("EXERCISE BEGIN!"));
+                stageChangeEmitter.emit("inStartingPosition");
             } else {
-                store.dispatch(setFeedback("LIE FLAT TO START"));
+                stageChangeEmitter.emit("notInStartingPosition");
             } return;
         case 2:
             if (!situps.checkHipMovement(keypoints, exerciseValues)) {
-                store.dispatch(setFeedback("DO NOT FLIP FLOP"));
+                stageChangeEmitter.emit("malignedRepFlipFlop");
                 return;
             }
             if (situps.checkElbowRaise(keypoints, exerciseValues)) {
-                store.dispatch(setStage(3));
-            } return;
+                stageChangeEmitter.emit("maxPointReached");
+            }
+            else {
+                stageChangeEmitter.emit("maxPointNotReached");
+            }
+            return;
         case 3:
             if (!situps.checkHipMovement(keypoints, exerciseValues)) {
-                store.dispatch(setStage(2));
-                store.dispatch(setFeedback("DO NOT FLIP FLOP"));
+                stageChangeEmitter.emit("malignedRepFlipFlopStage3");
                 return;
             }
             if (situps.checkShoulderDepth(keypoints, exerciseValues)) {
-                store.dispatch(setStage(2));
-                store.dispatch(incrementCount());
-            } return;
+                stageChangeEmitter.emit("repDone");
+            }
+            else {
+                stageChangeEmitter.emit("repNotCompletedYet");
+            }
+            return;
         default:
             console.log("ERROR"); return;
     }
@@ -108,26 +111,31 @@ export function assess_bicepcurls(keypoints, exerciseValues) {
             if (exerciseValues.bicepcurlval.isCalibrated) {
                 stageChangeEmitter.emit("isCalibrated");
             } else {
+                stageChangeEmitter.emit("calibrating");
                 bicepcurls.calibrate(keypoints, exerciseValues);
-                store.dispatch(setFeedback("CALIBRATING!"));
             } return;
         case 1:
             if (bicepcurls.checkArmStraight(keypoints, exerciseValues)) {
-                store.dispatch(setStage(2));
-                store.dispatch(setIsCanStart(true));
-                store.dispatch(setFeedback("EXERCISE BEGIN!"));
+                stageChangeEmitter.emit("inStartingPosition");
             } else {
-                store.dispatch(setFeedback("STRAIGHTEN ARM TO START"));
+                stageChangeEmitter.emit("notInStartingPosition");
             } return;
         case 2:
             if (bicepcurls.checkCurl(keypoints, exerciseValues)) {
-                store.dispatch(setStage(3));
-            } return;
+                stageChangeEmitter.emit("maxPointReached");
+            }
+            else {
+                stageChangeEmitter.emit("maxPointNotReached");
+            }
+            return;
         case 3:
             if (bicepcurls.checkArmStraight(keypoints, exerciseValues)) {
-                store.dispatch(setStage(2));
-                store.dispatch(incrementCount());
-            } return;
+                stageChangeEmitter.emit("repDone");
+            }
+            else {
+                stageChangeEmitter.emit("repNotCompletedYet");
+            }
+            return;
         default:
             console.log("ERROR"); return;
     }
@@ -139,26 +147,32 @@ export function assess_shoulderpress(keypoints, exerciseValues) {
             if (exerciseValues.shoulderpressval.isCalibrated) {
                 stageChangeEmitter.emit("isCalibrated");
             } else {
+                stageChangeEmitter.emit("calibrating");
                 shoulderpress.calibrate(keypoints, exerciseValues);
-                store.dispatch(setFeedback("CALIBRATING!"));
             } return;
         case 1:
             if (shoulderpress.checkDepth(keypoints, exerciseValues)) {
-                store.dispatch(setStage(2));
-                store.dispatch(setIsCanStart(true));
-                store.dispatch(setFeedback("EXERCISE BEGIN!"));
+                stageChangeEmitter.emit("inStartingPosition");
             } else {
-                store.dispatch(setFeedback("BEND ARMS TO 90 TO START"));
+                stageChangeEmitter.emit("notInStartingPosition");
             } return;
         case 2:
             if (shoulderpress.checkArmStraight(keypoints, exerciseValues)) {
-                store.dispatch(setStage(3));
-            } return;
+                stageChangeEmitter.emit("maxPointReached");
+            }
+            else {
+                stageChangeEmitter.emit("maxPointNotReached");
+            }
+            return;
         case 3:
             if (shoulderpress.checkDepth(keypoints, exerciseValues)) {
-                store.dispatch(setStage(2));
-                store.dispatch(incrementCount());
-            } return;
+                stageChangeEmitter.emit("repDone");
+                console.log("count")
+            }
+            else {
+                stageChangeEmitter.emit("repNotCompletedYet");
+            }
+            return;
         default:
             console.log("ERROR"); return;
     }
