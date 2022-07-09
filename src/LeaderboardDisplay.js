@@ -87,27 +87,20 @@ function GetTableContainer(user, exercise, leaderboardId) {
     const getLeaderboardData = async () => {
       const makeReq = async () => await axios.get('https://13.228.86.60/' +
         exercise + '/leaderboard/' + leaderboardId + '/' + rowsPerPage + '/' +
-        page);
+        page + '/' + user.uid);
       try {
         const { data } = await makeReq();
-        setRowData(data.rankings);
-        setCount(data.totalNumberOfElements);
+        if (data) {
+          setRowData(data.rankings);
+          setCount(data.totalNumberOfElements);
+          if (data.currentUserdata) setCurrentUserData(data.currentUserdata);
+          else setCurrentUserData(null);
+        }
       } catch (err) {
         console.log("Error fetching leaderboard data");
       }
     };
-    const getCurrentUserData = async () => {
-      const makeReq = async () => await axios.get('https://13.228.86.60/' + exercise + '/user/' + user.uid);
-      try {
-        const res = await makeReq();
-        if (res?.data) setCurrentUserData(res.data);
-        else setCurrentUserData(null);
-      } catch (err) {
-        console.log("Error fetching user");
-      }
-    };
-    if (user) getCurrentUserData();
-    if (leaderboardId) getLeaderboardData();
+    if (user && leaderboardId) getLeaderboardData();
   }, [page, rowsPerPage, leaderboardId, user, exercise])
 
   // console.count("2")
