@@ -56,7 +56,8 @@ async function renderPrediction() {
   camera.frameId = requestAnimationFrame(renderPrediction);
 }
 
-async function app(streamRef, setWebcamInstance) {
+async function app(webcamRef, streamRef, setWebcamInstance) {
+  webcamRef.current = true;
   camera = await Camera.setupCamera(STATE.camera, streamRef);
   setWebcamInstance(camera);
 
