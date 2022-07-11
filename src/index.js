@@ -18,19 +18,7 @@ import Settings from './Settings';
 import Leaderboard from './Leaderboard';
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { FirebaseAppProvider } from 'reactfire';
-import { exerciseIds } from "./util";
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAGX6XeU2KMJvP08LKo_iUIC71R81TZpfQ",
-  authDomain: "form-for-average-joe.firebaseapp.com",
-  projectId: "form-for-average-joe",
-  storageBucket: "form-for-average-joe.appspot.com",
-  messagingSenderId: "847183773725",
-  appId: "1:847183773725:web:8b149912201a34e901c6f4",
-  measurementId: "G-0DWTZ7HHW7"
-};
+import { exerciseIds, firebaseConfig } from "./util";
 
 export const theme = responsiveFontSizes(createTheme({
   components: {
