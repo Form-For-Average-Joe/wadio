@@ -23,17 +23,17 @@ afterEach(async () => {
     await signOut(getAuth(getApp()));
 });
 
-// it('exercise unlocked base on cumulative calories burnt', () => {
-//     expect(checkUnlocked(49, 'situps')).toBe(false);
-// });
-//
-// it('exercise unlocked base on cumulative calories burnt', () => {
-//     expect(checkUnlocked(50, 'situps')).toBe(true);
-// });
-//
-// it('exercise unlocked base on cumulative calories burnt', () => {
-//     expect(checkUnlocked(0, 'pushups')).toBe(true);
-// });
+it('exercise unlocked base on cumulative calories burnt', () => {
+    expect(checkUnlocked(49, 'situps')).toBe(false);
+});
+
+it('exercise unlocked base on cumulative calories burnt', () => {
+    expect(checkUnlocked(50, 'situps')).toBe(true);
+});
+
+it('exercise unlocked base on cumulative calories burnt', () => {
+    expect(checkUnlocked(0, 'pushups')).toBe(true);
+});
 
 test("Exercises are locked if not signed in", async () => {
     function UserNotSignedIn() {
