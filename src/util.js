@@ -12,6 +12,18 @@ import situps from "./assets/situps.png";
 import situpsG from "./assets/situpsG.jpeg";
 //can use the require('./assets/.png/') syntax to import inline in exerciseInformation
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+export const firebaseConfig = {
+  apiKey: "AIzaSyAGX6XeU2KMJvP08LKo_iUIC71R81TZpfQ",
+  authDomain: "form-for-average-joe.firebaseapp.com",
+  projectId: "form-for-average-joe",
+  storageBucket: "form-for-average-joe.appspot.com",
+  messagingSenderId: "847183773725",
+  appId: "1:847183773725:web:8b149912201a34e901c6f4",
+  measurementId: "G-0DWTZ7HHW7"
+};
+
 export const webcamStyles = {
   video: {
     WebkitTransform: "scaleX(-1)",
@@ -319,7 +331,7 @@ export const exerciseInformation = {
     leaderboardDisplayString: 'bench presses',
     exerciseId: exerciseIds[4],
     description: 'Coming soon',
-    toUnlock: 'Choose your custom timings and difficulty',
+    toUnlock: 'Exercise coming soon',
     to: '/'
   },
   [exerciseIds[5]]: {
@@ -329,7 +341,7 @@ export const exerciseInformation = {
     leaderboardDisplayString: 'leg raisers',
     exerciseId: exerciseIds[5],
     description: 'Coming soon',
-    toUnlock: 'Choose your custom timings and difficulty',
+    toUnlock: 'Exercise coming soon',
     to: '/'
   },
 }
