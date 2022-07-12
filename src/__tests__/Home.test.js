@@ -61,7 +61,7 @@ it("Exercises are unlocked if signed in", async () => {
     screen.debug();
 
     await act(async () => {
-        await signInWithCredential(getAuth(getApp()), GoogleAuthProvider.credential('{"sub": "Test User #1", "email": "test_user_1@example.com", "email_verified": true}'))
+        await signInWithCredential(getAuth(getApp()), GoogleAuthProvider.credential('{"sub": "Cao Shuhao", "email": "caoshuhao@example.com", "email_verified": true}'))
     });
 
     const user = auth.currentUser;
