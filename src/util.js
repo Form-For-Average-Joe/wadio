@@ -268,14 +268,14 @@ export function checkUnlocked(cal, ex) {
     case exerciseIds[0]:
       return true;
     case exerciseIds[1]:
-      //return cal >= 50;
-      return true;
+      return cal >= 50;
+      //return true;
     case exerciseIds[2]:
-      //return cal >= 300;
-      return true;
+      return cal >= 300;
+      //return true;
     case exerciseIds[3]:
-      //return cal >= 1000;
-      return true;
+      return cal >= 1000;
+      //return true;
     default:
       return false;
   }
