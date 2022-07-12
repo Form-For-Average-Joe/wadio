@@ -50,7 +50,7 @@ test("Exercises are locked if not signed in", async () => {
 
     render(<UserNotSignedIn/>);
 
-    // await waitFor(() => expect(screen.getByText("Push")).toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole('button', {name: /Attempt/i})).not.toBeInTheDocument());
 
     // screen.debug();
 });
@@ -58,7 +58,19 @@ test("Exercises are locked if not signed in", async () => {
 it("Exercises are unlocked if signed in", async () => {
     // render(<FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}><Home/></FirebaseWrapperForTesting>);
 
-    screen.debug();
+    function UserSignedIn() {
+      return (
+            <FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Home/>}/>
+                </Routes>
+              </BrowserRouter>
+            </FirebaseWrapperForTesting>
+          )
+    };
+
+    render(<UserSignedIn/>);
 
     await act(async () => {
         await signInWithCredential(getAuth(getApp()), GoogleAuthProvider.credential('{"sub": "Cao Shuhao", "email": "caoshuhao@example.com", "email_verified": true}'))
@@ -66,5 +78,10 @@ it("Exercises are unlocked if signed in", async () => {
 
     const user = auth.currentUser;
 
+    // screen.debug();
+
     expect(user).toBeDefined();
+
+    const attemptButtons = screen.queryAllByText("Attempt");
+    expect(attemptButtons).toHaveLength(1);
 })
