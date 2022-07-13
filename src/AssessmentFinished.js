@@ -9,13 +9,15 @@ import LastAttemptStats from "./containers/LastAttemptStats";
 import { clearExerciseState } from "./features/exercise/exerciseSlice";
 import { resetUserTime } from './features/userProfile/userProfileSlice';
 import { useUser } from 'reactfire';
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import GenericHeaderButton from "./components/GenericHeaderButton";
 import { fetchUserData, getCaloriesBurnt } from "./util";
 import { store } from './app/store';
 
 export default function AssessmentFinished() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { exercise, userProfile  } = store.getState();
   const { count, duration, nameOfExercise, difficultyLevel } = exercise;
   const { minutes, seconds } = userProfile;
@@ -59,13 +61,14 @@ export default function AssessmentFinished() {
     return <LoadingSpinner/>;
   }
 
-  const saveData = () => {
+  const saveData = async (e) => {
+    e.preventDefault();
     const lastAttemptStatsWithCalories = { ...lastAttemptStats, caloriesBurnt }
     if (user) {
       setDoc(doc(getFirestore(), user.uid, date + " " + time), { //chose to use time stamp
         'lastAttemptStats': lastAttemptStatsWithCalories,
       });
-      getIdToken(user, true).then((idToken) => {
+      await getIdToken(user, true).then((idToken) => {
         axios.post('https://13.228.86.60/calories/addToUserCumulative/' + idToken, {
           scoreOfLatest: caloriesBurnt,
         });
@@ -73,6 +76,10 @@ export default function AssessmentFinished() {
           scoreOfLatest: lastAttemptStats.repCount,
         });
       });
+      navigate("/dashboard");
+    }
+    else {
+      navigate("/");
     }
   }
 
@@ -91,7 +98,7 @@ export default function AssessmentFinished() {
         </Grid>
         <Grid item>
           <GenericHeaderButton variant="contained" sx={{ backgroundColor: "#444444" }} onClick={saveData}
-                               component={Link} to={user ? "/dashboard" : "/"}>
+                               component={Link} to={"/dashboard"}>
             Continue
           </GenericHeaderButton>
         </Grid>
