@@ -8,14 +8,14 @@ import { fetchUserData } from "../util";
 const SettingsWrapper = ({ children }) => {
   const { status, data: user } = useUser();
   const [hasUserProfileData, setHasUserProfileData] = useState(false);
-  const [redirectToAuthPage, setRedirectToAuthPage] = useState(false);
+  const [redirectToSettingsPage, setRedirectToSettingsPage] = useState(false);
   const [canRedirect, setCanRedirect] = useState(false);
 
   useEffect(() => {
     if (user) {
       const inner = async () => {
-        await getIdToken(user, true).then((idToken) => {
-          fetchUserData(idToken, (data) => {
+        await getIdToken(user, true).then(async (idToken) => {
+          await fetchUserData(idToken, (data) => {
             if (data) {
               setHasUserProfileData(true);
             }
@@ -27,7 +27,7 @@ const SettingsWrapper = ({ children }) => {
       });
     }
     else {
-      setRedirectToAuthPage(true);
+      setRedirectToSettingsPage(true);
     }
   }, [user])
 
@@ -39,7 +39,7 @@ const SettingsWrapper = ({ children }) => {
     throw new Error('Children must be provided');
   }
 
-  if (redirectToAuthPage) {
+  if (redirectToSettingsPage) {
     return <Navigate to={'/settings'} replace={true} />;
   }
 
