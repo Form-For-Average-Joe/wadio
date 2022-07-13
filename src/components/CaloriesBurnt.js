@@ -12,7 +12,7 @@ const CaloriesBurnt = ({ cal }) => {
                         Cumulative Calories Burnt:
                     </Typography>
                     <Typography variant="h2" align="center">
-                        {cal ? cal.toFixed(1) : 0}
+                        {cal ? cal.toFixed(0) : 0}
                     </Typography>
                 </Grid>
                 <Grid item style={{ paddingTop: "2rem" }}>
