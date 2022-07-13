@@ -1,50 +1,57 @@
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
-import Friends from "../Friends"
+import Dashboard from "../Dashboard";
 import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import { FirebaseWrapperForTesting } from "../testUtils";
 import { connectAuthEmulator, getAuth, GoogleAuthProvider, signInWithCredential, signOut } from "firebase/auth";
 import { getApp, initializeApp } from "firebase/app";
-import { checkUnlocked, firebaseConfig } from "../util";
+import { firebaseConfig } from "../util";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { randomFillSync } from 'crypto'
+
+window.crypto = {
+  getRandomValues(buffer) {
+    return randomFillSync(buffer)
+  }
+}
 
 let app, auth, firestoreInstance;
 
 beforeAll(() => {
-    app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    firestoreInstance = getFirestore();
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  firestoreInstance = getFirestore();
 
-    connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
-    connectFirestoreEmulator(firestoreInstance, 'localhost', 8080);
+  connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+  connectFirestoreEmulator(firestoreInstance, 'localhost', 8080);
 })
 
 afterEach(async () => {
-    cleanup();
-    await signOut(getAuth(getApp()));
+  cleanup();
+  await signOut(getAuth(getApp()));
 });
 
 it("Total calories updates with save", async () => {
-    // render(<FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}><Home/></FirebaseWrapperForTesting>);
+  // render(<FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}><Home/></FirebaseWrapperForTesting>);
 
-    function UserSignedIn() {
-      return (
-            <FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}>
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Friends/>}/>
-                </Routes>
-              </BrowserRouter>
-            </FirebaseWrapperForTesting>
-          )
-    };
+  function UserSignedIn() {
+    return (
+      <FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+          </Routes>
+        </BrowserRouter>
+      </FirebaseWrapperForTesting>
+    )
+  };
 
-    render(<UserSignedIn/>);
+  render(<UserSignedIn />);
 
-    await act(async () => {
-        await signInWithCredential(getAuth(getApp()), GoogleAuthProvider.credential('{"sub": "Cao Shuhao", "email": "caoshuhao@example.com", "email_verified": true}'))
-    });
+  await act(async () => {
+    await signInWithCredential(getAuth(getApp()), GoogleAuthProvider.credential('{"sub": "Cao Shuhao", "email": "caoshuhao@example.com", "email_verified": true}'))
+  });
 
-    const user = auth.currentUser;
+  const user = auth.currentUser;
 
-    // screen.debug();
+  // screen.debug();
 })
