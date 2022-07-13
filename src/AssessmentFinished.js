@@ -65,13 +65,13 @@ export default function AssessmentFinished() {
       setDoc(doc(getFirestore(), user.uid, date + " " + time), { //chose to use time stamp
         'lastAttemptStats': lastAttemptStatsWithCalories,
       });
-      axios.post('https://13.228.86.60/calories/addToUserCumulative/', {
-        uid: user.uid,
-        scoreOfLatest: caloriesBurnt,
-      });
-      axios.post('https://13.228.86.60/' + lastAttemptStats.nameOfExercise + '/addToUserCumulative/', {
-        uid: user.uid,
-        scoreOfLatest: lastAttemptStats.repCount,
+      getIdToken(user, true).then((idToken) => {
+        axios.post('https://13.228.86.60/calories/addToUserCumulative/' + idToken, {
+          scoreOfLatest: caloriesBurnt,
+        });
+        axios.post('https://13.228.86.60/' + lastAttemptStats.nameOfExercise + '/addToUserCumulative/' + idToken, {
+          scoreOfLatest: lastAttemptStats.repCount,
+        });
       });
     }
   }

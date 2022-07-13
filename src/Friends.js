@@ -1,11 +1,13 @@
 import { Paper } from '@mui/material';
 import { get } from "axios";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { getIdToken } from "firebase/auth";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { useState } from 'react';
 import { Typography, Grid, Box, TextField, Button, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid/non-secure';
 import { useUser } from "reactfire";
+import LoadingSpinner from "./components/LoadingSpinner";
 import { associateGroupCodeToUserId, associateUserIdToGroupCode, isInvalidTextInput } from "./util";
 
 const FriendsStuff = () => {
@@ -31,7 +33,9 @@ const FriendsStuff = () => {
       await associateGroupCodeToUserId(docSnap.data(), codeToStore, user.uid);
     })
       .then(async () => {
-        await associateUserIdToGroupCode(codeToStore, user.uid, leaderboardName);
+        await getIdToken(user, true).then(async (idToken) => {
+          await associateUserIdToGroupCode(codeToStore, idToken, leaderboardName);
+        });
         navigate('/leaderboard');
       })
   }
@@ -71,6 +75,10 @@ const FriendsStuff = () => {
     } else {
       e.preventDefault();
     }
+  }
+
+  if (status === 'loading') {
+    return <LoadingSpinner/>;
   }
 
   return (

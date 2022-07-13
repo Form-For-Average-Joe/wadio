@@ -93,7 +93,7 @@ function GetTableContainer(user, exercise, leaderboardId) {
         if (data) {
           setRowData(data.rankings);
           setCount(data.totalNumberOfElements);
-          if (data.currentUserdata) setCurrentUserData(data.currentUserdata);
+          if (data.currentUserData) setCurrentUserData(data.currentUserData);
           else setCurrentUserData(null);
         }
       } catch (err) {

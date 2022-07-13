@@ -74,17 +74,19 @@ const Settings = () => {
 
   const makeSave = (e) => {
     if (isFormValid()) {
-      axios.post('https://13.228.86.60/user/addUserStatistics/' + user.uid, {
-        userProfileStatistics: {
-          nickname,
-          age: +age,
-          weight: +weight,
-          height: +height,
-          gender,
-          anonymous,
-          photoURL
-        }
-      });
+      getIdToken(user, true).then((idToken) => {
+        axios.post('https://13.228.86.60/user/addUserStatistics/' + idToken, {
+          userProfileStatistics: {
+            nickname,
+            age: +age,
+            weight: +weight,
+            height: +height,
+            gender,
+            anonymous,
+            photoURL
+          }
+        });
+      })
       reload(user);
     } else {
       e.preventDefault();
