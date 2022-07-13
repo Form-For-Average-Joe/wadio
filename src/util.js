@@ -139,8 +139,8 @@ export const getCaloriesBurnt = (repCount, workoutTime, nameOfExercise, difficul
   return finalCal.toFixed(1);
 }
 
-export const fetchUserData = async (uid, callback) => {
-  const makeReq = async () => await get('https://13.228.86.60/user/getUserStatistics/' + uid);
+export const fetchUserData = async (idToken, callback) => {
+  const makeReq = async () => await get('https://13.228.86.60/user/getUserStatistics/' + idToken);
   try {
     const { data } = await makeReq();
     if (data) {

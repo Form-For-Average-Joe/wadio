@@ -1,5 +1,5 @@
 import { Typography, Grid, Container, Box } from '@mui/material';
-import { getAuth, getIdToken } from "firebase/auth";
+import { getIdToken } from "firebase/auth";
 import LoadingSpinner from "./components/LoadingSpinner";
 import BodyStatsPanel from './containers/BodyStatsPanel';
 import CaloriesBurnt from './components/CaloriesBurnt';
@@ -22,7 +22,7 @@ const Dashboard = () => {
     const firestore = getFirestore();
     if (firebaseUserData) {
       getIdToken(firebaseUserData, true).then((idToken) => {
-        fetchUserData(firebaseUserData.uid, (data) => {
+        fetchUserData(idToken, (data) => {
           setUserProfileData(data);
         });
         fetchUserCumulativeCalories(firebaseUserData.uid, (data) => {
