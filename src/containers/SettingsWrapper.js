@@ -1,3 +1,4 @@
+import { getIdToken } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Navigate } from 'react-router-dom';
 import { useUser } from 'reactfire';
@@ -13,11 +14,13 @@ const SettingsWrapper = ({ children }) => {
   useEffect(() => {
     if (user) {
       const inner = async () => {
-        await fetchUserData(user.uid, (data) => {
-          if (data) {
-            setHasUserProfileData(true);
-          }
-        });
+        await getIdToken(user, true).then((idToken) => {
+          fetchUserData(idToken, (data) => {
+            if (data) {
+              setHasUserProfileData(true);
+            }
+          });
+        })
       };
       inner().then(() => {
         setCanRedirect(true);

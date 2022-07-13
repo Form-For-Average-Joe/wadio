@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getIdToken } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { doc, setDoc, getFirestore } from "firebase/firestore";
 import { Grid, Card, Typography } from '@mui/material';
@@ -46,9 +47,11 @@ export default function AssessmentFinished() {
 
   useEffect(() => {
     if (user) {
-      fetchUserData(user.uid, (data) => {
-        setCaloriesBurnt(getCaloriesBurnt(count, workoutTime, nameOfExercise, difficultyLevel, data.gender, data.age, data.weight));
-      });
+      getIdToken(user, true).then((idToken) => {
+        fetchUserData(idToken, (data) => {
+          setCaloriesBurnt(getCaloriesBurnt(count, workoutTime, nameOfExercise, difficultyLevel, data.gender, data.age, data.weight));
+        });
+      })
     }
   }, [user])
 
