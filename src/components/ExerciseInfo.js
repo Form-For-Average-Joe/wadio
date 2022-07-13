@@ -77,7 +77,6 @@ const ExerciseInfo = ({ exerciseName }) => {
   return (
     <>
       <GenericHeaderButton
-        label="Sign in/Sign up"
         variant="contained"
         sx={{ backgroundColor: "#000000" }}
         onClick={() => setOpen(true)}>

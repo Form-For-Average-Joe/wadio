@@ -1,0 +1,50 @@
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+import Friends from "../Friends"
+import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
+import { FirebaseWrapperForTesting } from "../testUtils";
+import { connectAuthEmulator, getAuth, GoogleAuthProvider, signInWithCredential, signOut } from "firebase/auth";
+import { getApp, initializeApp } from "firebase/app";
+import { checkUnlocked, firebaseConfig } from "../util";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+let app, auth, firestoreInstance;
+
+beforeAll(() => {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    firestoreInstance = getFirestore();
+
+    connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+    connectFirestoreEmulator(firestoreInstance, 'localhost', 8080);
+})
+
+afterEach(async () => {
+    cleanup();
+    await signOut(getAuth(getApp()));
+});
+
+it("Total calories updates with save", async () => {
+    // render(<FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}><Home/></FirebaseWrapperForTesting>);
+
+    function UserSignedIn() {
+      return (
+            <FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Friends/>}/>
+                </Routes>
+              </BrowserRouter>
+            </FirebaseWrapperForTesting>
+          )
+    };
+
+    render(<UserSignedIn/>);
+
+    await act(async () => {
+        await signInWithCredential(getAuth(getApp()), GoogleAuthProvider.credential('{"sub": "Cao Shuhao", "email": "caoshuhao@example.com", "email_verified": true}'))
+    });
+
+    const user = auth.currentUser;
+
+    // screen.debug();
+})
