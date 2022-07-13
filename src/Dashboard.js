@@ -1,4 +1,5 @@
 import { Typography, Grid, Container, Box } from '@mui/material';
+import { getAuth, getIdToken } from "firebase/auth";
 import LoadingSpinner from "./components/LoadingSpinner";
 import BodyStatsPanel from './containers/BodyStatsPanel';
 import CaloriesBurnt from './components/CaloriesBurnt';
@@ -19,15 +20,19 @@ const Dashboard = () => {
 
   useEffect(() => {
     const firestore = getFirestore();
-    fetchUserData(firebaseUserData.uid, (data) => {
-      setUserProfileData(data);
-    });
-    fetchUserCumulativeCalories(firebaseUserData.uid, (data) => {
-      setCumulativeCalories(data.score);
-    });
-    getLastAttemptStats(firebaseUserData.uid, firestore, (data) => {
-      setRows(data);
-    });
+    if (firebaseUserData) {
+      getIdToken(firebaseUserData, true).then((idToken) => {
+        fetchUserData(firebaseUserData.uid, (data) => {
+          setUserProfileData(data);
+        });
+        fetchUserCumulativeCalories(firebaseUserData.uid, (data) => {
+          setCumulativeCalories(data.score);
+        });
+        getLastAttemptStats(firebaseUserData.uid, firestore, (data) => {
+          setRows(data);
+        });
+      })
+    }
     }, [firebaseUserData])
   if (status === 'loading') {
     return <LoadingSpinner/>
