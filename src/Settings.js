@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getIdToken } from "firebase/auth";
 import { Fragment, useState, useEffect } from 'react';
 import { Typography, Grid, Box, TextField, Button, Stack, Switch, Snackbar, Alert } from '@mui/material';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -7,11 +8,12 @@ import { useUser } from 'reactfire';
 import { Link, useLocation } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import LoadingSpinner from "./components/LoadingSpinner";
 import { fetchUserData, getUserNickname, isInvalidTextInput } from "./util";
 import { updateProfile, reload } from 'firebase/auth';
 
 const Settings = () => {
-  const { data: user } = useUser();
+  const { status, data: user } = useUser();
 
   const [nickname, setNickname] = useState(getUserNickname(user));
   const [age, setAge] = useState("");
@@ -56,15 +58,17 @@ const Settings = () => {
 
   useEffect(() => {
     if (user) {
-      fetchUserData(user.uid, (data) => {
-        setNickname(data.nickname);
-        setAge(data.age);
-        setWeight(data.weight);
-        setHeight(data.height);
-        setGender(data.gender);
-        setAnonymous(data.anonymous);
-        setPhotoURL(data.photoURL || "");
-      });
+      getIdToken(user, true).then((idToken) => {
+        fetchUserData(idToken, (data) => {
+          setNickname(data.nickname);
+          setAge(data.age);
+          setWeight(data.weight);
+          setHeight(data.height);
+          setGender(data.gender);
+          setAnonymous(data.anonymous);
+          setPhotoURL(data.photoURL || "");
+        });
+      })
     }
   }, [user])
 
@@ -93,6 +97,10 @@ const Settings = () => {
 
   const handleAnonymous = (event, newAnonymous) => {
     setAnonymous(newAnonymous);
+  };
+
+  if (status === 'loading') {
+    return <LoadingSpinner/>
   };
 
   return (

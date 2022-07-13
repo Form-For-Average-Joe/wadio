@@ -139,8 +139,20 @@ export const getCaloriesBurnt = (repCount, workoutTime, nameOfExercise, difficul
   return finalCal.toFixed(1);
 }
 
-export const fetchUserData = async (uid, callback) => {
-  const makeReq = async () => await get('https://13.228.86.60/user/getUserStatistics/' + uid);
+export const fetchMinorProfileUserData = async (uid, callback) => {
+  const makeReq = async () => await get('https://13.228.86.60/user/getMinorProfileStatistics/' + uid);
+  try {
+    const { data } = await makeReq();
+    if (data) {
+      callback(data);
+    }
+  } catch (err) {
+    console.log("Error fetching user data")
+  }
+}
+
+export const fetchUserData = async (idToken, callback) => {
+  const makeReq = async () => await get('https://13.228.86.60/user/getUserStatistics/' + idToken);
   try {
     const { data } = await makeReq();
     if (data) {
@@ -175,6 +187,7 @@ export const fetchUserCumulativeCalories = async (uid, callback) => {
   }
 }
 
+//todo technically instead of the entire userProfileData, we should only get the userProfileDataNickname
 export const getUserNickname = (firebaseUserData, userProfileData) => {
   return userProfileData?.nickname || firebaseUserData?.displayName || firebaseUserData?.email.match(/.*(?=@)/) || 'Guest'
 };
