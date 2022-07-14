@@ -4,6 +4,7 @@ import {Outlet} from "react-router-dom";
 import {AuthProvider, useFirebaseApp, useInitFirestore, FirestoreProvider} from 'reactfire';
 import {getAuth} from 'firebase/auth';
 import './App.css'
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const App = () => {
   const firebaseApp = useFirebaseApp();
@@ -19,9 +20,7 @@ const App = () => {
   });
 
   if (status === 'loading') {
-    return (
-      <div>Loading</div>
-    )
+    return (<LoadingSpinner />);
   }
   //
   // if (process.env.NODE_ENV !== 'production') {
