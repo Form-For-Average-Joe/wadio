@@ -1,5 +1,5 @@
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
-import { act, cleanup, render, screen, fireEvent } from "@testing-library/react";
+import { act, cleanup, render, screen, fireEvent, unmount } from "@testing-library/react";
 import { FirebaseWrapperForTesting } from "../testUtils";
 import { connectAuthEmulator, getAuth, GoogleAuthProvider, signInWithCredential, signOut } from "firebase/auth";
 import { getApp, initializeApp } from "firebase/app";
@@ -26,7 +26,7 @@ afterEach(async () => {
 });
 
 it("New group is added to leaderboard list", async () => {
-  function ListOfLeaderboards() {
+  const ListOfLeaderboards = () => {
     return (
       <FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}>
         <BrowserRouter>
@@ -38,7 +38,7 @@ it("New group is added to leaderboard list", async () => {
     )
   }
 
-  function TryToJoinGroup() {
+  const TryToJoinGroup = () => {
     return (
       <FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}>
         <BrowserRouter>
@@ -56,21 +56,23 @@ it("New group is added to leaderboard list", async () => {
   const user = auth.currentUser;
   expect(user).toBeDefined();
 
-  render(<ListOfLeaderboards />);
+  const {container1, unmount} = render(<ListOfLeaderboards />);
   const checkGlobalIsThere = screen.getByText("Global");
   const checkNewTestIsAbsent = screen.queryByText("New Test");
   expect(checkGlobalIsThere).toBeInTheDocument();
   expect(checkNewTestIsAbsent).not.toBeInTheDocument();
+  unmount();
 
-  // render(<TryToJoinGroup />);
-  // const codeField = screen.getByTestId("add-group-code");
-  // const submitButton = screen.getByText("Join Group");
-  // expect(codeField).toBeInTheDocument();
-  // expect(submitButton).toBeInTheDocument();
+  render(<JoinGroup />);
+  const codeField = screen.getByTestId("code-input");
+  const submitButton = screen.getByText("Join Group");
+  expect(codeField).toBeInTheDocument();
+  expect(submitButton).toBeInTheDocument();
 
-  // userEvent.type(codeField, "JJXKa1i004czQ6CvMVfiu");
-  // expect(codeField).toHaveValue('JJXKa1i004czQ6CvMVfiu');
-  // fireEvent.click(submitButton);
-  // render(<ListOfLeaderboards />);
-  // screen.debug();
+  fireEvent.change(codeField, {target: {value: 'JJXKa1i004czQ6CvMVfiu'}});
+  expect(codeField.value).toBe('JJXKa1i004czQ6CvMVfiu');
+
+  fireEvent.click(submitButton);
+  render(<ListOfLeaderboards />);
+  screen.debug();
 })

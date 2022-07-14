@@ -6,6 +6,8 @@ import {useDispatch} from "react-redux";
 import stageChangeEmitter from "./poseDetection/eventsFactory";
 import { globalListeners, pushupsListeners, situpsListeners, bicepcurlsListeners, shoulderpressListeners } from "./poseDetection/eventsListeners";
 import { exerciseIds } from "./util";
+import Worker from 'web-worker';
+import worker_script from './poseDetection/worker';
 
 const chooseListener = (nameOfExercise) => {
   switch (nameOfExercise) {
@@ -19,11 +21,14 @@ const chooseListener = (nameOfExercise) => {
 
 const ExerciseAssessment = ({nameOfExercise}) => {
   const dispatch = useDispatch();
-  const [webcamInstance, setWebcamInstance] = useState(null);
+  //const [webcamInstance, setWebcamInstance] = useState(null);
+  const [webInstance, setWebInstance] = useState(null);
 
   let streamRef = useRef(null);
 
   let webcamRef = useRef(null);
+
+  var worker = new Worker(worker_script);
 
   dispatch(setExercise(nameOfExercise));
 
@@ -37,7 +42,14 @@ const ExerciseAssessment = ({nameOfExercise}) => {
     for (const listener in listeners) {
       stageChangeEmitter.addListener(listener, listeners[listener]);
     }
-    if (!(webcamRef?.current)) webcam(webcamRef, streamRef, setWebcamInstance)
+    if (!(webcamRef?.current)) {
+      worker.postMessage({webcamRef, streamRef});
+      //webcam(webcamRef, streamRef, setWebcamInstance)
+      worker.onmessage = function(e) {
+        setWebInstance(e);
+        console.log('Message received from worker');
+      }
+    }
     // cleanup function stops any running webcam stream, unmounts event listeners, and allows a new webcam instance to be started
     return () => {
       if (streamRef && streamRef.current) {
@@ -54,7 +66,7 @@ const ExerciseAssessment = ({nameOfExercise}) => {
     }
   }, []) // [] here means no dependencies, so we only render webcam once for performance boost
 
-  return <AssessmentInProgress webcam={webcamInstance}/>;
+  return <AssessmentInProgress webcam={webInstance}/>;
 }
 
 export default ExerciseAssessment;
