@@ -7,12 +7,12 @@ import {getAuth} from "firebase/auth";
 const LastAttemptStats = ({lastAttemptStats}) => {
   const generateDisplayTimeString = (workoutTime) => Math.floor(workoutTime / 60) + ' minutes ' + (workoutTime % 60) + ' seconds'
   const [displayString, setDisplayString] = useState('No previous workout: let\'s get started!');
-  const generateDisplayString = (workoutTime, repCount, nameOfExercise, caloriesBurnt) => {
-    const displayTimeString = generateDisplayTimeString(workoutTime);
-    return 'Last Attempt: ' + repCount + ' ' + nameOfExercise + ' reps in ' + displayTimeString + '. You burnt ' + caloriesBurnt + " calories.";
-  }
 
   useEffect(() => {
+    const generateDisplayString = (workoutTime, repCount, nameOfExercise, caloriesBurnt) => {
+      const displayTimeString = generateDisplayTimeString(workoutTime);
+      return 'Last Attempt: ' + repCount + ' ' + nameOfExercise + ' reps in ' + displayTimeString + '. You burnt ' + caloriesBurnt + " calories.";
+    }
     if (lastAttemptStats) { // lastAttemptStats prop has been passed in
       setDisplayString(generateDisplayString(lastAttemptStats.workoutTime, lastAttemptStats.repCount, lastAttemptStats.nameOfExercise, lastAttemptStats.caloriesBurnt));
     } else { // get the stats from Firestore
@@ -36,7 +36,7 @@ const LastAttemptStats = ({lastAttemptStats}) => {
         setDisplayString("Please sign in to view your stats");
       }
     }
-  }, []);
+  }, [lastAttemptStats]);
 
   return (
     <Card>

@@ -139,6 +139,18 @@ export const getCaloriesBurnt = (repCount, workoutTime, nameOfExercise, difficul
   return finalCal.toFixed(1);
 }
 
+export const fetchMinorProfileUserData = async (uid, callback) => {
+  const makeReq = async () => await get('https://13.228.86.60/user/getMinorProfileStatistics/' + uid);
+  try {
+    const { data } = await makeReq();
+    if (data) {
+      callback(data);
+    }
+  } catch (err) {
+    console.log("Error fetching user data")
+  }
+}
+
 export const fetchUserData = async (idToken, callback) => {
   const makeReq = async () => await get('https://13.228.86.60/user/getUserStatistics/' + idToken);
   try {
@@ -151,8 +163,8 @@ export const fetchUserData = async (idToken, callback) => {
   }
 }
 
-export const fetchUserPhotoURL = async (uid, callback) => {
-  const makeReq = async () => await get('https://13.228.86.60/user/getUserPhotoURL/' + uid);
+export const fetchUserPhotoURL = async (idToken, callback) => {
+  const makeReq = async () => await get('https://13.228.86.60/user/getUserPhotoURL/' + idToken);
   try {
     const { data: userAddedPhotoURL } = await makeReq();
     if (userAddedPhotoURL) {
@@ -175,6 +187,7 @@ export const fetchUserCumulativeCalories = async (uid, callback) => {
   }
 }
 
+//todo technically instead of the entire userProfileData, we should only get the userProfileDataNickname
 export const getUserNickname = (firebaseUserData, userProfileData) => {
   return userProfileData?.nickname || firebaseUserData?.displayName || firebaseUserData?.email.match(/.*(?=@)/) || 'Guest'
 };
@@ -227,9 +240,9 @@ export async function getLastAttemptStats(userUid, firestore, callback) {
 
 export const isInvalidTextInput = (value) => value === "0" || value === "";
 
-export const associateUserIdToGroupCode = async (newCode, userUid, leaderboardName) => {
+export const associateUserIdToGroupCode = async (newCode, idToken, leaderboardName) => {
   try {
-    await put('https://13.228.86.60/addGroupCodeToUser/' + newCode + '/' + userUid, { leaderboardName });
+    await put('https://13.228.86.60/addGroupCodeToUser/' + newCode + '/' + idToken, { leaderboardName });
   } catch (err) {
     console.log(err)
   }
@@ -345,3 +358,5 @@ export const exerciseInformation = {
     to: '/'
   },
 }
+
+export const isGroupCodePresent = async (groupCode) => await get('https://13.228.86.60/isKeyPresent/' + groupCode);

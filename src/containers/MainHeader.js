@@ -15,6 +15,7 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Slide from '@mui/material/Slide';
+import { getIdToken } from "firebase/auth";
 import PropTypes from 'prop-types';
 import { useState, useEffect, useCallback } from 'react';
 import {Link, NavLink, Outlet} from "react-router-dom";
@@ -45,9 +46,11 @@ const Member = () => {
   const {data: user} = useUser();
   const [photoURL, setPhotoURL] = useState(user.photoURL);
   useEffect(() => {
-    fetchUserPhotoURL(user.uid, (userAddedPhotoURL) => {
+    getIdToken(user, true).then((idToken) => {
+      fetchUserPhotoURL(idToken, (userAddedPhotoURL) => {
         setPhotoURL(userAddedPhotoURL);
-    });
+      });
+    })
   })
   // const matches = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   return photoURL ? <IconButton component={Link} to={'/dashboard'}><Avatar src={photoURL}/></IconButton> : 

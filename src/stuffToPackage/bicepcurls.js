@@ -1,8 +1,6 @@
 /* eslint-disable no-use-before-define */
 
 import calculateCorrelation from 'calculate-correlation';
-import { selectDifficultyLevel } from "../features/exercise/exerciseSlice";
-import { store } from "../app/store";
 
 //Indexed in order wrist, elbow, shoulder
 const leftside = [5, 7, 9];
@@ -18,7 +16,7 @@ const difficultyThreshold = 0.6; // difficulty for user
 
 export function checkCurl(keypoints, exerciseValues) {
   let bdpoints;
-  if (exerciseValues.bicepcurlval.side == 1) {
+  if (exerciseValues.bicepcurlval.side === 1) {
     bdpoints = leftside;
   } else {
     bdpoints = rightside;
@@ -36,7 +34,7 @@ export function checkCurl(keypoints, exerciseValues) {
 
 export function checkArmStraight(keypoints, exerciseValues) {
   let bdpoints;
-  if (exerciseValues.bicepcurlval.side == 1) {
+  if (exerciseValues.bicepcurlval.side === 1) {
     bdpoints = leftside;
   } else {
     bdpoints = rightside;
@@ -57,7 +55,7 @@ export function checkArmStraight(keypoints, exerciseValues) {
 }
 
 function isBodyInFrame(keypoints, exerciseValues) {
-  if (exerciseValues.bicepcurlval.side == 1) {
+  if (exerciseValues.bicepcurlval.side === 1) {
     return keypoints[9].score > calibrationThreshold && keypoints[5].score > calibrationThreshold;
   } else {
     return keypoints[10].score > calibrationThreshold && keypoints[6] > calibrationThreshold;
@@ -66,7 +64,7 @@ function isBodyInFrame(keypoints, exerciseValues) {
 
 function isStablised(keypoints, exerciseValues) {
   let bdpoints;
-  if (exerciseValues.bicepcurlval.side == 1) {
+  if (exerciseValues.bicepcurlval.side === 1) {
     bdpoints = leftside;
   } else {
     bdpoints = rightside;
@@ -92,7 +90,6 @@ function isStablised(keypoints, exerciseValues) {
 
 //todo normalise
 export function calibrate(keypoints, exerciseValues) {
-  let bdpoints;
   if (keypoints[8].score < keypoints[7].score) {
     exerciseValues.bicepcurlval.side = 1;
   }

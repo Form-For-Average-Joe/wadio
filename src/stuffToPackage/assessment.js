@@ -4,7 +4,7 @@ import * as bicepcurls from './bicepcurls';
 import * as shoulderpress from './shoulderpress';
 import { store } from "../app/store";
 import { selectStage } from "../features/exercise/exerciseSlice";
-import stageChangeEmitter from "./eventsFactory";
+import stageChangeEmitter from "../poseDetection/eventsFactory";
 
 /*
 stage 0: check if calibrated (move to stage 1)
