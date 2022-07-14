@@ -63,18 +63,18 @@ export async function setBackendAndEnvFlags(flagConfig, backend) {
   }
 
   // Check the validation of flags and values.
-  for (const flag in flagConfig) {
-    // TODO: check whether flag can be set as flagConfig[flag].
-    if (!(flag in TUNABLE_FLAG_VALUE_RANGE_MAP)) {
-      throw new Error(`${flag} is not a tunable or valid environment flag.`);
-    }
-    if (TUNABLE_FLAG_VALUE_RANGE_MAP[flag].indexOf(flagConfig[flag]) === -1) {
-      throw new Error(
-          `${flag} value is expected to be in the range [${
-              TUNABLE_FLAG_VALUE_RANGE_MAP[flag]}], while ${flagConfig[flag]}` +
-          ' is found.');
-    }
-  }
+  // for (const flag in flagConfig) {
+  //   // TODO: check whether flag can be set as flagConfig[flag].
+  //   if (!(flag in TUNABLE_FLAG_VALUE_RANGE_MAP)) {
+  //     throw new Error(`${flag} is not a tunable or valid environment flag.`);
+  //   }
+  //   if (TUNABLE_FLAG_VALUE_RANGE_MAP[flag].indexOf(flagConfig[flag]) === -1) {
+  //     throw new Error(
+  //         `${flag} value is expected to be in the range [${
+  //             TUNABLE_FLAG_VALUE_RANGE_MAP[flag]}], while ${flagConfig[flag]}` +
+  //         ' is found.');
+  //   }
+  // }
 
   tf.env().setFlags(flagConfig);
 

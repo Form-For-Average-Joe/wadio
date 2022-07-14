@@ -1,39 +1,15 @@
-import { get } from "axios";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { useState } from 'react';
-import { Typography, Grid, Box, TextField, Button, Stack } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Typography, Box, TextField, Button, Stack } from '@mui/material';
 import { nanoid } from 'nanoid/non-secure';
-import { useUser } from "reactfire";
-import { associateGroupCodeToUserId, associateUserIdToGroupCode, isInvalidTextInput } from "../util";
+import { isInvalidTextInput, isGroupCodePresent } from "../util";
 
-export const CreateGroup = () => {
-    const { status, data: user } = useUser();
-    const [existingCode, setExistingCode] = useState("");
+export default function CreateGroup({createRelationBetweenGroupCodeAndUser}) {
     const [newCode, setNewCode] = useState("");
     const [leaderboardName, setLeaderboardName] = useState("");
-    const navigate = useNavigate();
 
     const isLeaderboardNameFormValid = () => {
         return !(isInvalidTextInput(leaderboardName));
     };
-
-    // need to filter res by code
-
-    // Make it an expiring group code
-
-    const isGroupCodePresent = async (groupCode) => await get('https://13.228.86.60/isKeyPresent/' + groupCode);
-
-    const createRelationBetweenGroupCodeAndUser = (codeToStore, leaderboardName) => {
-        const ref = doc(getFirestore(), user.uid, 'groupCodes');
-        getDoc(ref).then(async (docSnap) => {
-            await associateGroupCodeToUserId(docSnap.data(), codeToStore, user.uid);
-        })
-            .then(async () => {
-                await associateUserIdToGroupCode(codeToStore, user.uid, leaderboardName);
-                navigate('/leaderboard');
-            })
-    }
 
     const generateNewCode = async () => {
         let res = false;

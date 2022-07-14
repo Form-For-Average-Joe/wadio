@@ -358,3 +358,5 @@ export const exerciseInformation = {
     to: '/'
   },
 }
+
+export const isGroupCodePresent = async (groupCode) => await get('https://13.228.86.60/isKeyPresent/' + groupCode);
