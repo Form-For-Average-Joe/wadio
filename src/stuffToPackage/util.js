@@ -15,19 +15,6 @@
  * =============================================================================
  */
 import * as tf from '@tensorflow/tfjs-core';
-import {TUNABLE_FLAG_VALUE_RANGE_MAP} from './params';
-
-export function isiOS() {
-  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
-
-export function isAndroid() {
-  return /Android/i.test(navigator.userAgent);
-}
-
-export function isMobile() {
-  return isAndroid() || isiOS();
-}
 
 /**
  * Reset the target backend.
@@ -65,7 +52,7 @@ async function resetBackend(backendName) {
  * console.log(tf.env().getBool('WEBGL_PACK_BINARY_OPERATIONS')); // false
  * ```
  *
- * @param flagConfig An object to store flag-value pairs.
+ * @param backend
  */
 export async function setBackendAndEnvFlags(flagConfig, backend) {
   if (flagConfig == null) {

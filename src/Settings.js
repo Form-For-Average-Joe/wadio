@@ -5,7 +5,7 @@ import { Typography, Grid, Box, TextField, Button, Stack, Switch, Snackbar, Aler
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useUser } from 'reactfire';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import LoadingSpinner from "./components/LoadingSpinner";
@@ -14,6 +14,7 @@ import { updateProfile, reload } from 'firebase/auth';
 
 const Settings = () => {
   const { status, data: user } = useUser();
+  const navigate = useNavigate();
 
   const [nickname, setNickname] = useState(getUserNickname(user));
   const [age, setAge] = useState("");
@@ -72,20 +73,24 @@ const Settings = () => {
     }
   }, [user])
 
-  const makeSave = (e) => {
+  const makeSave = async (e) => {
     if (isFormValid()) {
-      axios.post('https://13.228.86.60/user/addUserStatistics/' + user.uid, {
-        userProfileStatistics: {
-          nickname,
-          age: +age,
-          weight: +weight,
-          height: +height,
-          gender,
-          anonymous,
-          photoURL
-        }
-      });
+      e.preventDefault();
+      await getIdToken(user, true).then((idToken) => {
+        axios.post('https://13.228.86.60/user/addUserStatistics/' + idToken, {
+          userProfileStatistics: {
+            nickname,
+            age: +age,
+            weight: +weight,
+            height: +height,
+            gender,
+            anonymous,
+            photoURL
+          }
+        });
+      })
       reload(user);
+      navigate("/dashboard");
     } else {
       e.preventDefault();
     }
@@ -101,7 +106,8 @@ const Settings = () => {
 
   if (status === 'loading') {
     return <LoadingSpinner/>
-  };
+  }
+  ;
 
   return (
     <>
@@ -126,7 +132,7 @@ const Settings = () => {
           sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
           onChange={(e) => {
             setNickname(e.target.value);
-            updateProfile(user, {displayName: e.target.value});
+            updateProfile(user, { displayName: e.target.value });
           }}
         />
         <TextField
@@ -181,7 +187,7 @@ const Settings = () => {
           sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
           onChange={(e) => {
             setPhotoURL(e.target.value);
-            updateProfile(user, {photoURL: e.target.value});
+            updateProfile(user, { photoURL: e.target.value });
           }}
         />
         <Grid container spacing={0} direction="column" alignItems="center">

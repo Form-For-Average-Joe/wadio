@@ -163,8 +163,8 @@ export const fetchUserData = async (idToken, callback) => {
   }
 }
 
-export const fetchUserPhotoURL = async (uid, callback) => {
-  const makeReq = async () => await get('https://13.228.86.60/user/getUserPhotoURL/' + uid);
+export const fetchUserPhotoURL = async (idToken, callback) => {
+  const makeReq = async () => await get('https://13.228.86.60/user/getUserPhotoURL/' + idToken);
   try {
     const { data: userAddedPhotoURL } = await makeReq();
     if (userAddedPhotoURL) {
@@ -240,9 +240,9 @@ export async function getLastAttemptStats(userUid, firestore, callback) {
 
 export const isInvalidTextInput = (value) => value === "0" || value === "";
 
-export const associateUserIdToGroupCode = async (newCode, userUid, leaderboardName) => {
+export const associateUserIdToGroupCode = async (newCode, idToken, leaderboardName) => {
   try {
-    await put('https://13.228.86.60/addGroupCodeToUser/' + newCode + '/' + userUid, { leaderboardName });
+    await put('https://13.228.86.60/addGroupCodeToUser/' + newCode + '/' + idToken, { leaderboardName });
   } catch (err) {
     console.log(err)
   }
