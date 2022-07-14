@@ -45,7 +45,7 @@ const JoinGroup = ({createRelationBetweenGroupCodeAndUser}) => {
                     variant="outlined"
                     type={'text'}
                     size="small"
-                    data-testid="add-group-code"
+                    inputProps={{ "data-testid": "code-input" }}
                     sx={{ backgroundColor: "#FFFFFF" }}
                     onChange={(e) => {
                         setExistingCode(e.target.value);
