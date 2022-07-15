@@ -8,7 +8,7 @@ const JoinGroup = ({createRelationBetweenGroupCodeAndUser}) => {
     const addNewCodeToUser = async (e) => {
         let result;
         try {
-            result = await isGroupCodePresent(existingCode);
+          result = await isGroupCodePresent(existingCode);
         } catch (err) {
             e.preventDefault();
         }
@@ -45,7 +45,7 @@ const JoinGroup = ({createRelationBetweenGroupCodeAndUser}) => {
                     variant="outlined"
                     type={'text'}
                     size="small"
-                    data-testid="add-group-code"
+                    inputProps={{ "data-testid": "code-input" }}
                     sx={{ backgroundColor: "#FFFFFF" }}
                     onChange={(e) => {
                         setExistingCode(e.target.value);

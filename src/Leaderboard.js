@@ -1,9 +1,6 @@
 import { Typography, Box, Paper } from '@mui/material';
-import axios from "axios";
-import { getIdToken } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from 'reactfire';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import List from '@mui/material/List';
@@ -11,6 +8,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import LoadingSpinner from "./components/LoadingSpinner";
+import { getGroupCodes, getLeaderboardName } from "./util";
 
 const globalLeaderboardId = 'global';
 const globalLeaderboardName = 'Global';
@@ -18,7 +16,7 @@ const globalLeaderboardName = 'Global';
 function createLeaderboardMenuItem(leaderboardId, leaderboardName) {
   return (
     <ListItem key={leaderboardId} disablePadding>
-      <ListItemButton component={Link} to={'/leaderboard/display'} state={{ leaderboardId, leaderboardName }}>
+        <ListItemButton component={Link} to={'/leaderboard/display'} state={{ leaderboardId, leaderboardName }}>
         <ListItemText primary={leaderboardName}/>
       </ListItemButton>
     </ListItem>
@@ -31,16 +29,14 @@ const Leaderboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const firestore = getFirestore();
-    const ref = doc(firestore, user.uid, 'groupCodes');
-    getDoc(ref).then(async (docSnap) => {
-      const groupCodes = docSnap.data();
+    getGroupCodes(user).then( async groupCodes => {
       if (groupCodes?.codes && user) {
         const allGroupCodes = groupCodes.codes;
-        setLeaderboards(await Promise.all(allGroupCodes.map(async groupCode => {
-          const { data } = await getIdToken(user, true).then((idToken) => axios.get('https://13.228.86.60/getLeaderboardName/' + groupCode + '/' + idToken));
+        const newLeaderboards = await Promise.all(allGroupCodes.map(async groupCode => {
+          const { data } = await getLeaderboardName(user, groupCode);
           return { leaderboardName: data.leaderboardName, leaderboardId: groupCode };
-        })));
+        }));
+        setLeaderboards(newLeaderboards);
       } else {
         navigate('/leaderboard/display', {
           state: {

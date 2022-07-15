@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders react component 1`] = `
+Object {
+  "currentCal": <h2
+    class="MuiTypography-root MuiTypography-h2 MuiTypography-alignCenter css-icizyq-MuiTypography-root"
+  >
+    1402
+  </h2>,
+  "requiredCal": <h2
+    class="MuiTypography-root MuiTypography-h2 MuiTypography-alignCenter css-icizyq-MuiTypography-root"
+  >
+    598
+  </h2>,
+}
+`;
+
+exports[`renders react component 2`] = `
+Object {
+  "currentCal": <h2
+    class="MuiTypography-root MuiTypography-h2 MuiTypography-alignCenter css-icizyq-MuiTypography-root"
+  >
+    0
+  </h2>,
+  "requiredCal": <h2
+    class="MuiTypography-root MuiTypography-h2 MuiTypography-alignCenter css-icizyq-MuiTypography-root"
+  >
+    1000
+  </h2>,
+}
+`;
+
+exports[`renders react component 3`] = `
+Object {
+  "currentCal": <h2
+    class="MuiTypography-root MuiTypography-h2 MuiTypography-alignCenter css-icizyq-MuiTypography-root"
+  >
+    5882
+  </h2>,
+  "requiredCal": <h2
+    class="MuiTypography-root MuiTypography-h2 MuiTypography-alignCenter css-icizyq-MuiTypography-root"
+  >
+    0
+  </h2>,
+}
+`;
