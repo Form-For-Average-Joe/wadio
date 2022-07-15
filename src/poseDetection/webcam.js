@@ -8,6 +8,20 @@ import {Camera} from './camera';
 import { MODEL_BACKEND_MAP, STATE } from "./params";
 import { setBackendAndEnvFlags} from '../stuffToPackage/util';
 
+// import Worker from 'web-worker';
+// import worker from './worker';
+
+// var worker = new Worker(worker_script);
+//
+// if (!(webcamRef?.current)) {
+//   worker.postMessage({webcamRef, streamRef});
+//   //webcam(webcamRef, streamRef, setWebcamInstance)
+//   worker.onmessage = function(e) {
+//     setWebInstance(e);
+//     console.log('Message received from worker');
+//   }
+// }
+
 let detector, camera;
 
 tfjsWasm.setWasmPaths(
@@ -46,7 +60,7 @@ async function renderResult() {
   // different model. If during model change, the result is from an old model,
   // which shouldn't be rendered.
   if (camera.isPostureDetectionEnabled && poses && poses.length > 0) {
-    camera.drawResults(poses);
+    camera.calculateExerciseForm(poses[0]);
   }
 }
 
@@ -56,7 +70,7 @@ async function renderPrediction() {
   camera.frameId = requestAnimationFrame(renderPrediction);
 }
 
-async function app(webcamRef, streamRef, setWebcamInstance) {
+async function webcam(webcamRef, streamRef, setWebcamInstance) {
   webcamRef.current = true;
   camera = await Camera.setupCamera(STATE.camera, streamRef);
   setWebcamInstance(camera);
@@ -89,4 +103,4 @@ async function app(webcamRef, streamRef, setWebcamInstance) {
   return camera;
 }
 
-export default app;
+export default webcam;

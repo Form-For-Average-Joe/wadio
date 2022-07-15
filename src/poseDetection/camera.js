@@ -14,13 +14,7 @@ export class Camera {
     this.frameId = null;
   }
 
-  drawResults(poses) {
-    for (const pose of poses) {
-      this.drawResult(pose);
-    }
-  }
-
-  drawResult(pose) {
+  calculateExerciseForm(pose) {
     if (selectIsStarted(store.getState())) {
       if (pose.keypoints != null) {
         // todo need a better way to enumerate exercises
