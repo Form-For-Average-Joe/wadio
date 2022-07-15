@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Typography, Box, TextField, Button, Stack } from '@mui/material';
-import { nanoid } from 'nanoid/non-secure';
+import { v4 as uuidv4 } from 'uuid';
 import { isInvalidTextInput, isGroupCodePresent } from "../util";
 
 export default function CreateGroup({createRelationBetweenGroupCodeAndUser}) {
@@ -15,7 +15,7 @@ export default function CreateGroup({createRelationBetweenGroupCodeAndUser}) {
         let res = false;
         let possibleGroupCode;
         while (!res) {
-            possibleGroupCode = nanoid();
+            possibleGroupCode = uuidv4();
             res = await isGroupCodePresent(possibleGroupCode);
         }
         setNewCode(possibleGroupCode);

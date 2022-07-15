@@ -27,7 +27,6 @@
     "firebaseui": "^6.0.1",
     "firestore-jest-mock": "^0.18.0",
     "howler": "^2.2.3",
-    "nanoid": "^4.0.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -36,7 +35,9 @@
     "react-step-progress-bar": "^1.0.3",
     "reactfire": "^4.2.1",
     "typescript": "^4.6.4",
-    "web-vitals": "^2.1.4"
+    "uuid": "^8.3.2",
+    "web-vitals": "^2.1.4",
+    "web-worker": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -45,8 +46,9 @@
     "eject": "react-scripts eject",
     "all-deps": "yarn && cd firebase/functions && yarn",
     "lint": "eslint .",
-    "deploy-prod": "GENERATE_SOURCEMAP=false && yarn && rm -r .firebase && yarn build && yarn firebase deploy",
-    "deploy-staging": "yarn && rm -r .firebase && yarn build && yarn firebase hosting:channel:deploy test",
+    "reminders": "echo \"\n\nHave you disabled prod emulators!\n\n\"",
+    "deploy-prod": "GENERATE_SOURCEMAP=false && yarn && rm -r .firebase && yarn build && yarn firebase deploy && yarn reminders",
+    "deploy-staging": "yarn && rm -r .firebase && yarn build && yarn firebase hosting:channel:deploy test && yarn reminders",
     "firebase": "./node_modules/firebase-tools/lib/bin/firebase.js",
     "tag-it": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && echo \"Creating tag for v$PACKAGE_VERSION\" && git tag -a v$PACKAGE_VERSION -m \"Version v$PACKAGE_VERSION\" && git push --tags",
     "cicd-test": "firebase emulators:exex --import=./emulator-test --export-on-exit \"CI=true yarn test\""

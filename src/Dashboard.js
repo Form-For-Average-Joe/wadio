@@ -3,7 +3,6 @@ import { getIdToken } from "firebase/auth";
 import LoadingSpinner from "./components/LoadingSpinner";
 import BodyStatsPanel from './containers/BodyStatsPanel';
 import CaloriesBurnt from './components/CaloriesBurnt';
-import { theme } from "./index";
 import LogoutButton from './components/LogoutButton';
 import { useUser } from 'reactfire';
 import { getFirestore } from 'firebase/firestore';
@@ -52,7 +51,7 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Container sx={{ px: theme.spacing(0), py: theme.spacing(3) }}>
+      <Container sx={{ px: 0, py: 3 }}>
         <Grid container spacing={3} justifyContent="center" style={{ marginBottom: "0.5rem" }}>
           <Grid item xs={10} sm={6} md={4}>
             <BodyStatsPanel stats={{ weight: userProfileData?.weight || 0, height: userProfileData?.height || 0 }}/>

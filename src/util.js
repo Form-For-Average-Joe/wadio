@@ -1,6 +1,6 @@
 // to mirror the webcam
 import { get, put } from "axios";
-import { collection, doc, getDocs, getFirestore, query, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc } from "firebase/firestore";
 import bicepcurls from "./assets/bicepcurls.png";
 import bicepcurlsG from "./assets/bicepcurlsG.jpeg";
 import comingsoon from "./assets/comingsoon.png";
@@ -360,3 +360,10 @@ export const exerciseInformation = {
 }
 
 export const isGroupCodePresent = async (groupCode) => await get('https://13.228.86.60/isKeyPresent/' + groupCode);
+
+export const saveCodetostoreToFirestore = async (user, codeToStore) => {
+  const ref = doc(getFirestore(), user.uid, 'groupCodes');
+  getDoc(ref).then(async (docSnap) => {
+    await associateGroupCodeToUserId(docSnap.data(), codeToStore, user.uid);
+  })
+}
