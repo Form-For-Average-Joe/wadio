@@ -1,11 +1,10 @@
 import { Paper } from '@mui/material';
 import { getIdToken } from "firebase/auth";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { Typography, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from "reactfire";
 import LoadingSpinner from "./components/LoadingSpinner";
-import { associateGroupCodeToUserId, associateUserIdToGroupCode } from "./util";
+import { associateUserIdToGroupCode, saveCodetostoreToFirestore } from "./util";
 import CreateGroup from './components/CreateGroup';
 import JoinGroup from './components/JoinGroup';
 
@@ -15,10 +14,7 @@ const FriendsStuff = () => {
   const navigate = useNavigate();
 
   const createRelationBetweenGroupCodeAndUser = (codeToStore, leaderboardName) => {
-    const ref = doc(getFirestore(), user.uid, 'groupCodes');
-    getDoc(ref).then(async (docSnap) => {
-      await associateGroupCodeToUserId(docSnap.data(), codeToStore, user.uid);
-    })
+    saveCodetostoreToFirestore(user,codeToStore)
       .then(async () => {
         await getIdToken(user, true).then(async (idToken) => {
           await associateUserIdToGroupCode(codeToStore, idToken, leaderboardName);

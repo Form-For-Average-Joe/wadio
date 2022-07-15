@@ -1,5 +1,6 @@
 // to mirror the webcam
 import { get, put } from "axios";
+import { getIdToken } from "firebase/auth";
 import { collection, doc, getDoc, getDocs, getFirestore, query, setDoc } from "firebase/firestore";
 import bicepcurls from "./assets/bicepcurls.png";
 import bicepcurlsG from "./assets/bicepcurlsG.jpeg";
@@ -366,4 +367,17 @@ export const saveCodetostoreToFirestore = async (user, codeToStore) => {
   getDoc(ref).then(async (docSnap) => {
     await associateGroupCodeToUserId(docSnap.data(), codeToStore, user.uid);
   })
+};
+
+export const getGroupCodes = async (user) => {
+  console.log("3")
+  const ref = doc(getFirestore(), user.uid, 'groupCodes');
+  return getDoc(ref).then(async (docSnap) => {
+    console.log("3")
+    return docSnap.data();
+  });
 }
+
+export const getLeaderboardName = async (user, groupCode) => {
+  return await getIdToken(user, true).then((idToken) => get('https://13.228.86.60/getLeaderboardName/' + groupCode + '/' + idToken));
+};
