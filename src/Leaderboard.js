@@ -16,7 +16,7 @@ const globalLeaderboardName = 'Global';
 function createLeaderboardMenuItem(leaderboardId, leaderboardName) {
   return (
     <ListItem key={leaderboardId} disablePadding>
-      <ListItemButton component={Link} to={'/leaderboard/display'} state={{ leaderboardId, leaderboardName }}>
+        <ListItemButton component={Link} to={'/leaderboard/display'} state={{ leaderboardId, leaderboardName }}>
         <ListItemText primary={leaderboardName}/>
       </ListItemButton>
     </ListItem>
@@ -24,20 +24,19 @@ function createLeaderboardMenuItem(leaderboardId, leaderboardName) {
 }
 
 const Leaderboard = () => {
-  console.log("hi")
   const { status, data: user } = useUser();
   const [leaderboards, setLeaderboards] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     getGroupCodes(user).then( async groupCodes => {
-      console.log("x")
       if (groupCodes?.codes && user) {
         const allGroupCodes = groupCodes.codes;
-        setLeaderboards(await Promise.all(allGroupCodes.map(async groupCode => {
+        const newLeaderboards = await Promise.all(allGroupCodes.map(async groupCode => {
           const { data } = await getLeaderboardName(user, groupCode);
           return { leaderboardName: data.leaderboardName, leaderboardId: groupCode };
-        })));
+        }));
+        setLeaderboards(newLeaderboards);
       } else {
         navigate('/leaderboard/display', {
           state: {

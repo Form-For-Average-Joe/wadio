@@ -370,10 +370,8 @@ export const saveCodetostoreToFirestore = async (user, codeToStore) => {
 };
 
 export const getGroupCodes = async (user) => {
-  console.log("3")
   const ref = doc(getFirestore(), user.uid, 'groupCodes');
   return getDoc(ref).then(async (docSnap) => {
-    console.log("3")
     return docSnap.data();
   });
 }
