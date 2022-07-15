@@ -1,6 +1,6 @@
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import Dashboard from "../Dashboard";
-import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render, waitFor } from "@testing-library/react";
 import { FirebaseWrapperForTesting } from "../testUtils";
 import { connectAuthEmulator, getAuth, GoogleAuthProvider, signInWithCredential, signOut } from "firebase/auth";
 import { getApp, initializeApp } from "firebase/app";
@@ -31,8 +31,6 @@ afterEach(async () => {
 });
 
 it("Total calories updates with save", async () => {
-  // render(<FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}><Home/></FirebaseWrapperForTesting>);
-
   function UserSignedIn() {
     return (
       <FirebaseWrapperForTesting auth={auth} firestoreInstance={firestoreInstance}>
@@ -52,6 +50,8 @@ it("Total calories updates with save", async () => {
   });
 
   const user = auth.currentUser;
-
+  await waitFor(() => {
+    expect(user).toBeDefined()
+  });
   // screen.debug();
 })

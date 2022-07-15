@@ -8,7 +8,7 @@ const JoinGroup = ({createRelationBetweenGroupCodeAndUser}) => {
     const addNewCodeToUser = async (e) => {
         let result;
         try {
-            result = await isGroupCodePresent(existingCode);
+          result = await isGroupCodePresent(existingCode);
         } catch (err) {
             e.preventDefault();
         }
