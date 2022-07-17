@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { theme } from "./index";
 import { getFirestore } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { fetchUserData, getLastAttemptStats, getUserNickname } from './util';
+import { fetchMinorProfileUserData, getLastAttemptStats, getUserNickname } from './util';
 import PastExerciseTable from './components/PastExerciseTable';
 import StrangerStats from './components/StrangerStats';
 
@@ -14,7 +14,7 @@ const MinorProfile = () => {
 
     useEffect(() => {
         const firestore = getFirestore();
-        fetchUserData(userUid, (data) => {
+        fetchMinorProfileUserData(userUid, (data) => {
             setUserProfileData(data);
         })
         getLastAttemptStats(userUid, firestore, (data) => {
@@ -27,7 +27,7 @@ const MinorProfile = () => {
             <Grid>
                 <Grid item>
                     <Typography variant="h5" align="center" style={{ paddingTop: "2rem" }}>
-                        {/*we can leave it as undefined, because for their stats to show up on the leaderboard, their
+                        {/*we can leave firebaseUserData as undefined, because for their stats to show up on the leaderboard, their
                            data would have to be on Redis, which is fetched and stored in userProfileData*/}
                         {getUserNickname(undefined, userProfileData)}'s Profile
                     </Typography>

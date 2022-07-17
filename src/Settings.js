@@ -1,17 +1,20 @@
 import axios from "axios";
+import { getIdToken } from "firebase/auth";
 import { Fragment, useState, useEffect } from 'react';
 import { Typography, Grid, Box, TextField, Button, Stack, Switch, Snackbar, Alert } from '@mui/material';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useUser } from 'reactfire';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import LoadingSpinner from "./components/LoadingSpinner";
 import { fetchUserData, getUserNickname, isInvalidTextInput } from "./util";
 import { updateProfile, reload } from 'firebase/auth';
 
 const Settings = () => {
-  const { data: user } = useUser();
+  const { status, data: user } = useUser();
+  const navigate = useNavigate();
 
   const [nickname, setNickname] = useState(getUserNickname(user));
   const [age, setAge] = useState("");
@@ -56,32 +59,38 @@ const Settings = () => {
 
   useEffect(() => {
     if (user) {
-      fetchUserData(user.uid, (data) => {
-        setNickname(data.nickname);
-        setAge(data.age);
-        setWeight(data.weight);
-        setHeight(data.height);
-        setGender(data.gender);
-        setAnonymous(data.anonymous);
-        setPhotoURL(data.photoURL || "");
-      });
+      getIdToken(user, true).then((idToken) => {
+        fetchUserData(idToken, (data) => {
+          setNickname(data.nickname);
+          setAge(data.age);
+          setWeight(data.weight);
+          setHeight(data.height);
+          setGender(data.gender);
+          setAnonymous(data.anonymous);
+          setPhotoURL(data.photoURL || "");
+        });
+      })
     }
   }, [user])
 
-  const makeSave = (e) => {
+  const makeSave = async (e) => {
     if (isFormValid()) {
-      axios.post('https://13.228.86.60/user/addUserStatistics/' + user.uid, {
-        userProfileStatistics: {
-          nickname,
-          age: +age,
-          weight: +weight,
-          height: +height,
-          gender,
-          anonymous,
-          photoURL
-        }
-      });
+      e.preventDefault();
+      await getIdToken(user, true).then((idToken) => {
+        axios.post('https://13.228.86.60/user/addUserStatistics/' + idToken, {
+          userProfileStatistics: {
+            nickname,
+            age: +age,
+            weight: +weight,
+            height: +height,
+            gender,
+            anonymous,
+            photoURL
+          }
+        });
+      })
       reload(user);
+      navigate("/dashboard");
     } else {
       e.preventDefault();
     }
@@ -95,6 +104,11 @@ const Settings = () => {
     setAnonymous(newAnonymous);
   };
 
+  if (status === 'loading') {
+    return <LoadingSpinner/>
+  }
+  ;
+
   return (
     <>
       <Typography align="center" variant="h4" sx={{ paddingTop: "2rem" }}>Settings</Typography>
@@ -104,7 +118,7 @@ const Settings = () => {
         sx={{
           width: "30ch",
           paddingTop: "1rem", paddingLeft: "1rem", paddingRight: "1rem", paddingBottom: "1rem",
-          backgroundColor: "#FFFFFF", margin: "auto", marginTop: "1rem"
+          backgroundColor: "#FFFFFF", margin: "auto", marginTop: "1rem", borderRadius: 3,
         }}
         spacing={2}
         autoComplete="off"
@@ -118,7 +132,7 @@ const Settings = () => {
           sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
           onChange={(e) => {
             setNickname(e.target.value);
-            updateProfile(user, {displayName: e.target.value});
+            updateProfile(user, { displayName: e.target.value });
           }}
         />
         <TextField
@@ -173,12 +187,12 @@ const Settings = () => {
           sx={{ backgroundColor: "#FFFFFF", marginTop: "0.5rem" }}
           onChange={(e) => {
             setPhotoURL(e.target.value);
-            updateProfile(user, {photoURL: e.target.value});
+            updateProfile(user, { photoURL: e.target.value });
           }}
         />
         <Grid container spacing={0} direction="column" alignItems="center">
           <Grid item>
-            <Switch checked={anonymous} onChange={handleAnonymous}>
+            <Switch checked={anonymous} onChange={handleAnonymous} color="warning">
               Anonymous
             </Switch>
           </Grid>

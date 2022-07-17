@@ -5,8 +5,8 @@ import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 import * as posedetection from '@tensorflow-models/pose-detection';
 
 import {Camera} from './camera';
-import {STATE, MODEL_BACKEND_MAP} from './params';
-import {setBackendAndEnvFlags} from './util';
+import { MODEL_BACKEND_MAP, STATE } from "./params";
+import { setBackendAndEnvFlags} from '../stuffToPackage/util';
 
 let detector, camera;
 
@@ -32,7 +32,7 @@ async function renderResult() {
     try {
       poses = await detector.estimatePoses(
         camera.video,
-        {maxPoses: STATE.modelConfig.maxPoses, flipHorizontal: false});
+        {maxPoses: 1, flipHorizontal: false});
     } catch (error) {
       detector.dispose();
       detector = null;
@@ -56,7 +56,8 @@ async function renderPrediction() {
   camera.frameId = requestAnimationFrame(renderPrediction);
 }
 
-async function app(streamRef, setWebcamInstance) {
+async function app(webcamRef, streamRef, setWebcamInstance) {
+  webcamRef.current = true;
   camera = await Camera.setupCamera(STATE.camera, streamRef);
   setWebcamInstance(camera);
 
@@ -66,7 +67,7 @@ async function app(streamRef, setWebcamInstance) {
   //todo tfjs logs if WebGL is not detected, but does not throw an error - users can enable hardware acceleration on their device to enable WebGL - implement a way to check if hardware acceleration is enabled?
   while (!isBackendSet && i < MODEL_BACKEND_MAP.length) {
     // Sets WebGL backend first
-    await setBackendAndEnvFlags(STATE.flags, MODEL_BACKEND_MAP[i]);
+    await setBackendAndEnvFlags({}, MODEL_BACKEND_MAP[i]);
     // Lets the backend initialise
     await tf.ready();
     const backend = tf.getBackend();

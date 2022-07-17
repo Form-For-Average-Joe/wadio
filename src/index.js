@@ -18,18 +18,7 @@ import Settings from './Settings';
 import Leaderboard from './Leaderboard';
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { FirebaseAppProvider } from 'reactfire';
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAGX6XeU2KMJvP08LKo_iUIC71R81TZpfQ",
-  authDomain: "form-for-average-joe.firebaseapp.com",
-  projectId: "form-for-average-joe",
-  storageBucket: "form-for-average-joe.appspot.com",
-  messagingSenderId: "847183773725",
-  appId: "1:847183773725:web:8b149912201a34e901c6f4",
-  measurementId: "G-0DWTZ7HHW7"
-};
+import { exerciseIds, firebaseConfig } from "./util";
 
 export const theme = responsiveFontSizes(createTheme({
   components: {
@@ -103,8 +92,10 @@ root.render((
                   </Route>
                 </Route>
                 <Route path="/exercise">
-                  <Route exact path="pushups" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={"pushups"}/></SettingsWrapper>}/>
-                  <Route exact path="situps" element={<SettingsWrapper><ExerciseAssessment nameOfExercise={"situps"}/></SettingsWrapper>}/>
+                  <Route exact path={exerciseIds[0]} element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exerciseIds[0]}/></SettingsWrapper>}/>
+                  <Route exact path={exerciseIds[1]} element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exerciseIds[1]}/></SettingsWrapper>}/>
+                  <Route exact path={exerciseIds[2]} element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exerciseIds[2]}/></SettingsWrapper>}/>
+                  <Route exact path={exerciseIds[3]} element={<SettingsWrapper><ExerciseAssessment nameOfExercise={exerciseIds[3]}/></SettingsWrapper>}/>
                 </Route>
               </Route>
             </Routes>

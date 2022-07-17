@@ -1,10 +1,9 @@
-import * as params from './params';
-import * as pushups from './pushups';
-import * as assessment from './assessment';
+import { exerciseIds } from "../util";
+import * as assessment from '../stuffToPackage/assessment';
 import {selectIsStarted, selectNameOfExercise} from '../features/exercise/exerciseSlice';
 import {selectStage} from "../features/exercise/exerciseSlice";
 import {store} from "../app/store";
-import valuesFactory from "./valuesFactory";
+import valuesFactory from "../stuffToPackage/valuesFactory";
 
 export class Camera {
   constructor() {
@@ -15,32 +14,32 @@ export class Camera {
     this.frameId = null;
   }
 
-  /**
-   * Draw the keypoints and skeleton on the video.
-   * @param poses A list of poses to render.
-   */
   drawResults(poses) {
     for (const pose of poses) {
       this.drawResult(pose);
     }
   }
 
-  /**
-   * Draw the keypoints and skeleton on the video.
-   * @param pose A pose with keypoints to render.
-   */
   drawResult(pose) {
     if (selectIsStarted(store.getState())) {
       if (pose.keypoints != null) {
         // todo need a better way to enumerate exercises
         const isNotAtStageFour = selectStage(store.getState()) !== 4;
-        if (this.nameOfExercise === 'pushups') {
+        if (this.nameOfExercise === exerciseIds[0]) {
           if (isNotAtStageFour) {
             assessment.assess_pushups(pose.keypoints, this.exerciseValues);
           }
-        } else if (this.nameOfExercise === 'situps') {
+        } else if (this.nameOfExercise === exerciseIds[1]) {
           if (isNotAtStageFour) {
             assessment.assess_situps(pose.keypoints, this.exerciseValues);
+          }
+        } else if (this.nameOfExercise === exerciseIds[2]) {
+          if (isNotAtStageFour) {
+            assessment.assess_bicepcurls(pose.keypoints, this.exerciseValues);
+          }
+        } else if (this.nameOfExercise === exerciseIds[3]) {
+          if (isNotAtStageFour) {
+            assessment.assess_shoulderpress(pose.keypoints, this.exerciseValues);
           }
         } else {
           console.log("No exercise detected, check Redux state for the value of nameOfExercise")
@@ -51,31 +50,18 @@ export class Camera {
     }
   }
 
-  /**
-   * Initiate a Camera instance and wait for the camera stream to be ready.
-   * @param cameraParam From app `STATE.camera`.
-   * @param parentStreamRef The reference to the stream
-   */
   static async setupCamera(cameraParam, parentStreamRef) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       throw new Error(
         'Browser API navigator.mediaDevices.getUserMedia not available');
     }
 
-    const {targetFPS, sizeOption} = cameraParam;
-    const $size = params.VIDEO_SIZE[sizeOption];
     const videoConfig = {
       'audio': false,
       'video': {
         facingMode: 'user',
-        // Only setting the video to a specified size for large screen, on
-        // mobile devices accept the default size.
-        // width: isMobile() ? params.VIDEO_SIZE['360 X 270'].width : $size.width,
-        // height: isMobile() ? params.VIDEO_SIZE['360 X 270'].height :
-        //   $size.height,
-        // width: 360, height: 270,
         frameRate: {
-          ideal: targetFPS,
+          ideal: 60,
         }
       }
     };
@@ -103,14 +89,6 @@ export class Camera {
     }
 
     camera.video.play();
-
-    // const videoWidth = camera.video.videoWidth;
-    // const videoHeight = camera.video.videoHeight;
-    // Must set below two lines, otherwise video element doesn't show.
-
-    //todo hide camera element for now, only keep context
-    // camera.video.width = videoWidth;
-    // camera.video.height = videoHeight;
 
     camera.nameOfExercise = selectNameOfExercise(store.getState());
 

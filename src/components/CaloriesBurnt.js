@@ -1,21 +1,18 @@
 import { Typography, Card, Grid } from '@mui/material';
-import { useUser } from "reactfire";
-import { fetchUserCumulativeCalories } from "../util";
-import { useState, useEffect } from "react";
 
 const CaloriesBurnt = ({ cal }) => {
     //todo fix levelData formula
     const levelData = cal > 5000 ? 0 : 1000 - (cal % 1000);
 
     return (
-        <Card sx={{paddingTop: "1rem"}}>
+        <Card sx={{ paddingTop: "1rem", borderRadius: 3 }}>
             <Grid container justifyContent="center" alignItems="center" direction="column">
                 <Grid item style={{ paddingTop: "1rem" }}>
                     <Typography variant="subtitle1" align="center">
                         Cumulative Calories Burnt:
                     </Typography>
                     <Typography variant="h2" align="center">
-                        {cal}
+                        {cal ? cal.toFixed(0) : 0}
                     </Typography>
                 </Grid>
                 <Grid item style={{ paddingTop: "2rem" }}>
